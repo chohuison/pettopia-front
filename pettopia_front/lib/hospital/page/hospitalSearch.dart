@@ -10,13 +10,12 @@ class HospitalSearch extends StatefulWidget {
   _HospitalSearchState createState() => _HospitalSearchState();
 }
 
-
 class _HospitalSearchState extends State<HospitalSearch> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4), // 디자인 기준 크기를 설정합니다.
-      child:  MaterialApp(
+      child: MaterialApp(
         title: "hospital",
         builder: (context, child) {
           // MediaQuery를 사용하여 텍스트 크기 조정을 비활성화합니다.
@@ -29,12 +28,17 @@ class _HospitalSearchState extends State<HospitalSearch> {
           builder: (context) {
             return Scaffold(
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(60.0.h), // ScreenUtil을 사용하여 높이 설정
-                child: AppBar(
-                  title: Text('병원 찾기 페이지'),
-                  centerTitle: true,
-                  backgroundColor: Colors.blue, // 색상을 직접 지정합니다.
-                ),
+                preferredSize: Size.fromHeight(60.0.h),
+                child: Container(
+                    color: Color.fromRGBO(237, 237, 233, 1.0),
+                    child: Row(
+                      children: <Widget>[
+                        _buildIconButton('assets/hospitalIcon.png', 0),
+                        _buildIconButton('assets/hospitalIcon.png', 1),
+                        _buildIconButton('assets/hospitalIcon.png', 2),
+                        _buildIconButton('assets/hospitalIcon.png', 3)
+                      ],
+                    )),
               ),
               bottomNavigationBar: CustomBottomNavigatorBar(page: 1),
             );
@@ -43,5 +47,23 @@ class _HospitalSearchState extends State<HospitalSearch> {
       ),
     );
   }
-}
 
+  Widget _buildIconButton(String img, int index) {
+    return ElevatedButton(
+      onPressed: () {},
+      child: Container(
+         
+          ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          Color(0xFFD5BDAF),
+        ),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    );
+  }
+}
