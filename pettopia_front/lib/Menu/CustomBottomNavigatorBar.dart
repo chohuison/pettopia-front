@@ -32,19 +32,21 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildIconButton(Icons.content_cut, 0),
-            _buildIconButton(Icons.local_hospital, 1),
-            _buildIconButton(Icons.home, 2),
-            _buildIconButton(Icons.list, 3),
-            _buildIconButton(Icons.settings, 4),
+            _buildIconButton(Icons.content_cut, 0,"미용"),
+            _buildIconButton(Icons.local_hospital, 1,"의료"),
+            _buildIconButton(Icons.home, 2,"매안"),
+            _buildIconButton(Icons.list, 3,"라이프"),
+            _buildIconButton(Icons.settings, 4,"설정"),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildIconButton(IconData icon, int pageIndex) {
-    return IconButton(
+  Widget _buildIconButton(IconData icon, int pageIndex, String name) {
+    return Column(
+      children :<Widget>[
+        IconButton(
       onPressed: () {
       if(pageIndex == 1){
             Navigator.push(
@@ -55,6 +57,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
       },
       icon: Icon(icon),
       color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Colors.grey,
-    );
+    ),
+    Text(name,
+    style: TextStyle(color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Colors.grey,),)
+      ]
+    ) ;
   }
 }
