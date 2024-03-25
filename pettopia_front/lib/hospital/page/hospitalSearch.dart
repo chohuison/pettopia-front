@@ -30,6 +30,14 @@ class _HospitalSearchState extends State<HospitalSearch> {
           body: ListView(
             children: [
               HospitalAppBar(page: 0),
+              Container(
+                height: 485.h,
+                  margin: EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
+                decoration: BoxDecoration(
+                  color: Color(0xFFD5BDAF),
+                   borderRadius: BorderRadius.circular(25),
+                ),
+              )
             ],
           ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 1),
