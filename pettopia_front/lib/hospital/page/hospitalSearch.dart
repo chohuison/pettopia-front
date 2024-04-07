@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
-import 'package:pettopia_front/hospital/page/hospitalAppbar.dart';
+import 'package:pettopia_front/hospital/widget/hospitalAppbar.dart';
+import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
 
 class HospitalSearch extends StatefulWidget {
   const HospitalSearch({Key? key}) : super(key: key);
@@ -37,6 +38,23 @@ class _HospitalSearchState extends State<HospitalSearch> {
                   color: Color(0xFFD5BDAF),
                    borderRadius: BorderRadius.circular(25),
                 ),
+                child:Column(
+                  children:<Widget>[
+                    Container(
+                         alignment: Alignment.centerLeft,
+                    child:RegionSelectBox(),
+                       padding: EdgeInsets.fromLTRB(20.w, 10.h, 0.w, 10.h),
+                             
+                              height:50.h),
+                    Container(
+                 
+                      // color:Colors.blue,
+                    
+                      height:405.h
+                    )
+                  ],
+
+                )
               )
             ],
           ),
