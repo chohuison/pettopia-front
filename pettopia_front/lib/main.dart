@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               bottomNavigationBar:
-                  CustomBottomNavigatorBar(page: 0), // 예시 커스텀 바텀 네비게이션 바
+                  CustomBottomNavigatorBar(page: 2), // 예시 커스텀 바텀 네비게이션 바
             );
           },
         ),
