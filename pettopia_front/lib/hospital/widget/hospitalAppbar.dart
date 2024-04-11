@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/enum/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 
 class HospitalAppBar extends StatefulWidget {
@@ -45,6 +46,12 @@ Widget _buildIconButton(String img, int index, String name) {
                  Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => HospitalSearch()),
+                );
+            }
+              if(index == 1){
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShortRecords()),
                 );
             }
           },
