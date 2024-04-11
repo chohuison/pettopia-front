@@ -52,6 +52,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
             Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => HospitalSearch()),
+                  
                 );
       }
       },
