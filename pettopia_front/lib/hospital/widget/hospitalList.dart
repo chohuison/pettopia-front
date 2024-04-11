@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/hospital/page/hospitalValue.dart';
+import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 
 class HospitalList extends StatefulWidget{
   final List<Map<String, dynamic>>hospitalList;

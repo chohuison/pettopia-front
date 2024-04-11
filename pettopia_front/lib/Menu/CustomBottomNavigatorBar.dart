@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
+import 'package:pettopia_front/main.dart';
 
 class CustomBottomNavigatorBar extends StatefulWidget {
   final int page;
@@ -25,7 +26,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: Offset(0, 3), 
             ),
           ],
         ),
@@ -34,7 +35,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
           children: [
             _buildIconButton(Icons.content_cut, 0,"미용"),
             _buildIconButton(Icons.local_hospital, 1,"의료"),
-            _buildIconButton(Icons.home, 2,"매안"),
+            _buildIconButton(Icons.home, 2,"메인"),
             _buildIconButton(Icons.list, 3,"라이프"),
             _buildIconButton(Icons.settings, 4,"설정"),
           ],
@@ -55,6 +56,14 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
                   
                 );
       }
+      else if(pageIndex ==2 ){
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyApp()),
+                  
+                );
+      }
+
       },
       icon: Icon(icon),
       color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Colors.grey,
