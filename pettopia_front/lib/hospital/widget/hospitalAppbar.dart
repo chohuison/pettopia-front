@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/shortRecords.dart';
+import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 
 class HospitalAppBar extends StatefulWidget {
