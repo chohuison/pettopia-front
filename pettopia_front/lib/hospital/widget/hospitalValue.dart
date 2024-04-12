@@ -19,7 +19,7 @@ class _HospitalValueState extends State<HospitalValue> {
     return ScreenUtilInit(
         designSize: const Size(411.4, 683.4),
         child: Container(
-  margin: EdgeInsets.only(top: 10.0.h, left: 10.0.w, right: 10.w, bottom: 5.h),
+  margin: EdgeInsets.only(top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
   width: 350.w,
   height: 90.h,
   decoration: BoxDecoration(
@@ -56,7 +56,7 @@ class _HospitalValueState extends State<HospitalValue> {
        )
       ),
       Container(
-          margin: EdgeInsets.only(top: 10.0.h, left: 15.0.w, bottom: 5.h),
+          margin: EdgeInsets.only(top: 5.0.h, left: 15.0.w, bottom: 5.h),
         width:50.w,
         height:50.h,
      decoration: BoxDecoration(

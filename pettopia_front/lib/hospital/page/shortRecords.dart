@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/hospital/page/shortWrite.dart';
+import 'package:pettopia_front/hospital/page/viewRecords.dart';
 import 'package:pettopia_front/hospital/widget/hospitalAppbar.dart';
+import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
 
 
 class ShortRecords extends StatefulWidget {
@@ -14,6 +17,13 @@ class ShortRecords extends StatefulWidget {
 
 class _ShortRecordshState extends State<ShortRecords> {
 
+  int _index=0;
+
+  int _getIndex(int index){
+    _index=index;
+    return index;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -41,7 +51,28 @@ class _ShortRecordshState extends State<ShortRecords> {
                   borderRadius: BorderRadius.circular(25),
                 ),
             
-          padding: EdgeInsets.fromLTRB(20.w, 10.h, 0.w, 10.h),
+       
+          child: Column(
+            children:<Widget>[
+              Container(
+                margin: EdgeInsets.all(10.0),
+                height:40.h,
+                // color:Colors.blue,
+                child: ShortRecordBar(
+                  indexNum: _index,
+                  index: (index){
+                    setState(() {
+                      _index=_getIndex(index);
+                    });
+                  },
+                ),
+              ),
+              Container(
+                height:420.h,
+                child:  buildWidget(_index)
+              )
+            ]
+          )
       
         ),
               ]),
@@ -52,4 +83,13 @@ class _ShortRecordshState extends State<ShortRecords> {
     );
   }
 }
-
+Widget buildWidget(int index) {
+  switch (index) {
+    case 1:
+      return ShortWrite();
+    case 2:
+      return ViewRecords();
+    default:
+      return Container(); // 기본적으로 빈 컨테이너를 반환하거나 다른 처리를 수행할 수 있습니다.
+  }
+}
