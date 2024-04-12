@@ -15,14 +15,15 @@ class HospitalSearch extends StatefulWidget {
 }
 
 class _HospitalSearchState extends State<HospitalSearch> {
- List<Map<String, dynamic>>? hospitalList;
+ List<Map<String, dynamic>>? _hospitalList;
   //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯 
-  List<Map<String, dynamic>> fetchHospitalList(String selectedRegion) {
+  List<Map<String, dynamic>> _fetchHospitalList(String selectedRegion) {
    
     return [
       {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
       {'name': '병원2', 'address': '주소2', 'phone': '전화번호2'},
       {'name': '병원3', 'address': '주소3', 'phone': '전화번호3'},
+       {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
     ];
   }
 
@@ -58,7 +59,7 @@ class _HospitalSearchState extends State<HospitalSearch> {
                       child:  RegionSelectBox(
             onRegionSelected: (selectedRegion) {
               setState(() {
-                hospitalList = fetchHospitalList(selectedRegion); // 선택한 지역에 따른 병원 목록 가져오기
+                _hospitalList = _fetchHospitalList(selectedRegion); // 선택한 지역에 따른 병원 목록 가져오기
               });
             },
           ),
@@ -66,9 +67,9 @@ class _HospitalSearchState extends State<HospitalSearch> {
           height: 50.h,
         ),
                   
-                    if (hospitalList != null)
+                    if (_hospitalList != null)
                       HospitalList(
-                        hospitalList: hospitalList!,
+                        hospitalList: _hospitalList!,
                       ),
                   ],
                 ),
