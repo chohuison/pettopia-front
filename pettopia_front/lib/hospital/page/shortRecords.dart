@@ -19,11 +19,21 @@ class _ShortRecordshState extends State<ShortRecords> {
 
   int _index=0;
 
-  int _getIndex(int index){
-    _index=index;
-    return index;
+ List<Map<String, dynamic>>? _chartList;
+
+
+ int _getIndex(int index){
+  _index = index;
+  if (_index == 2) {
+    _chartList = [
+      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
+      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
+      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
+      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
+    ];
   }
-  
+  return index;
+}
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -63,13 +73,14 @@ class _ShortRecordshState extends State<ShortRecords> {
                   index: (index){
                     setState(() {
                       _index=_getIndex(index);
+                
                     });
                   },
                 ),
               ),
               Container(
                 height:420.h,
-                child:  buildWidget(_index)
+                child:  buildWidget(_index,_chartList )
               )
             ]
           )
@@ -83,12 +94,12 @@ class _ShortRecordshState extends State<ShortRecords> {
     );
   }
 }
-Widget buildWidget(int index) {
+Widget buildWidget(int index, List<Map<String, dynamic>>? chartList) {
   switch (index) {
     case 1:
       return ShortWrite();
     case 2:
-      return ViewRecords();
+      return chartList != null ? ViewRecords(chartList: chartList) : Container();
     default:
       return Container(); // 기본적으로 빈 컨테이너를 반환하거나 다른 처리를 수행할 수 있습니다.
   }

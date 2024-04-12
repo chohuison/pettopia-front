@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/widget/ShortChartList.dart';
 import 'package:pettopia_front/hospital/widget/calendar.dart';
 import 'package:pettopia_front/hospital/widget/shortWriteValue.dart';
 
 class ViewRecords extends StatefulWidget {
- 
-  const ViewRecords({Key? key,}) : super(key: key);
+  final List<Map<String,dynamic>> chartList;
+  const ViewRecords({Key? key, required this.chartList}) : super(key: key);
 
   @override
   _ViewRecordsState createState() => _ViewRecordsState();
@@ -20,6 +21,6 @@ class _ViewRecordsState extends State<ViewRecords> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Text("기록 보기 페이지입니다");
+    return ShortChartList(chartList: widget.chartList);
   }
 }
