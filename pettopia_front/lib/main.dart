@@ -35,6 +35,7 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
+             resizeToAvoidBottomInset: false,
               appBar: PreferredSize(
                 preferredSize:
                     Size.fromHeight(60.0.h), // ScreenUtil을 사용하여 높이 설정

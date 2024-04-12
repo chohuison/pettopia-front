@@ -40,6 +40,7 @@ class _HospitalSearchState extends State<HospitalSearch> {
           );
         },
         home: Scaffold(
+        resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(
             children: <Widget>[
