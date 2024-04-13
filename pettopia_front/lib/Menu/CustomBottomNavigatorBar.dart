@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/main.dart';
+import 'package:pettopia_front/setting/page/settingMain.dart';
 
 class CustomBottomNavigatorBar extends StatefulWidget {
   final int page;
@@ -63,7 +64,12 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
                   
                 );
       }
-
+    else if(pageIndex==4){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SettingMain()),
+      );
+    }
       },
       icon: Icon(icon),
       color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Colors.grey,
