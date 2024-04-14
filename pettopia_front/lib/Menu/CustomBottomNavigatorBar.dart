@@ -19,9 +19,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: Container(
+
         height: 70.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+       color: Color(0xFFD6CCC2),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -72,10 +73,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
     }
       },
       icon: Icon(icon),
-      color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Colors.grey,
+      color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) :  Color(0xFFAFA59B),
     ),
     Text(name,
-    style: TextStyle(color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Colors.grey,),)
+    style: TextStyle(color: widget.page == pageIndex ? Color.fromARGB(255, 0, 22, 64) : Color(0xFFAFA59B),),)
       ]
     ) ;
   }
