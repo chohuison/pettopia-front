@@ -1,0 +1,1 @@
+enum LiveType{TRUE,FALSE}
