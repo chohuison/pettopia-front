@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
+import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/setting/page/settingMain.dart';
 
@@ -62,6 +63,14 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
           Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MyApp()),
+                  
+                );
+                
+      }
+      else if(pageIndex==3){
+           Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PetFilter()),
                   
                 );
       }
