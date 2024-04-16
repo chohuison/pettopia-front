@@ -7,28 +7,27 @@ import 'package:pettopia_front/Menu/appbar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
-
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
 
-class HospitalSearch extends StatefulWidget   {
-  const HospitalSearch({Key? key}) : super(key: key);
+class PetFilter extends StatefulWidget   {
+  const PetFilter({Key? key}) : super(key: key);
 
   @override
-  _HospitalSearchState createState() => _HospitalSearchState();
+  _PetFilterSearchState createState() => _PetFilterSearchState();
 }
 
-class _HospitalSearchState extends State<HospitalSearch> with AutomaticKeepAliveClientMixin{
+class _PetFilterSearchState extends State<PetFilter> with AutomaticKeepAliveClientMixin{
   @override
   bool get wantKeepAlive => true;
 
 
- late List<Map<String,dynamic>> _hospitalAppBar;
+ late List<Map<String,dynamic>> _lifeAppBar;
   @override
   void initState() {
     super.initState();
 
   AppBarList _appBarList= AppBarList();
-_hospitalAppBar=_appBarList.getHospitalAppBar();
+_lifeAppBar=_appBarList.getLifeAppBar();
   }
   
  
@@ -62,7 +61,7 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(
             children: <Widget>[
-            AppBarContainer(page: 0, barList: _hospitalAppBar),
+            AppBarContainer(page: 0, barList: _lifeAppBar),
               Container(
                 width:500.w,
                 height: 485.h,
@@ -72,31 +71,11 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
                   color: Color(0xFFD5BDAF),
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child:  RegionSelectBox(
-            onRegionSelected: (selectedRegion) {
-              setState(() {
-                _hospitalList = _fetchHospitalList(selectedRegion); // 선택한 지역에 따른 병원 목록 가져오기
-              });
-            },
-          ),
-          padding: EdgeInsets.fromLTRB(20.w, 10.h, 0.w, 10.h),
-          height: 50.h,
-        ),
-                  
-                    if (_hospitalList != null)
-                      HospitalList(
-                        hospitalList: _hospitalList!,
-                      ),
-                  ],
-                ),
+              
               ),
             ],
           ),
-          bottomNavigationBar: CustomBottomNavigatorBar(page: 1),
+          bottomNavigationBar: CustomBottomNavigatorBar(page: 3),
         ),
       ),
     );

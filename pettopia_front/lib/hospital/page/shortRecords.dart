@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:pettopia_front/Menu/appbar.dart';
+import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
 import 'package:pettopia_front/hospital/page/viewRecords.dart';
-import 'package:pettopia_front/hospital/widget/hospitalAppbar.dart';
+
 import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
 
 
@@ -15,8 +18,22 @@ class ShortRecords extends StatefulWidget {
   _ShortRecordshState createState() => _ShortRecordshState();
 }
 
-class _ShortRecordshState extends State<ShortRecords> {
+class _ShortRecordshState extends State<ShortRecords> with AutomaticKeepAliveClientMixin{
 
+ @override
+  bool get wantKeepAlive => true;
+
+
+ late List<Map<String,dynamic>> _hospitalAppBar;
+  @override
+  void initState() {
+    super.initState();
+
+  AppBarList _appBarList= AppBarList();
+_hospitalAppBar=_appBarList.getHospitalAppBar();
+  }
+  
+ 
   int _index=0;
 
  List<Map<String, dynamic>>? _chartList;
@@ -51,7 +68,7 @@ class _ShortRecordshState extends State<ShortRecords> {
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body:Column(
             children: <Widget>[
-              HospitalAppBar(page: 1),
+              AppBarContainer(page: 1, barList: _hospitalAppBar),
                Container(
                 height: 485.h,
                  width:500.w,

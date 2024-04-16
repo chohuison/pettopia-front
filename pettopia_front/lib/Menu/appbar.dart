@@ -3,34 +3,34 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 
-class HospitalAppBar extends StatefulWidget {
+class AppBarContainer extends StatefulWidget {
   final int page;
-
-  const HospitalAppBar({Key? key, required this.page}) : super(key: key);
+  final List<Map<String,dynamic>> barList;
+  const AppBarContainer({Key? key, required this.page, required this.barList}) : super(key: key);
 
   @override
-  _HospitalAppBarState createState() => _HospitalAppBarState();
+  _AppBarContainerState createState() => _AppBarContainerState();
 }
 
-class _HospitalAppBarState extends State<HospitalAppBar> {
+class _AppBarContainerState extends State<AppBarContainer> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4), // 디자인 기준 크기를 설정합니다.
-      child: Container(
-          height: 100.h,
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: 20.w),
-              _buildIconButton('assets/img/hospitalIcon.png', 0, '병원찾기'),
-              SizedBox(width: 20.w),
-              _buildIconButton('assets/img/hospitalIcon.png', 1, '명냥접종'),
-              SizedBox(width: 20.w),
-              _buildIconButton('assets/img/hospitalIcon.png', 2, '피부병'),
-              SizedBox(width: 20.w),
-              _buildIconButton('assets/img/hospitalIcon.png', 3, '질병찾기')
-            ],
-          )),
+      designSize: const Size(411.4, 683.4),
+      child:Container(
+  height: 100.h,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: 4, // 리스트의 개수에 맞게 설정하세요
+    itemBuilder: (context, index) {
+      final record = widget.barList[index];
+      return Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: _buildIconButton(record['imgUrl'], index, record['title']),
+      );
+    },
+  ),
+),
     );
   }
 
@@ -39,7 +39,11 @@ Widget _buildIconButton(String img, int index, String name) {
     height: 70.h,
     width: 50.w,
     child: Column(
+    
       children: <Widget>[
+          SizedBox(
+        height: 20.h,
+      ),
         ElevatedButton(
           onPressed: () {
             if(index == 0){
