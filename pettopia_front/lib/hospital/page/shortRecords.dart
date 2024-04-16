@@ -54,7 +54,7 @@ class _ShortRecordshState extends State<ShortRecords> {
               HospitalAppBar(page: 1),
                Container(
                 height: 485.h,
-                
+                 width:500.w,
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
                 decoration: BoxDecoration(
@@ -105,3 +105,4 @@ Widget buildWidget(int index, List<Map<String, dynamic>>? chartList) {
       return Container(); // 기본적으로 빈 컨테이너를 반환하거나 다른 처리를 수행할 수 있습니다.
   }
 }
+
