@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/page/shortRecordModify.dart';
 
 class ShortChartValue extends StatefulWidget {
   final Map<String, dynamic> value;
@@ -53,7 +54,7 @@ class ShortChartValueState extends State<ShortChartValue> {
                   ),
                   Row(
                      children: <Widget>[
-                      Text(widget.value['name'],
+                      Text(widget.value['type'],
                        style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold
@@ -81,7 +82,12 @@ class ShortChartValueState extends State<ShortChartValue> {
         width: 90.w,
         height: 30.h,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShortRecordModify(chartValue: widget.value,)),
+      );
+          },
           style: ButtonStyle(
             side: MaterialStateProperty.all<BorderSide>(
               BorderSide(color: Color(0xFF665D55)),
