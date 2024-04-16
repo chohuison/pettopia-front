@@ -2,44 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+
+import 'package:pettopia_front/enum/appBarList.dart';
+import 'package:pettopia_front/Menu/appbar.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
 import 'package:pettopia_front/hospital/page/viewRecords.dart';
-import 'package:pettopia_front/hospital/widget/hospitalAppbar.dart';
 import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
 
 class ShortRecordModify extends StatefulWidget {
-  final Map<String,dynamic> chartValue;
-  const ShortRecordModify(
-      {Key? key,  required this.chartValue})
+  final Map<String, dynamic> chartValue;
+  const ShortRecordModify({Key? key, required this.chartValue})
       : super(key: key);
 
   @override
   _ShortRecordModifyValueState createState() => _ShortRecordModifyValueState();
 }
 
-class _ShortRecordModifyValueState extends State<ShortRecordModify> {
+class _ShortRecordModifyValueState extends State<ShortRecordModify>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  late List<Map<String, dynamic>> _hospitalAppBar;
+  @override
+  void initState() {
+    super.initState();
+
+    AppBarList _appBarList = AppBarList();
+    _hospitalAppBar = _appBarList.getHospitalAppBar();
+  }
+
   late String _type = widget.chartValue['type'];
   late String _count = widget.chartValue['count'];
   late String _age = widget.chartValue['age'];
 
-
   void _typeHandler(String value) {
     setState(() {
-      _type=value;
+      _type = value;
     });
   }
 
   void _countHandler(String value) {
-
     setState(() {
-          _count = value;
+      _count = value;
     });
   }
 
   void _ageHandler(String value) {
-  setState(() {
-    _age=value;
-  });
+    setState(() {
+      _age = value;
+    });
   }
 
   void _savedButton() {
@@ -65,7 +77,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(children: <Widget>[
-            HospitalAppBar(page: 1),
+             AppBarContainer(page: 1, barList: _hospitalAppBar),
             Container(
                 height: 485.h,
                 width: 500.w,
@@ -80,12 +92,12 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify> {
                         bottom: 30.h, right: 30.w, top: 50.h, left: 30.w),
                     height: 300.h,
                     child: Column(children: <Widget>[
-                     _defalutValue("날짜",widget.chartValue['day']),
-                     _defalutValue("이름", widget.chartValue['dogname']),
+                      _defalutValue("날짜", widget.chartValue['day']),
+                      _defalutValue("이름", widget.chartValue['dogname']),
                       _textFieldContainer(
                           "종류", _type, 20, 10, _typeHandler, false),
                       _textFieldContainer(
-                          "차시",_count, 14, 10, _countHandler, true),
+                          "차시", _count, 14, 10, _countHandler, true),
                       _textFieldContainer(
                           "나이", _age, 13, 10, _ageHandler, true),
                       _createButton(_savedButton),
@@ -98,12 +110,9 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify> {
   }
 }
 
-Widget _defalutValue(String containerName,String value){
+Widget _defalutValue(String containerName, String value) {
   return Row(
-    children: <Widget>[
-      _typeContainer(containerName),
-      Text(value)
-    ],
+    children: <Widget>[_typeContainer(containerName), Text(value)],
   );
 }
 
@@ -173,8 +182,8 @@ Widget _selectBox(List<String> list, String listValue, Function controller) {
   );
 }
 
-Widget _textFieldContainer(String containerName, String value,
-    int horizontal, int vertical, Function contorller, bool isDigit) {
+Widget _textFieldContainer(String containerName, String value, int horizontal,
+    int vertical, Function contorller, bool isDigit) {
   return Row(
     children: <Widget>[
       _typeContainer(containerName),
@@ -184,7 +193,6 @@ Widget _textFieldContainer(String containerName, String value,
               onChanged: (text) {
                 contorller(text);
               },
-              
               keyboardType: isDigit ? TextInputType.number : null,
               decoration: InputDecoration(
                 hintText: value,
