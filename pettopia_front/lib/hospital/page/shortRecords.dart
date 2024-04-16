@@ -26,10 +26,10 @@ class _ShortRecordshState extends State<ShortRecords> {
   _index = index;
   if (_index == 2) {
     _chartList = [
-      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
-      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
-      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
-      {'dogname': '강아지1', 'age': '6주', 'name': '주사1', 'count': '1차시'},
+      {'day':'2024년 3월 1일 금요일', 'dogname': '강아지1', 'age': '6주', 'type': '주사1', 'count': '1차시'},
+      {'day':'2024년 3월 1일 금요일', 'dogname': '강아지1', 'age': '6주', 'type': '주사1', 'count': '1차시'},
+      {'day':'2024년 3월 1일 금요일', 'dogname': '강아지1', 'age': '6주', 'type': '주사1', 'count': '1차시'},
+      {'day':'2024년 3월 1일 금요일', 'dogname': '강아지1', 'age': '6주', 'type': '주사1', 'count': '1차시'},
     ];
   }
   return index;
