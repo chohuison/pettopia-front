@@ -46,6 +46,7 @@ class _HospitalSearchState extends State<HospitalSearch> {
             children: <Widget>[
               HospitalAppBar(page: 0),
               Container(
+                width:500.w,
                 height: 485.h,
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),

@@ -18,6 +18,12 @@ class _CalendarState extends State<Calendar>
 
   DateTime? _selectedDate;
 
+  //d여기서 이름 받아오는 코드 짜면 됨
+  List<String> getList(){
+    List<String>petList=["뽀비","초코"];
+    return petList;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -33,30 +39,12 @@ class _CalendarState extends State<Calendar>
           setState(() {
             _selectedDate = selectedDay;
           });
-          // 선택한 날짜에 대한 팝업 창 표시
-        showDialog(
-  context: context,
-  barrierDismissible: false,
-  builder: (BuildContext context) {
-    return Center(
-      child: Container(
-        width: 380.0.w,
-        height: 400.0.h, 
-       
-         decoration: BoxDecoration(
-    color: Color.fromRGBO(237, 237, 233, 1.0),
-    borderRadius: BorderRadius.circular(20),
-  ),
-        child: Dialog(
-          
-          child: ShortWriteValue(selectedDay: _selectedDate!),
-        ),
-      ),
-    );
-  },
-);
-
-
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShortWriteValue(selectedDay: _selectedDate!,petList: getList(),),
+            ),
+          );
         },
       ),
     );
