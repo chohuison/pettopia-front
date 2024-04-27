@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
+import 'package:pettopia_front/life/page/petFilter.dart';
 
-class AppBarContainer extends StatefulWidget {
+class LifeAppBar extends StatefulWidget {
   final int page;
   final List<Map<String,dynamic>> barList;
-  const AppBarContainer({Key? key, required this.page, required this.barList}) : super(key: key);
+  const LifeAppBar({Key? key, required this.page, required this.barList}) : super(key: key);
 
   @override
-  _AppBarContainerState createState() => _AppBarContainerState();
+  _LifeAppBarState createState() => _LifeAppBarState();
 }
 
-class _AppBarContainerState extends State<AppBarContainer> {
+class _LifeAppBarState extends State<LifeAppBar> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -21,7 +22,7 @@ class _AppBarContainerState extends State<AppBarContainer> {
   height: 100.h,
   child: ListView.builder(
     scrollDirection: Axis.horizontal,
-    itemCount: 4, // 리스트의 개수에 맞게 설정하세요
+    itemCount: 4, 
     itemBuilder: (context, index) {
       final record = widget.barList[index];
       return Padding(
@@ -49,15 +50,11 @@ Widget _buildIconButton(String img, int index, String name) {
             if(index == 0){
                  Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HospitalSearch()),
+                  MaterialPageRoute(builder: (context) => PetFilter()),
                 );
             }
-              if(index == 1){
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ShortRecords()),
-                );
-            }
+             
+            
           },
           child: Container(
             height: 50.h,

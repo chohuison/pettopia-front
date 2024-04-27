@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
+import 'package:pettopia_front/hospital/page/shortRecords.dart';
 
 class AppBarList{
   List<Map<String,dynamic>> _hospitalAppBar=[
@@ -23,6 +25,7 @@ class AppBarList{
    List<Map<String,dynamic>> getHospitalAppBar(){
     return _hospitalAppBar;
   }
+
 
   List<Map<String,dynamic>> getLifeAppBar(){
     return _lifeAppBar;
