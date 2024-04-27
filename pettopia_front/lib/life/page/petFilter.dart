@@ -54,7 +54,7 @@ class _PetFilterSearchState extends State<PetFilter>
       if (image != null) {
         setState(() {
           file = image;
-        });``````
+        });
       }
     });
   }
