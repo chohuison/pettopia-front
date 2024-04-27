@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 
 import 'package:pettopia_front/enum/appBarList.dart';
-import 'package:pettopia_front/Menu/appbar.dart';
+import 'package:pettopia_front/Menu/hospitalAppBar.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
 import 'package:pettopia_front/hospital/page/viewRecords.dart';
 import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
@@ -77,7 +77,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(children: <Widget>[
-             AppBarContainer(page: 1, barList: _hospitalAppBar),
+             HospitalAppBar(page: 1, barList: _hospitalAppBar),
             Container(
                 height: 485.h,
                 width: 500.w,

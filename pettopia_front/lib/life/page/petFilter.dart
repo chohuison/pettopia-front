@@ -8,7 +8,8 @@ import 'package:path_provider/path_provider.dart';
 
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
-import 'package:pettopia_front/Menu/appbar.dart';
+import 'package:pettopia_front/Menu/hospitalAppBar.dart';
+import 'package:pettopia_front/Menu/lifeAppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
@@ -33,7 +34,7 @@ class _PetFilterSearchState extends State<PetFilter>
 
   late List<Map<String, dynamic>> _lifeAppBar;
   late CameraDescription firstCamera;
-   final petFilterService = AI('http://10.0.2.2:5000');
+   final petFilterService = AI();
 
   @override
   void initState() {
@@ -54,19 +55,19 @@ class _PetFilterSearchState extends State<PetFilter>
     });
   }
 
- // 비동기 작업 완료 후에 `setState`를 호출
+
 Future<void> _getGallery() async {
   final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
   if (pickedImage == null) {
-    return; // 이미지가 선택되지 않은 경우
+    return;
   }
 
-  // 비동기 작업을 수행
+
   XFile? filteredImage = await petFilterService.applyPetFilter(pickedImage, '강이지', 'nose.png', 'horns2.png'); // 필터 적용 요청
 
-  // 비동기 작업이 완료된 후 상태 업데이트
+
   setState(() {
-    file = filteredImage; // 상태를 동기적으로 변경
+    file = filteredImage;
   });
 }
 
@@ -94,7 +95,7 @@ Future<void> _getGallery() async {
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(
             children: <Widget>[
-              AppBarContainer(page: 0, barList: _lifeAppBar),
+              LifeAppBar(page: 0, barList: _lifeAppBar),
               Container(
                   width: 500.w,
                   height: 485.h,
