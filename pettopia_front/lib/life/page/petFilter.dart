@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/Menu/appbar.dart';
@@ -12,6 +15,7 @@ import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
 import 'package:pettopia_front/life/page/TakePictureScreen.dart';
 import 'package:camera/camera.dart';
+import 'package:pettopia_front/server/AI.dart';
 
 class PetFilter extends StatefulWidget {
   const PetFilter({Key? key}) : super(key: key);
@@ -29,6 +33,7 @@ class _PetFilterSearchState extends State<PetFilter>
 
   late List<Map<String, dynamic>> _lifeAppBar;
   late CameraDescription firstCamera;
+   final petFilterService = AI('http://10.0.2.2:5000');
 
   @override
   void initState() {
@@ -49,15 +54,23 @@ class _PetFilterSearchState extends State<PetFilter>
     });
   }
 
-  Future<void> _getGallery() async {
-    ImagePicker().pickImage(source: ImageSource.gallery).then((image) {
-      if (image != null) {
-        setState(() {
-          file = image;
-        });
-      }
-    });
+ // 비동기 작업 완료 후에 `setState`를 호출
+Future<void> _getGallery() async {
+  final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+  if (pickedImage == null) {
+    return; // 이미지가 선택되지 않은 경우
   }
+
+  // 비동기 작업을 수행
+  XFile? filteredImage = await petFilterService.applyPetFilter(pickedImage, '강이지', 'nose.png', 'horns2.png'); // 필터 적용 요청
+
+  // 비동기 작업이 완료된 후 상태 업데이트
+  setState(() {
+    file = filteredImage; // 상태를 동기적으로 변경
+  });
+}
+
+
 
   Future<void> _initializeData() async {
     final cameras = await availableCameras();
