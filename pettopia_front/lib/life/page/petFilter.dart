@@ -8,6 +8,8 @@ import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
+import 'package:pettopia_front/life/page/TakePictureScreen.dart';
+import 'package:camera/camera.dart';
 
 class PetFilter extends StatefulWidget   {
   const PetFilter({Key? key}) : super(key: key);
@@ -22,34 +24,37 @@ class _PetFilterSearchState extends State<PetFilter> with AutomaticKeepAliveClie
 
 
  late List<Map<String,dynamic>> _lifeAppBar;
+ late CameraDescription firstCamera;
+
+ 
   @override
   void initState() {
     super.initState();
+     AppBarList _appBarList = AppBarList();
+    _lifeAppBar = _appBarList.getLifeAppBar();
 
-  AppBarList _appBarList= AppBarList();
-_lifeAppBar=_appBarList.getLifeAppBar();
+   
+    _initializeData();
+  }
+  
+   Future<void> _initializeData() async {
+   
+
+    final cameras = await availableCameras();
+    firstCamera = cameras.first;
   }
   
  
 
- List<Map<String, dynamic>>? _hospitalList;
-  //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯 
-  List<Map<String, dynamic>> _fetchHospitalList(String selectedRegion) {
-   
-    return [
-      {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
-      {'name': '병원2', 'address': '주소2', 'phone': '전화번호2'},
-      {'name': '병원3', 'address': '주소3', 'phone': '전화번호3'},
-       {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
-        title: "hospitalSearch",
+        title: "petfilter",
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -70,8 +75,31 @@ _lifeAppBar=_appBarList.getLifeAppBar();
                 decoration: BoxDecoration(
                   color: Color(0xFFD5BDAF),
                   borderRadius: BorderRadius.circular(25),
+                  
                 ),
+              child:Column(
+                children:<Widget>[
+                  Container(
+                    // color:Colors.black,
+                    width:300.w,
+                    height:200.h,
+                    child: TakePictureScreen(camera: firstCamera,),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top:10.h, left:75.w),
+                    child:    Row(children: <Widget>[
+
+                
+                  _button("촬영하기"),
+                  SizedBox(width:20.w),
+                    _button("갤러리")
+                  
+                  ],)
+                  )
+         
               
+                ]
+              )
               ),
             ],
           ),
@@ -80,4 +108,28 @@ _lifeAppBar=_appBarList.getLifeAppBar();
       ),
     );
   }
+}
+
+Widget _button (String buttonName){
+  return     SizedBox(
+        width: 100.w,
+        height: 40.h,
+        child: ElevatedButton(
+          onPressed: () {
+        
+          },
+          style: ButtonStyle(
+      
+            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
+          ),
+          child: Text(
+           buttonName,
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
 }
