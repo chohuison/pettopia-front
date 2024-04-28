@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
-import 'package:pettopia_front/Menu/hospitalAppBar.dart';
+import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 
 class FindDisease extends StatefulWidget {
@@ -19,12 +19,14 @@ class _FindDiseaseState extends State<FindDisease>
   bool get wantKeepAlive => true;
 
   late List<Map<String, dynamic>> _hospitalAppBar;
+      AppBarList _appBarList = AppBarList();
 
   @override
   void initState() {
     super.initState();
-    AppBarList _appBarList = AppBarList();
+
     _hospitalAppBar = _appBarList.getHospitalAppBar();
+    
   }
 
   @override
@@ -45,7 +47,7 @@ class _FindDiseaseState extends State<FindDisease>
             backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
             body: Column(
               children: <Widget>[
-                HospitalAppBar(page: 3, barList: _hospitalAppBar),
+                CustomAppBar(page: 3, barList: _hospitalAppBar, buttonHandler:_appBarList.hospitalAppBarHandler),
                 Container(
                     width: 500.w,
                     height: 485.h,

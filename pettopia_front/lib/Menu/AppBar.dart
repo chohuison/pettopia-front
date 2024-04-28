@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/page/findDisease.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
-import 'package:pettopia_front/life/page/petFilter.dart';
 
-class LifeAppBar extends StatefulWidget {
+class CustomAppBar extends StatefulWidget {
   final int page;
   final List<Map<String,dynamic>> barList;
-  const LifeAppBar({Key? key, required this.page, required this.barList}) : super(key: key);
+  final Function buttonHandler;
+  const CustomAppBar({Key? key, required this.page, required this.barList, required this.buttonHandler}) : super(key: key);
 
   @override
-  _LifeAppBarState createState() => _LifeAppBarState();
+  _CustomAppBarState createState() => _CustomAppBarState();
 }
 
-class _LifeAppBarState extends State<LifeAppBar> {
+class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -22,12 +23,12 @@ class _LifeAppBarState extends State<LifeAppBar> {
   height: 100.h,
   child: ListView.builder(
     scrollDirection: Axis.horizontal,
-    itemCount: 4, 
+    itemCount: widget.barList.length,
     itemBuilder: (context, index) {
       final record = widget.barList[index];
       return Padding(
         padding: EdgeInsets.only(left: 20.w),
-        child: _buildIconButton(record['imgUrl'], index, record['title']),
+        child: _buildIconButton(record['imgUrl'], index, record['title'],widget.buttonHandler),
       );
     },
   ),
@@ -35,7 +36,7 @@ class _LifeAppBarState extends State<LifeAppBar> {
     );
   }
 
-Widget _buildIconButton(String img, int index, String name) {
+Widget _buildIconButton(String img, int index, String name,Function buttonHandler) {
   return Container(
     height: 70.h,
     width: 50.w,
@@ -47,14 +48,7 @@ Widget _buildIconButton(String img, int index, String name) {
       ),
         ElevatedButton(
           onPressed: () {
-            if(index == 0){
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PetFilter()),
-                );
-            }
-             
-            
+          buttonHandler(index,context);
           },
           child: Container(
             height: 50.h,
