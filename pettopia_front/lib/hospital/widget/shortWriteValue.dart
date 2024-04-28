@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:pettopia_front/Menu/hospitalAppBar.dart';
+import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
@@ -26,11 +26,12 @@ class _ShortWriteValueState extends State<ShortWriteValue> with AutomaticKeepAli
 
 
  late List<Map<String,dynamic>> _hospitalAppBar;
+ AppBarList _appBarList= AppBarList();
   @override
   void initState() {
     super.initState();
 
-  AppBarList _appBarList= AppBarList();
+  
 _hospitalAppBar=_appBarList.getHospitalAppBar();
   }
   
@@ -78,7 +79,7 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(children: <Widget>[
-            HospitalAppBar(page: 1, barList: _hospitalAppBar),
+            CustomAppBar(page: 1, barList: _hospitalAppBar, buttonHandler:_appBarList.hospitalAppBarHandler),
             Container(
                 height: 485.h,
                 width: 500.w,
