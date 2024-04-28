@@ -8,8 +8,8 @@ import 'package:path_provider/path_provider.dart';
 
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
-import 'package:pettopia_front/Menu/hospitalAppBar.dart';
-import 'package:pettopia_front/Menu/lifeAppBar.dart';
+import 'package:pettopia_front/Menu/AppBar.dart';
+
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
@@ -35,11 +35,12 @@ class _PetFilterSearchState extends State<PetFilter>
   late List<Map<String, dynamic>> _lifeAppBar;
   late CameraDescription firstCamera;
    final petFilterService = AI();
+       AppBarList _appBarList = AppBarList();
 
   @override
   void initState() {
     super.initState();
-    AppBarList _appBarList = AppBarList();
+
     _lifeAppBar = _appBarList.getLifeAppBar();
 
     _initializeData();
@@ -95,7 +96,7 @@ Future<void> _getGallery() async {
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(
             children: <Widget>[
-              LifeAppBar(page: 0, barList: _lifeAppBar),
+              CustomAppBar(page: 0, barList: _lifeAppBar, buttonHandler:_appBarList.lifeAppBarHandler),
               Container(
                   width: 500.w,
                   height: 485.h,
