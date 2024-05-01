@@ -18,29 +18,27 @@ class _FindDiseaseState extends State<FindDisease>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  late List<Map<String,dynamic>> ?_diseaseList=[];
+  late List<Map<String, dynamic>>? _diseaseList = [];
 
   late List<Map<String, dynamic>> _hospitalAppBar;
-      AppBarList _appBarList = AppBarList();
+  AppBarList _appBarList = AppBarList();
 
   @override
   void initState() {
     super.initState();
 
     _hospitalAppBar = _appBarList.getHospitalAppBar();
-    
   }
+
   //ai랑 연결
-  void _buttonController(){
-    
+  void _buttonController() {
     setState(() {
-          _diseaseList = [{'name':'쯔쯔가무시'},
-    {'name':'사마귀'},
-    {'name':'아토피'},
-    ];
+      _diseaseList = [
+        {'name': '쯔쯔가무시'},
+        {'name': '사마귀'},
+        {'name': '아토피'},
+      ];
     });
-
-
   }
 
   @override
@@ -60,9 +58,11 @@ class _FindDiseaseState extends State<FindDisease>
             resizeToAvoidBottomInset: false,
             backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
             body: Column(
-           
               children: <Widget>[
-                CustomAppBar(page: 3, barList: _hospitalAppBar, buttonHandler:_appBarList.hospitalAppBarHandler),
+                CustomAppBar(
+                    page: 3,
+                    barList: _hospitalAppBar,
+                    buttonHandler: _appBarList.hospitalAppBarHandler),
                 Container(
                     width: 500.w,
                     height: 485.h,
@@ -75,38 +75,45 @@ class _FindDiseaseState extends State<FindDisease>
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.0.h),
-                          width: 340.w,
-                          height: 80.h,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF5EBE0),
-                            borderRadius: BorderRadius.circular(35),
-                         
-                          ),
-                             child:Container(
-                               margin: EdgeInsets.symmetric(horizontal: 20.0.w,vertical: 5.0.h),
-                              child:Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("잠깐!",textAlign: TextAlign.left,style: TextStyle(fontSize: 17.sp, color:Colors.red),),
-                                Text("아직 우리 아이의 정보를 등록하지 않으셧다면?"),
-                                Text("반려 동물 정보 등록하기",textAlign: TextAlign.left,style: TextStyle(fontSize: 13.sp, color:Color(0xFF3013E1)))
-                              ],
-                            )
-                             )
-                        ),
+                            margin: EdgeInsets.symmetric(vertical: 10.0.h),
+                            width: 340.w,
+                            height: 80.h,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(35),
+                            ),
+                            child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20.0.w, vertical: 5.0.h),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "잠깐!",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 17.sp, color: Colors.red),
+                                    ),
+                                    Text("아직 우리 아이의 정보를 등록하지 않으셧다면?"),
+                                    Text("반려 동물 정보 등록하기",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            color: Color(0xFF3013E1)))
+                                  ],
+                                ))),
                         _button(_buttonController),
                         Container(
                           margin: EdgeInsets.only(
                               left: 25.w, right: 25.w, top: 9.h, bottom: 15.h),
                           height: 2.h,
-                          color:  Color.fromARGB(255, 200, 180, 167),
+                          color: Color.fromARGB(255, 200, 180, 167),
                         ),
-                          if (
-                            _diseaseList != null)
-                      SilimarDiseaseList(
-                        diseaseList: _diseaseList!,
-                      ),
+                        Text("우리 아이는 이런 질병을 조심해 주세요"),
+                        if (_diseaseList != null)
+                          SilimarDiseaseList(
+                            diseaseList: _diseaseList!,
+                          ),
                       ],
                     )),
               ],
@@ -118,7 +125,6 @@ class _FindDiseaseState extends State<FindDisease>
     );
   }
 }
-
 
 Widget _button(Function controller) {
   return Container(
@@ -145,4 +151,3 @@ Widget _button(Function controller) {
     ),
   );
 }
-

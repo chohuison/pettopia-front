@@ -3,21 +3,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/region.dart';
 
 class RegionSelectBox extends StatefulWidget {
-  final void Function(String selectedRegion)? onRegionSelected; // 선택한 지역을 알리는 콜백
+  final void Function(String selectedRegion)?
+      onRegionSelected;
+  
 
-  const RegionSelectBox({Key? key, this.onRegionSelected}) : super(key: key);
+  const RegionSelectBox({Key? key, required this.onRegionSelected})
+      : super(key: key);
 
   @override
   _RegionSelectBoxState createState() => _RegionSelectBoxState();
 }
 
-class _RegionSelectBoxState extends State<RegionSelectBox> with AutomaticKeepAliveClientMixin {
+class _RegionSelectBoxState extends State<RegionSelectBox>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
   late Region _region;
   late List<String> _regionList;
   late String _regionValue;
+  bool _isOpen = false;
+  String _selectBoxValue="구 선택";
 
   @override
   void initState() {
@@ -32,51 +38,82 @@ class _RegionSelectBoxState extends State<RegionSelectBox> with AutomaticKeepAli
     super.build(context);
 
     return Container(
-      width: 120.w,
-      child: Row(
-        children: [
-          Flexible(
-            child: DropdownButtonFormField<String>(
-              itemHeight: 50.h,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
+        width: 150.w,
+        height: 100.h,
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 20.h, left: 20.w),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 120.w,
+                    height: 30.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black, width: 1),
+                    ),
+                    child:Center(
+                      child:Text(_selectBoxValue)
+                    )
                   ),
-                ),
-                filled: true,
-                fillColor: Colors.white,
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isOpen = !_isOpen;
+                        });
+                        print("클릭함");
+                      },
+                      child: Container(
+                        width: 30.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 1),
+                        ),
+                        child: Icon(
+                          _isOpen
+                              ? Icons.arrow_drop_up
+                              : Icons.arrow_drop_down, // 상태에 따라 아이콘 변경
+                        ),
+                      )),
+                ],
               ),
-              value: _regionValue,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "구를 선택해주세요요";
-                }
-                return null;
-              },
-              onChanged: (String? value) {
-                setState(() {
-                  _regionValue = value!;
-                });
-                // 선택한 지역을 알리는 콜백 호출
-                if (widget.onRegionSelected != null) {
-                  widget.onRegionSelected!(_regionValue);
-                }
-              },
-              items: _regionList.map<DropdownMenuItem<String>>((String eachValue) {
-                return DropdownMenuItem<String>(
-                  value: eachValue,
-                  child: Container(
-                    height: 50.h,
-                    child: Text(eachValue, style: TextStyle(fontSize: 10.sp)),
-                  ),
-                );
-              }).toList(),
             ),
-          ),
-        ],
-      ),
-    );
+            if (_isOpen)
+              Container(
+                margin: EdgeInsets.only(right: 38.w),
+                width: 120.w,
+                height: 200.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 1),
+                ),
+                child: ListView.separated(
+                   padding: EdgeInsets.zero,
+                  itemCount: _regionList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (_regionList != null && index < _regionList.length) {
+                      final record = _regionList[index]!;
+                      return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isOpen = !_isOpen;
+                          _selectBoxValue=record;
+                        });
+                        widget.onRegionSelected!(record);
+                     
+                      },
+                      child:Center( child: Text(record)) );
+                    } 
+                  }, separatorBuilder: (BuildContext context, int index) => const Divider(),
+                ),
+              )
+          ],
+        ));
   }
+}
+
+Widget value(String value) {
+  return Text(value);
 }
