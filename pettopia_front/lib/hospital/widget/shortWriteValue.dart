@@ -7,6 +7,7 @@ import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
 import 'package:pettopia_front/hospital/page/viewRecords.dart';
+import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
 
 class ShortWriteValue extends StatefulWidget {
@@ -20,21 +21,20 @@ class ShortWriteValue extends StatefulWidget {
   _ShortWriteValueState createState() => _ShortWriteValueState();
 }
 
-class _ShortWriteValueState extends State<ShortWriteValue> with AutomaticKeepAliveClientMixin{
+class _ShortWriteValueState extends State<ShortWriteValue>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-
- late List<Map<String,dynamic>> _hospitalAppBar;
- AppBarList _appBarList= AppBarList();
+  late List<Map<String, dynamic>> _hospitalAppBar;
+  AppBarList _appBarList = AppBarList();
   @override
   void initState() {
     super.initState();
 
-  
-_hospitalAppBar=_appBarList.getHospitalAppBar();
+    _hospitalAppBar = _appBarList.getHospitalAppBar();
   }
-  
+
   late String _petName = widget.petList.first;
   late String _type = "";
   late int _count = 0;
@@ -79,7 +79,10 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(children: <Widget>[
-            CustomAppBar(page: 1, barList: _hospitalAppBar, buttonHandler:_appBarList.hospitalAppBarHandler),
+            CustomAppBar(
+                page: 1,
+                barList: _hospitalAppBar,
+                buttonHandler: _appBarList.hospitalAppBarHandler),
             Container(
                 height: 485.h,
                 width: 500.w,
@@ -95,19 +98,64 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
                     height: 300.h,
                     child: Column(children: <Widget>[
                       Row(children: <Widget>[
-                        _typeContainer("날짜"),
+                        _typeContainer("날짜",0),
                         Text(
                           "2024년 5월 1일",
                           style: TextStyle(fontSize: 17.sp),
                         ),
                       ]),
-                      _selectBox(widget.petList, _petName, _petNameHandler),
+                      Container(
+                        height: 120.h,
+                        child: Stack(children: [
+                          Positioned(
+                            top: 50.h,
+                            child: Container(
+                              width: 300.w,
+                              height: 70.h,
+                              child: _textFieldContainer("종류", "접종 종류를 알려주세요 ",
+                                  20, 10, _typeHandler, false,0),
+                            ),
+                          ),
+                          //petSelctBox
+                          Positioned(
+                              child: Container(
+                                  width: 300.w,
+                                  height: 100.h,
+                                  // color: Colors.blue,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            right: 20.w,
+                                            top: 20.h,
+                                            bottom: 45.w),
+                                        width: 80.w,
+                                        height: 40.h,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF9F8678),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "이름",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      PetSelectBox(
+                                          onRegionSelected: _petNameHandler,
+                                          petName: widget.petList)
+                                    ],
+                                  ))),
+                        ]),
+                      ),
                       _textFieldContainer(
-                          "종류", "접종 종류를 알려주세요 ", 20, 10, _typeHandler, false),
+                          "차시", "몇차 접종인지 알려주세요 ", 14, 10, _countHandler, true,10),
                       _textFieldContainer(
-                          "차시", "몇차 접종인지 알려주세요 ", 14, 10, _countHandler, true),
-                      _textFieldContainer(
-                          "나이", "정종 당시 나이를 알려주세요", 13, 10, _ageHandler, true),
+                          "나이", "정종 당시 나이를 알려주세요", 13, 10, _ageHandler, true,10),
                       _createButton(_savedButton),
                     ]))),
           ]),
@@ -118,9 +166,9 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
   }
 }
 
-Widget _typeContainer(String containerName) {
+Widget _typeContainer(String containerName, int leftMargin) {
   return Container(
-    margin: EdgeInsets.only(right: 20.w, top: 20.h),
+    margin: EdgeInsets.only(right: 20.w, top: 20.h, left:leftMargin.w),
     width: 80.w,
     height: 40.h,
     decoration: BoxDecoration(
@@ -138,57 +186,11 @@ Widget _typeContainer(String containerName) {
   );
 }
 
-Widget _selectBox(List<String> list, String listValue, Function controller) {
-  return Row(
-    children: <Widget>[
-      _typeContainer("이름"),
-      Container(
-        width: 150.w,
-        height: 30.h,
-        child: DropdownButtonFormField<String>(
-          itemHeight: 50.h,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
-            ),
-            filled: true,
-            fillColor: Colors.white,
-          ),
-          value: listValue,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return "이름을 선택해주세요";
-            }
-            return null;
-          },
-          onChanged: (String? value) {
-            if (controller != null) {
-              controller!(value);
-            }
-          },
-          items: list.map<DropdownMenuItem<String>>((String eachValue) {
-            return DropdownMenuItem<String>(
-              value: eachValue,
-              child: Container(
-                height: 50.h,
-                child: Text(eachValue, style: TextStyle(fontSize: 10.sp)),
-              ),
-            );
-          }).toList(),
-        ),
-      ),
-    ],
-  );
-}
-
 Widget _textFieldContainer(String containerName, String labelText,
-    int horizontal, int vertical, Function contorller, bool isDigit) {
+    int horizontal, int vertical, Function contorller, bool isDigit, int leftMargin) {
   return Row(
     children: <Widget>[
-      _typeContainer(containerName),
+      _typeContainer(containerName,leftMargin),
       Container(
           width: 170.w,
           child: TextField(
