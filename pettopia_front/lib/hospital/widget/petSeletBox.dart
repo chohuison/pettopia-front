@@ -2,35 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/region.dart';
 
-class RegionSelectBox extends StatefulWidget {
+class PetSelectBox extends StatefulWidget {
   final void Function(String selectedRegion)?
       onRegionSelected;
+  final List<String> petName;
+  
   
 
-  const RegionSelectBox({Key? key, required this.onRegionSelected})
+  const PetSelectBox({Key? key, required this.onRegionSelected, required this.petName})
       : super(key: key);
 
   @override
-  _RegionSelectBoxState createState() => _RegionSelectBoxState();
+  _PetSelectBoxState createState() => _PetSelectBoxState();
 }
 
-class _RegionSelectBoxState extends State<RegionSelectBox>
+class _PetSelectBoxState extends State<PetSelectBox>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-
-  late Region _region;
-  late List<String> _regionList;
-  late String _regionValue;
   bool _isOpen = false;
-  String _selectBoxValue="구 선택";
+  late String _selectBoxValue;
+ 
 
   @override
   void initState() {
     super.initState();
-    _region = Region();
-    _regionList = _region.getRegionList();
-    _regionValue = _regionList.first;
+   _selectBoxValue=widget.petName.first;
   }
 
   @override
@@ -39,15 +36,15 @@ class _RegionSelectBoxState extends State<RegionSelectBox>
 
     return Container(
         width: 150.w,
-        height: 100.h,
+        height: 70.h,
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 20.h, left: 20.w),
+              margin: EdgeInsets.only(top:5.h, left: 20.w),
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 120.w,
+                    width: 100.w,
                     height: 30.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -82,19 +79,19 @@ class _RegionSelectBoxState extends State<RegionSelectBox>
             ),
             if (_isOpen)
               Container(
-                margin: EdgeInsets.only(right: 38.w),
-                width: 120.w,
-                height: 200.h,
+                     margin: EdgeInsets.only(right:10.w),
+                width: 100.w,
+                height: 30.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.black, width: 1),
                 ),
                 child: ListView.separated(
                    padding: EdgeInsets.zero,
-                  itemCount: _regionList.length,
+                  itemCount: widget.petName.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if (_regionList != null && index < _regionList.length) {
-                      final record = _regionList[index]!;
+                    if (widget.petName != null && index < widget.petName.length) {
+                      final record = widget.petName[index]!;
                       return GestureDetector(
                       onTap: () {
                         setState(() {
@@ -113,5 +110,4 @@ class _RegionSelectBoxState extends State<RegionSelectBox>
         ));
   }
 }
-
 
