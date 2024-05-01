@@ -1,1 +1,1 @@
-enum LiveType{TRUE,FALSE}
+enum LiveType{TRUE,MIDIUM,FALSE}
