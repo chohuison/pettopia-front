@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
+import 'package:pettopia_front/setting/page/petAddInformation.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({Key? key}) : super(key: key);
@@ -86,6 +87,12 @@ Widget _buildContainer(BuildContext context, String name, int index) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CreatePet()),
+          );
+        }
+        else if(index ==1){
+              Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PetAddInformation()),
           );
         }
       },

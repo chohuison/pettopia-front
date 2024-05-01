@@ -10,40 +10,39 @@ import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
 
-class HospitalSearch extends StatefulWidget   {
+class HospitalSearch extends StatefulWidget {
   const HospitalSearch({Key? key}) : super(key: key);
 
   @override
   _HospitalSearchState createState() => _HospitalSearchState();
 }
 
-class _HospitalSearchState extends State<HospitalSearch> with AutomaticKeepAliveClientMixin{
+class _HospitalSearchState extends State<HospitalSearch>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-
- late List<Map<String,dynamic>> _hospitalAppBar;
-   AppBarList _appBarList= AppBarList();
+  late List<Map<String, dynamic>> _hospitalAppBar;
+  AppBarList _appBarList = AppBarList();
   @override
   void initState() {
     super.initState();
 
-
-_hospitalAppBar=_appBarList.getHospitalAppBar();
+    _hospitalAppBar = _appBarList.getHospitalAppBar();
   }
-  
- 
 
- List<Map<String, dynamic>>? _hospitalList;
-  //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯 
-  List<Map<String, dynamic>> _fetchHospitalList(String selectedRegion) {
-   
-    return [
+  List<Map<String, dynamic>>? _hospitalList;
+  //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯
+  void _fetchHospitalList(String selectedRegion){
+
+    setState(() {
+      _hospitalList= [
       {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
       {'name': '병원2', 'address': '주소2', 'phone': '전화번호2'},
       {'name': '병원3', 'address': '주소3', 'phone': '전화번호3'},
-       {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
+      {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
     ];
+    });
   }
 
   @override
@@ -59,13 +58,16 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
           );
         },
         home: Scaffold(
-        resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(
             children: <Widget>[
-            CustomAppBar(page: 0, barList: _hospitalAppBar, buttonHandler:_appBarList.hospitalAppBarHandler),
+              CustomAppBar(
+                  page: 0,
+                  barList: _hospitalAppBar,
+                  buttonHandler: _appBarList.hospitalAppBarHandler),
               Container(
-                width:500.w,
+                width: 500.w,
                 height: 485.h,
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
@@ -73,27 +75,38 @@ _hospitalAppBar=_appBarList.getHospitalAppBar();
                   color: Color(0xFFD5BDAF),
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child:  RegionSelectBox(
-            onRegionSelected: (selectedRegion) {
-              setState(() {
-                _hospitalList = _fetchHospitalList(selectedRegion); // 선택한 지역에 따른 병원 목록 가져오기
-              });
-            },
-          ),
-          padding: EdgeInsets.fromLTRB(20.w, 10.h, 0.w, 10.h),
-          height: 50.h,
-        ),
-                  
-                    if (_hospitalList != null)
+                child: Stack(
+                  children: [
+                    Positioned(
+                        top:35.h,
+                        child: Container(
+                      //  color: Colors.blue,
+                       height: 440.h,
+                       width: 370.w,
+                       child:Column(
+                        children:<Widget> [
+                       if (_hospitalList != null)
                       HospitalList(
                         hospitalList: _hospitalList!,
                       ),
+
+                        ],
+
+                       )
+                      
+                    )),
+                    //selectBox부분 
+                    Positioned(
+                    
+                      width: 200.w,
+                      child: Container(
+                      // color: Colors.red,
+                      height: 300.h,
+                       child: RegionSelectBox(onRegionSelected: _fetchHospitalList),
+                     
+                    ))
                   ],
-                ),
+                )
               ),
             ],
           ),
