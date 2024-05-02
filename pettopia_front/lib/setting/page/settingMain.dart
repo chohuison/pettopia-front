@@ -29,8 +29,8 @@ class _SettingMainhState extends State<SettingMain> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Container(
-            width:400.w,
-            height:600.h,
+            width: 400.w,
+            height: 600.h,
             margin: EdgeInsets.only(
                 left: 15.w, top: 15.h, right: 15.w, bottom: 15.h),
             decoration: BoxDecoration(
@@ -41,16 +41,18 @@ class _SettingMainhState extends State<SettingMain> {
               children: <Widget>[
                 //여기 나중에 펫토피아 글씨 로고 넣기
                 Container(
-                    margin: EdgeInsets.only(left: 17.w, top: 80.h),
+                    margin: EdgeInsets.only(left: 17.w, top: 60.h),
                     width: 240.w,
                     height: 80.h,
-                    color: Colors.blue),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/img/txtLogo.png')))),
                 Container(
                     margin: EdgeInsets.only(left: 12.w, top: 10.h),
                     child: Text("설정", style: TextStyle(fontSize: 20.sp))),
                 Container(
                   margin: EdgeInsets.only(
-                      left: 25.w, right: 25.w, top: 9.h, bottom: 15.h),
+                      left: 25.w, right: 25.w, top: 12.h, bottom: 15.h),
                   height: 2.h,
                   color: Color(0xFFD5BDAF),
                 ),
@@ -88,9 +90,8 @@ Widget _buildContainer(BuildContext context, String name, int index) {
             context,
             MaterialPageRoute(builder: (context) => CreatePet()),
           );
-        }
-        else if(index ==1){
-              Navigator.push(
+        } else if (index == 1) {
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PetAddInformation()),
           );
