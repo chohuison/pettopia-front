@@ -35,11 +35,35 @@ class _LoginState extends State<Login> {
               color: Color(0xFFE3D5CA),
               borderRadius: BorderRadius.circular(25),
             ),
-            child: Column(),
+            child: Column(children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(left: 17.w, top: 60.h),
+                  width: 240.w,
+                  height: 80.h,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/img/txtLogo.png')))),
+              Container(
+                  margin: EdgeInsets.only(left: 12.w, top: 10.h),
+                  child: Text("로그인", style: TextStyle(fontSize: 20.sp))),
+              Container(
+                margin: EdgeInsets.only(
+                    left: 25.w, right: 25.w, top: 12.h, bottom: 15.h),
+                height: 2.h,
+                color: Color(0xFFD5BDAF),
+              ),
+              _loginContainer(context, "카카오 로그인", 0),
+              _loginContainer(context, "네이버 로그인", 1),
+              _loginContainer(context, "구글 로그인", 2),
+            ]),
           ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 4),
         ),
       ),
     );
   }
+}
+
+Widget _loginContainer(BuildContext context, String name, int index) {
+  return Container();
 }
