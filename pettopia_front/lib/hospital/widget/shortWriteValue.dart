@@ -5,14 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
 import 'package:pettopia_front/hospital/page/viewRecords.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
+import 'package:pettopia_front/server/DB/ShotRecords.dart';
 
 class ShortWriteValue extends StatefulWidget {
   final DateTime selectedDay;
-  final List<String> petList;
+  final List<Map<String, dynamic>> petList;
   const ShortWriteValue(
       {Key? key, required this.selectedDay, required this.petList})
       : super(key: key);
@@ -35,13 +37,17 @@ class _ShortWriteValueState extends State<ShortWriteValue>
     _hospitalAppBar = _appBarList.getHospitalAppBar();
   }
 
-  late String _petName = widget.petList.first;
+  late String _petName = widget.petList.first['dog_nm'];
   late String _type = "";
   late int _count = 0;
   late int _age = 0;
+  late int _pk = widget.petList.first['pk'];
+  final shotRecordsServer = ShotRecords();
+  String _errorText = "";
 
-  void _petNameHandler(String value) {
+  void _petNameHandler(String value, int valuePk) {
     _petName = value;
+    _pk = valuePk;
   }
 
   void _typeHandler(String value) {
@@ -57,10 +63,17 @@ class _ShortWriteValueState extends State<ShortWriteValue>
   }
 
   void _savedButton() {
-    print("작동");
-    print(_type);
-    print(_count);
-    print(_age);
+    if (_type == "") {
+      setState(() {
+        _errorText = "필수 입력 사항을 모두 입력해주세요";
+      });
+    } else {
+      shotRecordsServer.makeShotRecords(_pk, _type, _count, _age);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShortRecords()),
+      );
+    }
   }
 
   @override
@@ -98,7 +111,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                     height: 300.h,
                     child: Column(children: <Widget>[
                       Row(children: <Widget>[
-                        _typeContainer("날짜",0),
+                        _typeContainer("날짜", 5),
                         Text(
                           "2024년 5월 1일",
                           style: TextStyle(fontSize: 17.sp),
@@ -113,7 +126,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                               width: 300.w,
                               height: 70.h,
                               child: _textFieldContainer("종류", "접종 종류를 알려주세요 ",
-                                  20, 10, _typeHandler, false,0),
+                                  20, 10, _typeHandler, false, 0),
                             ),
                           ),
                           //petSelctBox
@@ -126,7 +139,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                                     children: <Widget>[
                                       Container(
                                         margin: EdgeInsets.only(
-                                            right: 20.w,
+                                            right: 5.w,
                                             top: 20.h,
                                             bottom: 45.w),
                                         width: 80.w,
@@ -152,10 +165,18 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                                   ))),
                         ]),
                       ),
+                      _textFieldContainer("차시", "몇차 접종인지 알려주세요 ", 14, 10,
+                          _countHandler, true, 5),
                       _textFieldContainer(
-                          "차시", "몇차 접종인지 알려주세요 ", 14, 10, _countHandler, true,10),
-                      _textFieldContainer(
-                          "나이", "정종 당시 나이를 알려주세요", 13, 10, _ageHandler, true,10),
+                          "나이", "몇 개월 차인지 알려주세요", 13, 10, _ageHandler, true, 5),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Text(
+                        _errorText,
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
                       _createButton(_savedButton),
                     ]))),
           ]),
@@ -168,7 +189,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
 
 Widget _typeContainer(String containerName, int leftMargin) {
   return Container(
-    margin: EdgeInsets.only(right: 20.w, top: 20.h, left:leftMargin.w),
+    margin: EdgeInsets.only(right: 20.w, top: 20.h, left: leftMargin.w),
     width: 80.w,
     height: 40.h,
     decoration: BoxDecoration(
@@ -186,11 +207,17 @@ Widget _typeContainer(String containerName, int leftMargin) {
   );
 }
 
-Widget _textFieldContainer(String containerName, String labelText,
-    int horizontal, int vertical, Function contorller, bool isDigit, int leftMargin) {
+Widget _textFieldContainer(
+    String containerName,
+    String labelText,
+    int horizontal,
+    int vertical,
+    Function contorller,
+    bool isDigit,
+    int leftMargin) {
   return Row(
     children: <Widget>[
-      _typeContainer(containerName,leftMargin),
+      _typeContainer(containerName, leftMargin),
       Container(
           width: 170.w,
           child: TextField(
@@ -216,7 +243,7 @@ Widget _textFieldContainer(String containerName, String labelText,
 
 Widget _createButton(Function controller) {
   return Container(
-    margin: EdgeInsets.only(top: 35.h),
+    margin: EdgeInsets.only(top: 20.h),
     width: 150.w,
     height: 50.h,
     decoration: BoxDecoration(

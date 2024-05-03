@@ -19,8 +19,12 @@ class _CalendarState extends State<Calendar>
   DateTime? _selectedDate;
 
   //d여기서 이름 받아오는 코드 짜면 됨
-  List<String> getList(){
-    List<String>petList=["뽀비","초코"];
+  List<Map<String,dynamic>> getList(){
+ List<Map<String,dynamic>> petList=[
+  {"dog_nm":"초코", "pk":3},
+    {"dog_nm":"나비", "pk":4}
+
+  ];
     return petList;
   }
 
