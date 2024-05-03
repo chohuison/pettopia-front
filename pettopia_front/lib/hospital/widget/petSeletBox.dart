@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/region.dart';
 
 class PetSelectBox extends StatefulWidget {
-  final void Function(String selectedRegion)?
+  final void Function(String selectValue, int selectValuePk)?
       onRegionSelected;
-  final List<String> petName;
+  final List<Map<String,dynamic>> petName;
   
   
 
@@ -22,12 +22,14 @@ class _PetSelectBoxState extends State<PetSelectBox>
   bool get wantKeepAlive => true;
   bool _isOpen = false;
   late String _selectBoxValue;
+  late int _selectBoxValuePk;
  
 
   @override
   void initState() {
     super.initState();
-   _selectBoxValue=widget.petName.first;
+   _selectBoxValue=widget.petName.first['dog_nm'];
+   _selectBoxValuePk=widget.petName.first['pk'];
   }
 
   @override
@@ -59,7 +61,7 @@ class _PetSelectBoxState extends State<PetSelectBox>
                         setState(() {
                           _isOpen = !_isOpen;
                         });
-                        print("클릭함");
+                    
                       },
                       child: Container(
                         width: 30.w,
@@ -91,14 +93,15 @@ class _PetSelectBoxState extends State<PetSelectBox>
                   itemCount: widget.petName.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (widget.petName != null && index < widget.petName.length) {
-                      final record = widget.petName[index]!;
+                      final record = widget.petName[index]['dog_nm']!;
                       return GestureDetector(
                       onTap: () {
                         setState(() {
                           _isOpen = !_isOpen;
                           _selectBoxValue=record;
+                          _selectBoxValuePk=widget.petName[index]['pk'];
                         });
-                        widget.onRegionSelected!(record);
+                        widget.onRegionSelected!(_selectBoxValue,_selectBoxValuePk);
                      
                       },
                       child:Center( child: Text(record)) );
