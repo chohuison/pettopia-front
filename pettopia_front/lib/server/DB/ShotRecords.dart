@@ -37,6 +37,27 @@ class ShotRecords{
 
 
   }
+
+    Future<void> modifySHotCharts(int pk,int petPk, String type, int num, int age) async{
+    final url = Uri.parse('$serverUrl$pk'); 
+    final headers ={'Content-Type': 'application/json'};
+    final body =jsonEncode(AddShotRecordRequestToJson(petPk, type, num, age));
+
+    final response = await http.patch(
+    url,
+    headers: headers,
+    body: body,
+  );
+
+  if(response.statusCode == 201){
+    print("Shot record created successfully!");
+  }else{
+    print("Failed to create shot record. Status code :${response.statusCode}");
+  }
+
+
+  }
+
 Future<List<Map<String, dynamic>>> getChartList() async {
   final uri = Uri.parse(serverUrl); // 서버 URL 파싱
   final response = await http.get(uri); // GET 요청 보내기
