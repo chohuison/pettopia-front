@@ -58,6 +58,18 @@ class ShotRecords{
 
   }
 
+    Future<void> deleteShotRecord(int pk) async{
+    final uri = Uri.parse('$serverUrl$pk'); 
+    final response = await http.delete(uri);
+  if(response.statusCode == 204){
+    print("Shot record delete successfully!");
+  }else{
+    print("Failed to create shot record. Status code :${response.statusCode}");
+  }
+
+
+  }
+
 Future<List<Map<String, dynamic>>> getChartList() async {
   final uri = Uri.parse(serverUrl); // 서버 URL 파싱
   final response = await http.get(uri); // GET 요청 보내기

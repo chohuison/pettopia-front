@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/page/deleteCheckPopup.dart';
 import 'package:pettopia_front/hospital/page/shortRecordModify.dart';
 
 class ShortChartValue extends StatefulWidget {
@@ -113,7 +114,17 @@ class ShortChartValueState extends State<ShortChartValue> {
         width: 90.w,
         height: 30.h,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+             showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content:DeleteCheckPopup(pk:widget.value['pk']),
+                  surfaceTintColor: Colors.white,
+                );
+              },
+            );
+          },
           style: ButtonStyle(
             side: MaterialStateProperty.all<BorderSide>(
               BorderSide(color: Color(0xFF665D55)),
