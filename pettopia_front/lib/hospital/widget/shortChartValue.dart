@@ -15,6 +15,10 @@ class ShortChartValue extends StatefulWidget {
 }
 
 class ShortChartValueState extends State<ShortChartValue> {
+
+  String _intToString(int value){
+    return value.toString();
+  }
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -37,7 +41,7 @@ class ShortChartValueState extends State<ShortChartValue> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Text(widget.value['dogname'],
+                      Text(widget.value['petName'],
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold
@@ -45,7 +49,7 @@ class ShortChartValueState extends State<ShortChartValue> {
                       SizedBox(
                         width: 5.0.w,
                       ),
-                      Text(widget.value['age'],
+                      Text(_intToString(widget.value['age']),
                          style: TextStyle(
                         fontSize: 13.sp,
                       
@@ -62,7 +66,7 @@ class ShortChartValueState extends State<ShortChartValue> {
                        SizedBox(
                         width: 5.0.w,
                       ),
-                      Text(widget.value['count'],
+                      Text(_intToString(widget.value['num']),
                         style: TextStyle(
                         fontSize: 13.sp,
                       

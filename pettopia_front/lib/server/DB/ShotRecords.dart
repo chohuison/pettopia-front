@@ -37,7 +37,19 @@ class ShotRecords{
 
 
   }
+Future<List<Map<String, dynamic>>> getChartList() async {
+  final uri = Uri.parse(serverUrl); // 서버 URL 파싱
+  final response = await http.get(uri); // GET 요청 보내기
 
+  if (response.statusCode == 200) {
+    // UTF-8로 응답을 디코딩하고 JSON 파싱
+    final List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+    final List<Map<String, dynamic>> data = jsonData.cast<Map<String, dynamic>>(); // 타입 캐스팅
+    return data; // 결과 반환
+  } else {
+    throw Exception("Failed to fetch chart list. Status code: ${response.statusCode}"); // 예외 발생
+  }
+}
 
 
 }
