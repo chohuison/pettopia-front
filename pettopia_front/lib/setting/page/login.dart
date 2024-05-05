@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
             ),
             child: Column(children: <Widget>[
               Container(
-                  margin: EdgeInsets.only(left: 17.w, top: 60.h),
+                  margin: EdgeInsets.only(left: 17.w, top: 150.h),
                   width: 240.w,
                   height: 80.h,
                   decoration: BoxDecoration(
@@ -52,9 +52,9 @@ class _LoginState extends State<Login> {
                 height: 2.h,
                 color: Color(0xFFD5BDAF),
               ),
-              _loginContainer(context, "카카오 로그인", 0),
-              _loginContainer(context, "네이버 로그인", 1),
-              _loginContainer(context, "구글 로그인", 2),
+              _kakaoLogin(),
+              _naverLogin(),
+              _googleLogin()
             ]),
           ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 4),
@@ -64,6 +64,50 @@ class _LoginState extends State<Login> {
   }
 }
 
-Widget _loginContainer(BuildContext context, String name, int index) {
-  return Container();
+Widget _kakaoLogin() {
+  return Container(
+    width: 185.w,
+    height: 50.h,
+    padding: EdgeInsets.zero,
+    child: IconButton(
+        onPressed: () {},
+        icon: Image.asset(
+          'assets/img/kakao_login.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        )),
+  );
+}
+
+Widget _naverLogin() {
+  return Container(
+    width: 185.w,
+    height: 50.h,
+    padding: EdgeInsets.zero,
+    child: IconButton(
+        onPressed: () {},
+        icon: Image.asset(
+          'assets/img/naver_login.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        )),
+  );
+}
+
+Widget _googleLogin() {
+  return Container(
+    width: 185.w,
+    height: 50.h,
+    padding: EdgeInsets.zero,
+    child: IconButton(
+        onPressed: () {},
+        icon: Image.asset(
+          'assets/img/google_login.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+        )),
+  );
 }
