@@ -19,7 +19,7 @@ class _FindDiseaseState extends State<FindDisease>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  late List<Map<String, dynamic>>? _diseaseList = [];
+  late List<Map<String, dynamic>> _diseaseList = [];
 
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
@@ -33,15 +33,14 @@ class _FindDiseaseState extends State<FindDisease>
   }
 
   //ai랑 연결
-  void _buttonController() {
+  void _buttonController() async {
+    List<Map<String,dynamic>> _findDiseae= await aiServer.getPetDiseaseRecommendation();;
+   if(mounted)
     setState(() {
-      _diseaseList = [
-        {'name': '쯔쯔가무시'},
-        {'name': '사마귀'},
-        {'name': '아토피'},
-      ];
+          _diseaseList=_findDiseae;
+        
     });
-    aiServer.getPetDiseaseRecommendation();
+  
   }
 
   @override
@@ -112,7 +111,7 @@ class _FindDiseaseState extends State<FindDisease>
                           height: 2.h,
                           color: Color.fromARGB(255, 200, 180, 167),
                         ),
-                        Text("우리 아이는 이런 질병을 조심해 주세요"),
+                        Text("우리 아이와 비슷한 아이들은 이런 지병이 있어요"),
                         if (_diseaseList != null)
                           SilimarDiseaseList(
                             diseaseList: _diseaseList!,

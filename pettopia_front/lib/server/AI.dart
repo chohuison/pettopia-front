@@ -48,7 +48,7 @@ class AI {
     }
   }
 
-  Future<String?> getPetDiseaseRecommendation() async {
+  Future<List<Map<String, dynamic>>> getPetDiseaseRecommendation() async {
   final uri = Uri.parse('$serverUrl/PetDiseaseRecommend');
 
   // JSON 데이터로 POST 요청을 생성
@@ -79,16 +79,17 @@ class AI {
     // 상태 코드가 200이면 성공으로 간주합니다.
     if (response.statusCode == 200) {
       final responseData = jsonDecode(utf8.decode(response.bodyBytes));
-      // 여기서 응답 데이터 처리
-      print(responseData.toString());
-      return responseData.toString(); // 원하는 데이터 변환 및 반환
+      List<Map<String,dynamic>> list = [];
+      list.add(responseData['response']);
+      print(list);
+      return  list;
     } else {
       print("Failed to get pet disease recommendation. Status code: ${response.statusCode}");
-      return null;
+      return [];
     }
   } catch (e) {
     print("Error during request: $e");
-    return null;
+    return [];
   }
 }
 
