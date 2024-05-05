@@ -6,6 +6,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/SimilarDiseaseList.dart';
+import 'package:pettopia_front/server/AI.dart';
 
 class FindDisease extends StatefulWidget {
   const FindDisease({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _FindDiseaseState extends State<FindDisease>
 
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
+  final aiServer = AI();
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _FindDiseaseState extends State<FindDisease>
         {'name': '아토피'},
       ];
     });
+    aiServer.getPetDiseaseRecommendation();
   }
 
   @override
