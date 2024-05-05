@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 
@@ -34,8 +33,8 @@ class _PetFilterSearchState extends State<PetFilter>
 
   late List<Map<String, dynamic>> _lifeAppBar;
   late CameraDescription firstCamera;
-   final petFilterService = AI();
-       AppBarList _appBarList = AppBarList();
+  final petFilterService = AI();
+  AppBarList _appBarList = AppBarList();
 
   @override
   void initState() {
@@ -56,23 +55,20 @@ class _PetFilterSearchState extends State<PetFilter>
     });
   }
 
+  Future<void> _getGallery() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage == null) {
+      return;
+    }
 
-Future<void> _getGallery() async {
-  final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-  if (pickedImage == null) {
-    return;
+    XFile? filteredImage = await petFilterService.applyPetFilter(
+        pickedImage, '강이지', 'nose.png', 'horns2.png'); // 필터 적용 요청
+
+    setState(() {
+      file = filteredImage;
+    });
   }
-
-
-  XFile? filteredImage = await petFilterService.applyPetFilter(pickedImage, '강이지', 'nose.png', 'horns2.png'); // 필터 적용 요청
-
-
-  setState(() {
-    file = filteredImage;
-  });
-}
-
-
 
   Future<void> _initializeData() async {
     final cameras = await availableCameras();
@@ -96,7 +92,10 @@ Future<void> _getGallery() async {
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Column(
             children: <Widget>[
-              CustomAppBar(page: 0, barList: _lifeAppBar, buttonHandler:_appBarList.lifeAppBarHandler),
+              CustomAppBar(
+                  page: 0,
+                  barList: _lifeAppBar,
+                  buttonHandler: _appBarList.lifeAppBarHandler),
               Container(
                   width: 500.w,
                   height: 485.h,
@@ -108,19 +107,27 @@ Future<void> _getGallery() async {
                   ),
                   child: Column(children: <Widget>[
                     Container(
-                        color: Colors.grey,
-                        width: 300.w,
-                        height: 200.h,
-                        child: (file != null)
-                            ? Image.file(
-                                File(file!.path),
-                                fit: BoxFit.cover,
-                              )
-                            : const Icon(
-                                Icons.image,
-                                size: 50,
-                                color: Colors.white,
-                              )),
+                      margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
+                      width: 250.h,
+                      height: 250.h,
+                      child: (file != null)
+                          ? Image.file(
+                              File(file!.path),
+                              fit: BoxFit.cover,
+                            )
+                          : const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 50,
+                              color: Colors.black,
+                            ),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 229, 211, 198),
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                            width: 1,
+                            color: Color.fromARGB(255, 165, 142, 128),
+                          )),
+                    ),
                     Container(
                         margin: EdgeInsets.only(top: 10.h, left: 75.w),
                         child: Row(
