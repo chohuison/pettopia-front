@@ -37,7 +37,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
   Widget build(BuildContext context) {
     super.build(context); // AutomaticKeepAliveClientMixin 사용 시 추가
     return Container(
-      color:Colors.red,
+      // color:Colors.red,
       width: 300.w,
       height:125.h,
       child: Column(
@@ -98,7 +98,6 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
       Function(LiveType) contorller,
       int sizedBoxWidth) {
     return Container(
-      // margin: EdgeInsets.only(bottom: 5.h),
       
       width: 300.w,
       height: 30.h,
@@ -150,25 +149,66 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
            child:_typeContainer(containerName)
            ),
           Container(
-            width:210.w,
-            height:65.h,
-            color:Colors.green,
+            width:200.w,
+            height:70.h,
+            // color:Colors.green,
             child: Column(
               children: <Widget>[
                 Container(
-                  width:170.w,
-                  height:30.h,
-                  color:Colors.red,
+                  width:200.w,
+                  height:16.h,
+                  // color:Colors.orange,
+                  child:Row(
+                    children: <Widget>[
+                        Radio<LiveType>(
+                  value: LiveType.TRUE,
+                  groupValue: selectedValue,
+                  onChanged: (LiveType? value) {
+                    selectedValue = value!;
+                    contorller(selectedValue);
+                  },
+                ),
+                Text(option1,style: TextStyle(fontSize: 12.sp),)
+                    ],
+                  )
                 ),
                    Container(
                   width:170.w,
-                  height:30.h,
-                  color:Colors.blue,
+                  height:16.h,
+                    margin: EdgeInsets.only(right: 30.w,bottom: 2.h),
+                  // color:Colors.blue,
+                  child:Row(
+                    children: <Widget>[
+                        Radio<LiveType>(
+                  value: LiveType.MIDIUM,
+                  groupValue: selectedValue,
+                  onChanged: (LiveType? value) {
+                    selectedValue = value!;
+                    contorller(selectedValue);
+                  },
+                ),
+                Text(option2,style: TextStyle(fontSize: 12.sp),)
+                    ],
+                  )
                 ),
                    Container(
                   width:170.w,
-                  height:30.h,
-                  color:Colors.green,
+                  height:16.h,
+                  margin: EdgeInsets.only(right: 30.w),
+                  // color:Colors.purple,
+                  child:Row(
+                    children: <Widget>[
+                        Radio<LiveType>(
+                  value: LiveType.FALSE,
+                  groupValue: selectedValue,
+                  onChanged: (LiveType? value) {
+                    selectedValue = value!;
+                    contorller(selectedValue);
+                  },
+                ),
+                Text(option3,style: TextStyle(fontSize: 12.sp),)
+                    ],
+                  )
                 ),
             
               ],
