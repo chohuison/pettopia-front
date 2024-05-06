@@ -38,16 +38,9 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
+                 backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
              resizeToAvoidBottomInset: false,
-              appBar: PreferredSize(
-                preferredSize:
-                    Size.fromHeight(60.0.h), // ScreenUtil을 사용하여 높이 설정
-                child: AppBar(
-                  title: Text('메인 페이지'),
-                  centerTitle: true,
-                  backgroundColor: Colors.grey, // 색상을 직접 지정합니다.
-                ),
-              ),
+        
               bottomNavigationBar:
                   CustomBottomNavigatorBar(page: 2), // 예시 커스텀 바텀 네비게이션 바
             );

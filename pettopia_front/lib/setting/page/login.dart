@@ -48,10 +48,10 @@ class _LoginState extends State<Login> {
 
                   
                  // MyApp 또는 원하는 페이지로 이동
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
+                  );
                 }
               })
               .catchError((error) {

@@ -24,6 +24,7 @@ class ShotRecords{
 
 
   Future<void> makeShotRecords(int petPk, String type, int num, int age) async{
+    
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
@@ -50,8 +51,12 @@ class ShotRecords{
   }
 
     Future<void> modifySHotCharts(int pk,int petPk, String type, int num, int age) async{
+         String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
     final url = Uri.parse('$serverUrl$pk'); 
-    final headers ={'Content-Type': 'application/json'};
+    final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', };
     final body =jsonEncode(AddShotRecordRequestToJson(petPk, type, num, age));
 
     final response = await http.patch(
@@ -70,8 +75,15 @@ class ShotRecords{
   }
 
     Future<void> deleteShotRecord(int pk) async{
+         String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+     final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', };
     final uri = Uri.parse('$serverUrl$pk'); 
-    final response = await http.delete(uri);
+    
+    final response = await http.delete(uri,
+     headers: headers,);
   if(response.statusCode == 204){
     print("Shot record delete successfully!");
   }else{
@@ -87,7 +99,7 @@ Future<List<Map<String, dynamic>>> getChartList() async {
     print(assessToken);
   final uri = Uri.parse(serverUrl); // 서버 URL 파싱
     Map<String,String> headers = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json; charset=UTF-8',
 
     'Authorization': 'Bearer $assessToken',  // JWT 토큰,
   };
