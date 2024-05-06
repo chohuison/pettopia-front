@@ -44,7 +44,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
               width: 400.w,
               height: 600.h,
               margin: EdgeInsets.only(
-                  left: 15.w, top: 15.h, right: 15.w, bottom: 15.h),
+                  left: 15.w, right: 15.w,),
               decoration: BoxDecoration(
                 color: Color(0xFFE3D5CA),
                 borderRadius: BorderRadius.circular(25),
@@ -72,7 +72,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
                      width: 350.w,
               height: 125.h,
               margin: EdgeInsets.only(
-                  left: 15.w, top: 15.h, right: 15.w, bottom: 10.h),
+                  left: 15.w,  right: 15.w, bottom: 10.h),
               decoration: BoxDecoration(
                 color: Color(0xFFF5EBE0),
                 borderRadius: BorderRadius.circular(25),
