@@ -24,12 +24,18 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
   late LiveType? _exercise = LiveType.TRUE;
 
   void _enviormentHandler(LiveType value) {
-    _enviorment = value;
+    setState(() {
+        _enviorment = value;
+    });
+  
     widget.onHandleLifeStyleHabits(_enviorment!, _exercise!);
   }
 
   void _exerciseHandler(LiveType value) {
-    _exercise = value;
+    setState(() {
+      _exercise = value;
+    });
+    
     widget.onHandleLifeStyleHabits(_enviorment!, _exercise!);
   }
 
@@ -39,7 +45,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
     return Container(
       // color:Colors.red,
       width: 300.w,
-      height:125.h,
+      height:140.h,
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -53,7 +59,8 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
           ),
           Container(
             width: 300.w,
-            height: 80.h,
+            height: 110.h,
+            // color: Colors.green,
             child: Row(
               children: <Widget>[
                 Container(
@@ -140,7 +147,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
       String option3, LiveType selectedValue, Function(LiveType) contorller) {
     return Container(
       width: 300.w,
-      height: 50.h,
+      height: 80.h,
       child: Row(
         children: <Widget>[
           Container(
@@ -157,6 +164,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                 Container(
                   width:200.w,
                   height:16.h,
+                  margin: EdgeInsets.only(bottom: 3.h),
                   // color:Colors.orange,
                   child:Row(
                     children: <Widget>[
@@ -175,7 +183,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                    Container(
                   width:170.w,
                   height:16.h,
-                    margin: EdgeInsets.only(right: 30.w,bottom: 2.h),
+                    margin: EdgeInsets.only(right: 30.w,bottom: 3.h),
                   // color:Colors.blue,
                   child:Row(
                     children: <Widget>[

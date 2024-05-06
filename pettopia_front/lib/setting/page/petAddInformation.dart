@@ -5,7 +5,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 
 import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/setting/widget/lifeStyleHablits.dart';
-
+import 'package:pettopia_front/setting/widget/Eat.dart';
 
 class PetAddInformation extends StatefulWidget {
   const PetAddInformation({Key? key}) : super(key: key);
@@ -18,12 +18,20 @@ class _PetAddInformationState extends State<PetAddInformation> {
 
   late LiveType _enviorment = LiveType.TRUE;
    late LiveType? _exercise=LiveType.TRUE;
-
+  late int? _eatCount=0;
+  late int? _snackCount=0;
+  late LiveType? _eatKind=LiveType.TRUE;
    void onHandleLifeStyleHablits(LiveType enviorment, LiveType exercise){
     _enviorment = enviorment;
     _exercise = exercise;
   }
+  
+  void onHandleEat(String eatCount, LiveType eatKind, String snackCount){
+    _eatCount = int.parse(eatCount);
+    _eatKind = eatKind;
+    _snackCount = int.parse(snackCount);
 
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -61,17 +69,11 @@ class _PetAddInformationState extends State<PetAddInformation> {
                           fontSize: 20.sp, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  //셀렉트 박스
-                  Container(
-                    width:100.w,
-                    height:35.h,
-                    color: Colors.black,
-                  ),
                   //생활 습관 컨테이너
                   Container(
                      width: 350.w,
-              height: 125.h,
-              margin: EdgeInsets.only(
+              height: 140.h,
+              margin: EdgeInsets.only( top:5.h,
                   left: 15.w,  right: 15.w, bottom: 10.h),
               decoration: BoxDecoration(
                 color: Color(0xFFF5EBE0),
@@ -82,18 +84,19 @@ class _PetAddInformationState extends State<PetAddInformation> {
                   //식사량 컨테이너
                       Container(
                      width: 350.w,
-              height: 165.h,
+              height: 175.h,
               margin: EdgeInsets.only(
                   left: 15.w, top: 0.h, right: 15.w, bottom: 10.h),
               decoration: BoxDecoration(
                 color: Color(0xFFF5EBE0),
                 borderRadius: BorderRadius.circular(25),
               ),
+              child:Eat(onHandleEat:onHandleEat ,)
                   ),
                   //약 컨테이너
                     Container(
                      width: 350.w,
-              height: 125.h,
+              height: 145.h,
               margin: EdgeInsets.only(
                   left: 15.w, top: 0.h, right: 15.w, bottom: 5.h),
               decoration: BoxDecoration(
