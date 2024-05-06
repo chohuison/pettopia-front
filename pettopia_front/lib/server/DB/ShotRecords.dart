@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ShotRecords{
   final String serverUrl='http://10.0.2.2:8080/api/v1/shot_records/';
+    final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   
   ShotRecords();
   
@@ -19,12 +21,17 @@ class ShotRecords{
     };
   }
 
-  String token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoiVVNFUiIsIm5hbWUiOiLshpDstIjtnawiLCJlbWFpbCI6InNjaGFiYzg0MzZAZGF1bS5uZXQiLCJpYXQiOjE3MTQ4NDUxMDQsImV4cCI6MTcxNDg0NTcwNH0.gBRmCEYQ9lQcuetCJqVjV2IUgJpcW0dJJmJcXyPJw87s-MIDiaJite_pGBNSzZUR';
+
 
   Future<void> makeShotRecords(int petPk, String type, int num, int age) async{
+    
+        String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
     final url = Uri.parse(serverUrl);
     final headers ={'Content-Type': 'application/json',
-     'Authorization': 'Bearer $token',};
+     'Authorization': 'Bearer $assessToken', 
+   };
     final body =jsonEncode(AddShotRecordRequestToJson(petPk, type, num, age));
 
     final response = await http.post(
@@ -44,8 +51,12 @@ class ShotRecords{
   }
 
     Future<void> modifySHotCharts(int pk,int petPk, String type, int num, int age) async{
+         String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
     final url = Uri.parse('$serverUrl$pk'); 
-    final headers ={'Content-Type': 'application/json'};
+    final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', };
     final body =jsonEncode(AddShotRecordRequestToJson(petPk, type, num, age));
 
     final response = await http.patch(
@@ -64,8 +75,15 @@ class ShotRecords{
   }
 
     Future<void> deleteShotRecord(int pk) async{
+         String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+     final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', };
     final uri = Uri.parse('$serverUrl$pk'); 
-    final response = await http.delete(uri);
+    
+    final response = await http.delete(uri,
+     headers: headers,);
   if(response.statusCode == 204){
     print("Shot record delete successfully!");
   }else{
@@ -76,12 +94,14 @@ class ShotRecords{
   }
 
 Future<List<Map<String, dynamic>>> getChartList() async {
+    String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
   final uri = Uri.parse(serverUrl); // 서버 URL 파싱
-    final headers = {
-    'Content-Type': 'application/json; charset=utf-8',
+    Map<String,String> headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
 
-    'Authorization': 'Bearer $token',  // JWT 토큰
-     'Cache-Control': 'no-cache',
+    'Authorization': 'Bearer $assessToken',  // JWT 토큰,
   };
 
   final response = await http.get(uri,
