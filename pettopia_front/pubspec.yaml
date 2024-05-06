@@ -37,6 +37,7 @@ dependencies:
   path_provider: ^2.0.5
   url_launcher: ^6.0.20
   webview_flutter: ^4.0.7
+  flutter_secure_storage : ^7.0.1
 
 
 
