@@ -13,6 +13,15 @@ class SettingMain extends StatefulWidget {
 }
 
 class _SettingMainhState extends State<SettingMain> {
+
+    List<Map<String,dynamic>> _getList(){
+ List<Map<String,dynamic>> petList=[
+  {"dog_nm":"초코", "pk":3},
+    {"dog_nm":"나비", "pk":4}
+
+  ];
+    return petList;
+  }
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -68,8 +77,7 @@ class _SettingMainhState extends State<SettingMain> {
       ),
     );
   }
-}
-
+  
 Widget _buildContainer(BuildContext context, String name, int index) {
   return Container(
     margin: EdgeInsets.only(left: 25.w, right: 25.w, bottom: 15.h),
@@ -93,7 +101,7 @@ Widget _buildContainer(BuildContext context, String name, int index) {
         } else if (index == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PetAddInformation()),
+            MaterialPageRoute(builder: (context) => PetAddInformation(petList: _getList(),)),
           );
         }
       },
@@ -108,4 +116,6 @@ Widget _buildContainer(BuildContext context, String name, int index) {
       ),
     ),
   );
+}
+
 }
