@@ -45,7 +45,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
     return Container(
       // color:Colors.red,
       width: 300.w,
-      height:140.h,
+      height:150.h,
       child: Column(
         children: <Widget>[
           SizedBox(
@@ -59,8 +59,8 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
           ),
           Container(
             width: 300.w,
-            height: 110.h,
-            // color: Colors.green,
+            height: 125.h,
+            // color: Colors.yellow,
             child: Row(
               children: <Widget>[
                 Container(
@@ -69,6 +69,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                     children: <Widget>[
                       _enviormentRadio("생활환경*", "실내", "야외", _enviorment!,
                           _enviormentHandler, 5),
+                          SizedBox(height:2.h),
                       _exerciseRadio("운동강도*", "저(일주일에 1시간 이하)", "중(매일 30분 이하)",
                           "고(매일 1시간 이상)", _exercise!, _exerciseHandler)
                     ],
@@ -147,7 +148,8 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
       String option3, LiveType selectedValue, Function(LiveType) contorller) {
     return Container(
       width: 300.w,
-      height: 80.h,
+      height: 90.h,
+      // color:Colors.green,
       child: Row(
         children: <Widget>[
           Container(
@@ -157,14 +159,14 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
            ),
           Container(
             width:200.w,
-            height:70.h,
-            // color:Colors.green,
+            height:80.h,
+            // color:Colors.blue,
             child: Column(
               children: <Widget>[
                 Container(
                   width:200.w,
                   height:16.h,
-                  margin: EdgeInsets.only(bottom: 3.h),
+                  margin: EdgeInsets.only(bottom: 7.h),
                   // color:Colors.orange,
                   child:Row(
                     children: <Widget>[
@@ -183,7 +185,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                    Container(
                   width:170.w,
                   height:16.h,
-                    margin: EdgeInsets.only(right: 30.w,bottom: 3.h),
+                    margin: EdgeInsets.only(right: 30.w,bottom: 7.h),
                   // color:Colors.blue,
                   child:Row(
                     children: <Widget>[
