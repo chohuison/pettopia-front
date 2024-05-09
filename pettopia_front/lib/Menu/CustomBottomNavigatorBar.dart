@@ -5,6 +5,7 @@ import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/setting/page/settingMain.dart';
 import 'package:pettopia_front/setting/page/login.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CustomBottomNavigatorBar extends StatefulWidget {
   final int page;
@@ -18,6 +19,9 @@ class CustomBottomNavigatorBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
+
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -52,13 +56,14 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
   Widget _buildIconButton(IconData icon, int pageIndex, String name) {
     return Column(children: <Widget>[
       IconButton(
-        onPressed: () {
+        onPressed: () async {
           if (pageIndex == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => HospitalSearch()),
             );
           } else if (pageIndex == 2) {
+         
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MyApp()),
@@ -69,10 +74,25 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => PetFilter()),
             );
           } else if (pageIndex == 4) {
-            Navigator.push(
+    //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+    //         if(containsKey == true){
+
+    //                     Navigator.push(
+    //           context,
+    //           MaterialPageRoute(builder: (context) => SettingMain()),
+    //         );
+    //         }
+    //         else{
+    //  Navigator.push(
+    //           context,
+    //           MaterialPageRoute(builder: (context) => Login()),
+    //         );
+    //         }
+       Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Login()),
             );
+       
           }
         },
         icon: Icon(icon),
