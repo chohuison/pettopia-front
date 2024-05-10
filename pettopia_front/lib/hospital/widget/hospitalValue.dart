@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/page/kakaoMap.dart';
 
 class HospitalValue extends StatefulWidget {
   final Map<String, dynamic> value;
@@ -55,15 +56,24 @@ class _HospitalValueState extends State<HospitalValue> {
         ],
        )
       ),
-      Container(
-          margin: EdgeInsets.only(top: 5.0.h, left: 15.0.w, bottom: 5.h),
-        width:50.w,
-        height:50.h,
-     decoration: BoxDecoration(
-    color: Color(0xFFAFA59B),
-    borderRadius: BorderRadius.circular(20.0), 
-  ),
-        //여기 아이콘 넣기 그려야할듯 ..?
+      GestureDetector(
+          onTap: () {
+        Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => KakaoMap()),
+             );
+       
+      },
+        child: Container(
+            margin: EdgeInsets.only(top: 5.0.h, left: 15.0.w, bottom: 5.h),
+          width:50.w,
+          height:50.h,
+             decoration: BoxDecoration(
+            color: Color(0xFFAFA59B),
+            borderRadius: BorderRadius.circular(20.0), 
+          ),
+          //여기 아이콘 넣기 그려야할듯 ..?
+        ),
       )
     ],
   ),

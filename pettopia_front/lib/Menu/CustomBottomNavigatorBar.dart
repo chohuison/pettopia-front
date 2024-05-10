@@ -72,7 +72,31 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => PetFilter()),
             );
           } else if (pageIndex == 4) {
+
+
+    //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+    //         if(containsKey == true){
+
+            //             Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => SettingMain()),
+            // );
+    //         }
+    //         else{
+    //  Navigator.push(
+    //           context,
+    //           MaterialPageRoute(builder: (context) => Login()),
+    //         );
+    //         }
+        Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => Login()),
+             );
+       
+   //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+
             //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+
             //         if(containsKey == true){
             Navigator.push(
               context,
@@ -89,6 +113,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
             //         context,
             //         MaterialPageRoute(builder: (context) => Login()),
             //       );
+
           }
         },
         icon: Icon(icon),
