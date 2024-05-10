@@ -9,6 +9,7 @@ import 'package:pettopia_front/hospital/widget/hospitalList.dart';
 import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
+import 'package:pettopia_front/server/DB/API.dart';
 
 class HospitalSearch extends StatefulWidget {
   const HospitalSearch({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _HospitalSearchState extends State<HospitalSearch>
 
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
+  APIServer _apiServer = APIServer();
   @override
   void initState() {
     super.initState();
@@ -34,7 +36,7 @@ class _HospitalSearchState extends State<HospitalSearch>
   List<Map<String, dynamic>>? _hospitalList;
   //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯
   void _fetchHospitalList(String selectedRegion){
-
+    _apiServer.getHospitalService();
     setState(() {
       _hospitalList= [
       {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
