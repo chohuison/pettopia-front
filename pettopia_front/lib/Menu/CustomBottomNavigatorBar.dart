@@ -74,11 +74,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
           } else if (pageIndex == 4) {
             //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
             //         if(containsKey == true){
-
-            //                     Navigator.push(
-            //           context,
-            //           MaterialPageRoute(builder: (context) => SettingMain()),
-            //         );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingMain()),
+            );
             //         }
             //         else{
             //  Navigator.push(
@@ -86,11 +85,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
             //           MaterialPageRoute(builder: (context) => Login()),
             //         );
             //         }
-            Navigator.push(
-              context,
-              //MaterialPageRoute(builder: (context) => Login()),
-              MaterialPageRoute(builder: (context) => SettingMain()),
-            );
+            //  Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => Login()),
+            //       );
           }
         },
         icon: Icon(icon),
