@@ -73,6 +73,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
             );
           } else if (pageIndex == 4) {
 
+
     //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
     //         if(containsKey == true){
 
@@ -93,6 +94,9 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
              );
        
    //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+
+            //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+
             //         if(containsKey == true){
             Navigator.push(
               context,
