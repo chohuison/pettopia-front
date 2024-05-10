@@ -5,8 +5,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:camera/camera.dart';
 
 void main() async {
- 
-WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   //가로가 더 길어질때 생기는 오류방지 크롬으로 실행했을시 생긴다는데 혹시 모르니깐 적용해놈
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -38,9 +37,9 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
-                 backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
-             resizeToAvoidBottomInset: false,
-        
+              backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
+              resizeToAvoidBottomInset: false,
+
               bottomNavigationBar:
                   CustomBottomNavigatorBar(page: 2), // 예시 커스텀 바텀 네비게이션 바
             );
@@ -48,5 +47,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
+  } 
 }
