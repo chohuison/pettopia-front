@@ -19,7 +19,6 @@ class CustomBottomNavigatorBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
-
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   @override
@@ -63,7 +62,6 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => HospitalSearch()),
             );
           } else if (pageIndex == 2) {
-         
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MyApp()),
@@ -74,25 +72,23 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => PetFilter()),
             );
           } else if (pageIndex == 4) {
-    //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
-    //         if(containsKey == true){
-
-                        Navigator.push(
+            //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
+            //         if(containsKey == true){
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SettingMain()),
             );
-    //         }
-    //         else{
-    //  Navigator.push(
-    //           context,
-    //           MaterialPageRoute(builder: (context) => Login()),
-    //         );
-    //         }
-      //  Navigator.push(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => Login()),
-      //       );
-       
+            //         }
+            //         else{
+            //  Navigator.push(
+            //           context,
+            //           MaterialPageRoute(builder: (context) => Login()),
+            //         );
+            //         }
+            //  Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => Login()),
+            //       );
           }
         },
         icon: Icon(icon),

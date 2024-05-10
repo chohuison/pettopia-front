@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
+import 'package:pettopia_front/setting/page/viewPetInformation.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({Key? key}) : super(key: key);
@@ -13,15 +14,14 @@ class SettingMain extends StatefulWidget {
 }
 
 class _SettingMainhState extends State<SettingMain> {
-
-    List<Map<String,dynamic>> _getList(){
- List<Map<String,dynamic>> petList=[
-  {"dog_nm":"초코", "pk":3},
-    {"dog_nm":"나비", "pk":4}
-
-  ];
+  List<Map<String, dynamic>> _getList() {
+    List<Map<String, dynamic>> petList = [
+      {"dog_nm": "초코", "pk": 3},
+      {"dog_nm": "나비", "pk": 4}
+    ];
     return petList;
   }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -77,45 +77,50 @@ class _SettingMainhState extends State<SettingMain> {
       ),
     );
   }
-  
-Widget _buildContainer(BuildContext context, String name, int index) {
-  return Container(
-    margin: EdgeInsets.only(left: 25.w, right: 25.w, bottom: 15.h),
-    width: 500.w,
-    height: 70.h,
-    decoration: BoxDecoration(
-      color: Color(0xFFF5EBE0),
-      border: Border.all(
-        color: Color(0xFFD5BDAF),
-        width: 1.0,
+
+  Widget _buildContainer(BuildContext context, String name, int index) {
+    return Container(
+      margin: EdgeInsets.only(left: 25.w, right: 25.w, bottom: 15.h),
+      width: 500.w,
+      height: 70.h,
+      decoration: BoxDecoration(
+        color: Color(0xFFF5EBE0),
+        border: Border.all(
+          color: Color(0xFFD5BDAF),
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(30.0),
       ),
-      borderRadius: BorderRadius.circular(30.0),
-    ),
-    child: ElevatedButton(
-      onPressed: () {
-        if (index == 0) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreatePet()),
-          );
-        } else if (index == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PetAddInformation(petList: _getList(),)),
-          );
-        }
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF5EBE0)),
-      ),
-      child: Center(
-        child: Text(
-          name,
-          style: TextStyle(fontSize: 20.sp, color: Colors.black),
+      child: ElevatedButton(
+        onPressed: () {
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreatePet()),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PetAddInformation(
+                        petList: _getList(),
+                      )),
+            );
+          } else if (index == 2) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ViewPetInformation()));
+          }
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF5EBE0)),
+        ),
+        child: Center(
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 20.sp, color: Colors.black),
+          ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }
