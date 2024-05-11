@@ -3,16 +3,29 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:async';
 import 'dart:io';
 
-class kakaoMapServer{
-  
+class kakaoMapServer  {
+
   kakaoMapServer();
+
+
+
+
 
 Future<Map<String,dynamic>> getXY() async {
  // REST_API_KEY는 실제 Kakao API 키여야 합니다.
-  String REST_API_KEY = "c645d6c6a6a4a88d461e0f4348394647";
+ String restApi;
+   try {
+      await dotenv.load(fileName: ".env");
+    } catch (e) {
+      print("Error loading .env file: $e"); // 오류 메시지 출력
+    }
+    restApi = dotenv.env['KAKAO_REST_KEY'] ?? 'YOUR_KAKAO_APP_KEY';
+    print("apikey: " + restApi);
+  String REST_API_KEY = restApi;
 
   // Kakao API 엔드포인트 및 쿼리 설정
   String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
