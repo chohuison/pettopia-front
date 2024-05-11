@@ -21,6 +21,13 @@ class AppBarList {
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫스피커'},
   ];
 
+  List<Map<String, dynamic>> _beautyAppBar = [
+    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫스널컬러'},
+    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '미용실 찾기'},
+ 
+  ];
+    
+
   AppBarList();
 
   List<Map<String, dynamic>> getHospitalAppBar() {
@@ -46,6 +53,15 @@ class AppBarList {
     }
   }
 
+  void beautyAppBarHandler(int index, BuildContext context){
+    if(index==0){
+      
+    }
+    else {
+
+    }
+  }
+
   void lifeAppBarHandler(int index, BuildContext context) {
     if (index == 0) {
       Navigator.push(
@@ -60,5 +76,8 @@ class AppBarList {
 
   List<Map<String, dynamic>> getLifeAppBar() {
     return _lifeAppBar;
+  }
+  List<Map<String,dynamic>> getBeautyAppBar(){
+    return _beautyAppBar;
   }
 }
