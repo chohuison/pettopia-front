@@ -18,7 +18,7 @@ class _KakaoMapState extends State<KakaoMap>
   @override
   bool get wantKeepAlive => true;
   late final _kakaoAppKey;
-  late final _controller;
+  late final _controller=WebViewController();
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,7 @@ class _KakaoMapState extends State<KakaoMap>
     _kakaoAppKey = dotenv.env['KAKAO_APP_KEY'] ?? 'YOUR_KAKAO_APP_KEY';
     print("apikey: " + _kakaoAppKey);
     setState(() {
-      _controller = WebViewController()
+      _controller 
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..loadHtmlString(_generateMapHtml(_kakaoAppKey,widget.x, widget.y));
     });
