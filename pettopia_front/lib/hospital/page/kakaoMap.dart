@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class KakaoMap extends StatefulWidget {
-  const KakaoMap({Key? key}) : super(key: key);
+  final double x;
+  final double y;
+  const KakaoMap({Key? key, required this.x, required this.y}) : super(key: key);
 
   @override
   _KakaoMapState createState() => _KakaoMapState();
@@ -35,13 +37,13 @@ class _KakaoMapState extends State<KakaoMap>
     setState(() {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..loadHtmlString(_generateMapHtml(_kakaoAppKey));
+        ..loadHtmlString(_generateMapHtml(_kakaoAppKey,widget.x, widget.y));
     });
   }
 
-  String _generateMapHtml(String kakaoAppKey) {
-    // 앱 키를 포함하는 HTML 문자열 생성
-    return '''
+ String _generateMapHtml(String kakaoAppKey, double x, double y) {
+  // 앱 키를 포함하는 HTML 문자열 생성
+  return '''
     <!DOCTYPE html>
     <html lang="ko">
     <head>
@@ -57,47 +59,44 @@ class _KakaoMapState extends State<KakaoMap>
     <body onload="initializeMap()">
       <div id="map"></div>
       <script>
-  function initializeMap() {
-    // 존재 확인
-    if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined' || typeof kakao.maps.services === 'undefined') {
-      console.error("카카오맵 API가 제대로 로드되지 않았습니다.");
-      return;
-    }
+        function initializeMap() {
+          // 존재 확인
+          if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined' || typeof kakao.maps.services === 'undefined') {
+            console.error("카카오맵 API가 제대로 로드되지 않았습니다.");
+            return;
+          }
+          
+          var x = $x;
+          var y = $y;
 
-    var container = document.getElementById('map');
-    var options = {
-      center: new kakao.maps.LatLng(37.5665, 126.9780),
-      level: 3
-    };
+          var container = document.getElementById('map');
+          var options = {
+            center: new kakao.maps.LatLng(y, x),
+            level: 3
+          };
 
-    var map = new kakao.maps.Map(container, options);
-    var geocoder = new kakao.maps.services.Geocoder();
+          var map = new kakao.maps.Map(container, options);
+          
+          var coords = new kakao.maps.LatLng(y, x);
+          
+          var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+          });
 
-    geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리 회사</div>'
+          });
+          infowindow.open(map, marker);
 
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords
-        });
-
-        var infowindow = new kakao.maps.InfoWindow({
-          content: '<div style="width:150px;text-align:center;padding:6px 0;">우리 회사</div>'
-        });
-        infowindow.open(map, marker);
-
-        map.setCenter(coords);
-      } else {
-        console.error("주소 검색 실패: " + status);
-      }
-    });
-  }
-</script>
+          map.setCenter(coords);
+        }
+      </script>
     </body>
     </html>
   ''';
-  }
+}
+
 
   @override
   Widget build(BuildContext context) {
