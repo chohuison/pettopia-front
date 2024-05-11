@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/page/kakaoMap.dart';
+
+
+import 'package:pettopia_front/server/kakaoMapServer.dart';
 
 class HospitalValue extends StatefulWidget {
   final Map<String, dynamic> value;
@@ -14,6 +18,7 @@ class HospitalValue extends StatefulWidget {
 }
 
 class _HospitalValueState extends State<HospitalValue> {
+  kakaoMapServer _kakaoServer = kakaoMapServer();
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -55,15 +60,27 @@ class _HospitalValueState extends State<HospitalValue> {
         ],
        )
       ),
-      Container(
-          margin: EdgeInsets.only(top: 5.0.h, left: 15.0.w, bottom: 5.h),
-        width:50.w,
-        height:50.h,
-     decoration: BoxDecoration(
-    color: Color(0xFFAFA59B),
-    borderRadius: BorderRadius.circular(20.0), 
-  ),
-        //여기 아이콘 넣기 그려야할듯 ..?
+      GestureDetector(
+          onTap: () async {
+       
+        Map<String,dynamic> xyValue=await _kakaoServer.getXY();
+       
+         Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => KakaoMap(x: xyValue['x'], y: xyValue['y'])),
+             );
+       
+      },
+        child: Container(
+            margin: EdgeInsets.only(top: 5.0.h, left: 15.0.w, bottom: 5.h),
+          width:50.w,
+          height:50.h,
+             decoration: BoxDecoration(
+            color: Color(0xFFAFA59B),
+            borderRadius: BorderRadius.circular(20.0), 
+          ),
+          //여기 아이콘 넣기 그려야할듯 ..?
+        ),
       )
     ],
   ),
