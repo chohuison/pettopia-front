@@ -56,12 +56,12 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                           width: 350.w,
                           child: Positioned(
                               top: 15.h,
-                              child: // 추가 정보
+                              child: // 반려동물 정보
                                   Container(
                                 width: 343.w,
                                 // height: 410.h,
                                 margin:
-                                    EdgeInsets.fromLTRB(3.w, 10.h, 15.w, 10.h),
+                                    EdgeInsets.fromLTRB(3.w, 10.h, 3.w, 10.h),
                                 decoration: BoxDecoration(
                                   color: Color(0xFFF5EBE0),
                                   borderRadius: BorderRadius.circular(25),
@@ -77,7 +77,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                 width: 343.w,
                                 // height: 410.h,
                                 margin:
-                                    EdgeInsets.fromLTRB(3.w, 10.h, 15.w, 20.h),
+                                    EdgeInsets.fromLTRB(3.w, 10.h, 3.w, 10.h),
                                 decoration: BoxDecoration(
                                   color: Color(0xFFF5EBE0),
                                   borderRadius: BorderRadius.circular(25),
