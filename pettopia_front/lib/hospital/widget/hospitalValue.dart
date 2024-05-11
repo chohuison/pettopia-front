@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/kakaoMap.dart';
 
+
+import 'package:pettopia_front/server/kakaoMapServer.dart';
+
 class HospitalValue extends StatefulWidget {
   final Map<String, dynamic> value;
 
@@ -15,6 +18,7 @@ class HospitalValue extends StatefulWidget {
 }
 
 class _HospitalValueState extends State<HospitalValue> {
+  kakaoMapServer _kakaoServer = kakaoMapServer();
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -57,10 +61,13 @@ class _HospitalValueState extends State<HospitalValue> {
        )
       ),
       GestureDetector(
-          onTap: () {
-        Navigator.push(
+          onTap: () async {
+       
+        Map<String,dynamic> xyValue=await _kakaoServer.getXY();
+       
+         Navigator.push(
              context,
-             MaterialPageRoute(builder: (context) => KakaoMap()),
+             MaterialPageRoute(builder: (context) => KakaoMap(x: xyValue['x'], y: xyValue['y'])),
              );
        
       },
