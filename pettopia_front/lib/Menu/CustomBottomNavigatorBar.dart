@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/beauty/page/petColor.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/main.dart';
@@ -56,12 +57,20 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
     return Column(children: <Widget>[
       IconButton(
         onPressed: () async {
+          print(pageIndex);
           if (pageIndex == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => HospitalSearch()),
             );
-          } else if (pageIndex == 2) {
+          } 
+          else if (pageIndex == 0){
+            print("여기 잘 걸렸는데");
+               Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PetColor()),
+            );
+          }else if (pageIndex == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MyApp()),
@@ -97,11 +106,11 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
 
             //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
 
-            //         if(containsKey == true){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingMain()),
-            );
+            // //         if(containsKey == true){
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => SettingMain()),
+            // );
             //         }
             //         else{
             //  Navigator.push(
