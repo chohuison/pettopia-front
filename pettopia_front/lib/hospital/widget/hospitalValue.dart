@@ -17,6 +17,7 @@ class HospitalValue extends StatefulWidget {
 }
 
 class _HospitalValueState extends State<HospitalValue> {
+  late Map<String, dynamic> xyValue;
   bool _isTapped = false;
   kakaoMapServer _kakaoServer = kakaoMapServer();
   @override
@@ -27,7 +28,7 @@ class _HospitalValueState extends State<HospitalValue> {
           margin: EdgeInsets.only(
               top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
           width: 350.w,
-          height: _isTapped ? 400.h : 90.h,
+          height: _isTapped ? 350.h : 90.h,
           decoration: BoxDecoration(
             color: Color(0xFFF5EBE0),
             borderRadius: BorderRadius.circular(10.0),
@@ -64,12 +65,12 @@ class _HospitalValueState extends State<HospitalValue> {
                             style: TextStyle(
                               fontSize: 14.0,
                             ),
-                          )
+                          ),
                         ],
                       )),
                   GestureDetector(
                     onTap: () async {
-                      // Map<String, dynamic> xyValue = await _kakaoServer.getXY();
+                      xyValue = await _kakaoServer.getXY();
 
                       // Navigator.push(
                       //   context,
@@ -94,6 +95,20 @@ class _HospitalValueState extends State<HospitalValue> {
                     ),
                   )
                 ],
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
+                child: Expanded(
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    height: _isTapped ? 250.h : 0,
+                    width: 300.w,
+                    color: Colors.transparent, // 배경색을 투명하게 설정
+                    child: _isTapped
+                        ? KakaoMap(x: xyValue['x'], y: xyValue['y'])
+                        : Container(), // _isTapped가 false일 경우 빈 컨테이너를 표시
+                  ),
+                ),
               ),
             ],
           ),

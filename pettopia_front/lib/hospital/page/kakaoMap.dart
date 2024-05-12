@@ -7,7 +7,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 class KakaoMap extends StatefulWidget {
   final double x;
   final double y;
-  const KakaoMap({Key? key, required this.x, required this.y}) : super(key: key);
+  const KakaoMap({Key? key, required this.x, required this.y})
+      : super(key: key);
 
   @override
   _KakaoMapState createState() => _KakaoMapState();
@@ -18,7 +19,7 @@ class _KakaoMapState extends State<KakaoMap>
   @override
   bool get wantKeepAlive => true;
   late final _kakaoAppKey;
-  late final _controller=WebViewController();
+  late final _controller = WebViewController();
   @override
   void initState() {
     super.initState();
@@ -35,15 +36,15 @@ class _KakaoMapState extends State<KakaoMap>
     _kakaoAppKey = dotenv.env['KAKAO_APP_KEY'] ?? 'YOUR_KAKAO_APP_KEY';
     print("apikey: " + _kakaoAppKey);
     setState(() {
-      _controller 
+      _controller
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..loadHtmlString(_generateMapHtml(_kakaoAppKey,widget.x, widget.y));
+        ..loadHtmlString(_generateMapHtml(_kakaoAppKey, widget.x, widget.y));
     });
   }
 
- String _generateMapHtml(String kakaoAppKey, double x, double y) {
-  // 앱 키를 포함하는 HTML 문자열 생성
-  return '''
+  String _generateMapHtml(String kakaoAppKey, double x, double y) {
+    // 앱 키를 포함하는 HTML 문자열 생성
+    return '''
     <!DOCTYPE html>
     <html lang="ko">
     <head>
@@ -95,8 +96,7 @@ class _KakaoMapState extends State<KakaoMap>
     </body>
     </html>
   ''';
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +113,16 @@ class _KakaoMapState extends State<KakaoMap>
         home: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                // 뒤로가기 버튼
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context); // 뒤로 가기 동작
-                },
-              ),
-            ),
+            // appBar: AppBar(
+            //   backgroundColor: Colors.white,
+            //   leading: IconButton(
+            //     // 뒤로가기 버튼
+            //     icon: Icon(Icons.arrow_back),
+            //     onPressed: () {
+            //       Navigator.pop(context); // 뒤로 가기 동작
+            //     },
+            //   ),
+            // ),
             body: WebViewWidget(controller: _controller)),
       ),
     );
