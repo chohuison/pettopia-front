@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/kakaoMap.dart';
 
-
 import 'package:pettopia_front/server/kakaoMapServer.dart';
 
 class HospitalValue extends StatefulWidget {
@@ -18,74 +17,86 @@ class HospitalValue extends StatefulWidget {
 }
 
 class _HospitalValueState extends State<HospitalValue> {
+  bool _isTapped = false;
   kakaoMapServer _kakaoServer = kakaoMapServer();
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: const Size(411.4, 683.4),
         child: Container(
-  margin: EdgeInsets.only(top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
-  width: 350.w,
-  height: 90.h,
-  decoration: BoxDecoration(
-    color: Color(0xFFF5EBE0),
-    borderRadius: BorderRadius.circular(10.0), 
-  ),
-
-  child: Row(
-    children: <Widget>[
-      Container(
-        width:250.w,
-         margin: EdgeInsets.only(top: 15.0.h, left: 10.0.w,  ),
-       child:Column(
-        
-          crossAxisAlignment: CrossAxisAlignment.start,
-        children:<Widget> [
-       Text(
-        widget.value['name'],
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontSize: 15.0, 
-          fontWeight: FontWeight.bold, 
-        ),
-      ),
-    Text(widget.value['address'],
-    style: TextStyle(
-          fontSize: 14.0,
-        ),),
-     Text(widget.value['phone'],
-      style: TextStyle(
-          fontSize: 14.0,
-        ),)
-        ],
-       )
-      ),
-      GestureDetector(
-          onTap: () async {
-       
-        Map<String,dynamic> xyValue=await _kakaoServer.getXY();
-       
-         Navigator.push(
-             context,
-             MaterialPageRoute(builder: (context) => KakaoMap(x: xyValue['x'], y: xyValue['y'])),
-             );
-       
-      },
-        child: Container(
-            margin: EdgeInsets.only(top: 5.0.h, left: 15.0.w, bottom: 5.h),
-          width:50.w,
-          height:50.h,
-             decoration: BoxDecoration(
-            color: Color(0xFFAFA59B),
-            borderRadius: BorderRadius.circular(20.0), 
+          margin: EdgeInsets.only(
+              top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
+          width: 350.w,
+          height: _isTapped ? 400.h : 90.h,
+          decoration: BoxDecoration(
+            color: Color(0xFFF5EBE0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          //여기 아이콘 넣기 그려야할듯 ..?
-        ),
-      )
-    ],
-  ),
-)
+          child: Column(
+            children: [
+              Row(
+                children: <Widget>[
+                  Container(
+                      width: 250.w,
+                      margin: EdgeInsets.only(
+                        top: 15.0.h,
+                        left: 10.0.w,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            widget.value['name'],
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            widget.value['address'],
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                          Text(
+                            widget.value['phone'],
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          )
+                        ],
+                      )),
+                  GestureDetector(
+                    onTap: () async {
+                      // Map<String, dynamic> xyValue = await _kakaoServer.getXY();
 
-            );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           KakaoMap(x: xyValue['x'], y: xyValue['y'])),
+                      // );
+                      setState(() {
+                        _isTapped = !_isTapped;
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          top: 5.0.h, left: 15.0.w, bottom: 5.h),
+                      width: 50.w,
+                      height: 50.h,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFAFA59B),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      //여기 아이콘 넣기 그려야할듯 ..?
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }
