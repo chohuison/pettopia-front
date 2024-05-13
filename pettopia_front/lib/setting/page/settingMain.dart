@@ -5,6 +5,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class SettingMain extends StatefulWidget {
 }
 
 class _SettingMainhState extends State<SettingMain> {
+    final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   List<Map<String, dynamic>> _getList() {
     List<Map<String, dynamic>> petList = [
       {"dog_nm": "초코", "pk": 3},
@@ -92,7 +94,7 @@ class _SettingMainhState extends State<SettingMain> {
         borderRadius: BorderRadius.circular(30.0),
       ),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (index == 0) {
             Navigator.push(
               context,
@@ -109,6 +111,9 @@ class _SettingMainhState extends State<SettingMain> {
           } else if (index == 2) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ViewPetInformation()));
+          }else if (index ==3){
+                await _secureStorage.deleteAll();
+            
           }
         },
         style: ButtonStyle(
