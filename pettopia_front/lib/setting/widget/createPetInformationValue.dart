@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/LiveType.dart';
+import 'package:pettopia_front/enum/PetBreedList.dart';
+import 'package:pettopia_front/setting/widget/speciesSelectBox.dart';
 
 class CreatePetInformation extends StatefulWidget {
   final Function(String, String, String, LiveType, LiveType,LiveType,String) onHandlePetInformation;
@@ -19,67 +23,66 @@ class CreatePetInformation extends StatefulWidget {
 class _CreatePetInformationState extends State<CreatePetInformation>  with AutomaticKeepAliveClientMixin {
     @override
   bool get wantKeepAlive => true;
-  late List<String> _breedList=[];
-  late String _breed="";
+  late List<Map<String,dynamic>>_speciesList =[];
+  late String _species="";
   String _petNumber="";
   String _petName="";
   String _birth="";
   late LiveType? _fur=LiveType.TRUE;
   late LiveType? _sex = LiveType.TRUE;
   late LiveType? _neutering = LiveType.TRUE;
+  PetBreedList _petBreedList = PetBreedList();
+  late int _speciesPk=0;
 
  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _initializeVariables();
-    });
+ _speciesList = _petBreedList.getSpecies();
+
+    _species = _speciesList.first['species'];
   }
-  void _initializeVariables() {
-    _breedList = ["말티즈", "시바"];
-    _breed = _breedList.first;
-    setState(() {}); // 상태 변경을 통해 위젯을 다시 빌드하여 오류를 해결합니다.
-  }
+ 
 
     void _onFurUpdate(LiveType? value) {
     setState(() {
       _fur = value;
     });
-    widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
  void _onSexUpdate(LiveType? value) {
     setState(() {
       _sex = value;
     });
-      widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
    void _onnNuteringUpdate(LiveType? value) {
     setState(() {
       _neutering = value;
     });
-      widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
-  void onSeleted(String value){
-    _breed=value;
-      widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+  void onSeleted(String value, int pk){
+    _species=value;
+    _speciesPk=pk;
+      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
   void _petNumberController(String value){
     _petNumber=value;
-      widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
   void _petNameController(String value){
     _petName = value;
-      widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
   void _birthController(String value){
     _birth=value;
-      widget.onHandlePetInformation(_petNumber, _petName,_breed, _fur!, _sex!,_neutering!,_birth);
+      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
   }
 
   @override
@@ -158,10 +161,50 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
             children: <Widget>[
            _textFieldContainer("번호*","반려동물 등록 번호를 입력해주세요",0,10,_petNumberController),
            _textFieldContainer("이름*","이름을 입력해주세요",30,10, _petNameController),
-             _selectBox(_breedList,_breed,onSeleted),
-             _radio("단장모*", "단모", "장모", _fur!,_onFurUpdate,10),
+           Container(
+            height: 150.h,
+          margin: EdgeInsets.only(left:18.w),
+            child: Stack(
+              children: [
+             
+                Positioned(
+                  top:40.h,
+                  child: 
+                Container(
+                  child:Column(
+                    children: <Widget>[
+      _radio("단장모*", "단모", "장모", _fur!,_onFurUpdate,10),
             _radio("성별*", "남", "여", _sex!,_onSexUpdate,22),
             _radio("중성화*", "O", "X", _neutering!,_onnNuteringUpdate,24),
+                    ],
+                  )
+                )),
+                   Positioned(child: 
+                   Container(
+                  // width:400.w,
+                  height:95.h,
+                  // color: Colors.blue,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(bottom: 60.h),
+                        width:90.w,
+                        height:30.h,
+                      child:_typeContainer("품종*"),
+                      ),
+                
+                      SpeciesSelectBox(onSpeciesSelected:onSeleted, petName:_speciesList)
+                    ],
+                  ),
+                
+                )),
+                    
+                
+              ],
+            ),
+           ),
+           
+       
                      _textFieldContainer("생년월일*","YYYY-MM-DD",40,10,_birthController),
             ],
           ))
@@ -213,52 +256,7 @@ Widget _textFieldContainer(String containerName, String labelText, int horizonta
 
 }
 
-Widget _selectBox(List<String> list, String listValue, Function controller){
-  return    Container(
-                  margin: EdgeInsets.only(bottom: 5.h),
-                  width: 300.w,
-                  height: 30.h,
-                  child: Row(
-                    children: <Widget>[_typeContainer("품종*"),
-                     Container(
-                      width:150.w,
-            child: DropdownButtonFormField<String>(
-              itemHeight: 50.h,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black,
-                    width: 1,
-                  ),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-              ),
-              value: listValue,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "품종을 선택해주세요";
-                }
-                return null;
-              },
-              onChanged: (String? value) {
-                if (controller != null) {
-                 controller!(value);
-                }
-              },
-              items: list.map<DropdownMenuItem<String>>((String eachValue) {
-                return DropdownMenuItem<String>(
-                  value: eachValue,
-                  child: Container(
-                    height: 50.h,
-                    child: Text(eachValue, style: TextStyle(fontSize: 10.sp)),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),],
-                  ));
-}
+
 
 Widget _radio(String containerName, String option1, String option2, LiveType selectedValue, Function(LiveType)contorller, int sizedBoxWidth) {
   return Container(
