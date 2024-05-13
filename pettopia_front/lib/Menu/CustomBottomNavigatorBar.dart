@@ -63,14 +63,12 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               context,
               MaterialPageRoute(builder: (context) => HospitalSearch()),
             );
-          } 
-          else if (pageIndex == 0){
-            print("여기 잘 걸렸는데");
-               Navigator.push(
+          } else if (pageIndex == 0) {
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PetColor()),
             );
-          }else if (pageIndex == 2) {
+          } else if (pageIndex == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MyApp()),
@@ -81,48 +79,23 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => PetFilter()),
             );
           } else if (pageIndex == 4) {
+      
+            bool containsKey =
+                await _secureStorage.containsKey(key: 'accessToken');
 
-
-    //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
-    //         if(containsKey == true){
-
-            //             Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => SettingMain()),
-            // );
-    //         }
-    //         else{
-    //  Navigator.push(
-    //           context,
-    //           MaterialPageRoute(builder: (context) => Login()),
-    //         );
-    //         }
-        Navigator.push(
-             context,
-             MaterialPageRoute(builder: (context) => Login()),
-             );
-       
-   //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
-
-            //            bool containsKey = await _secureStorage.containsKey(key: 'accessToken');
-
-            // //         if(containsKey == true){
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => SettingMain()),
-            // );
-            //         }
-            //         else{
-            //  Navigator.push(
-            //           context,
-            //           MaterialPageRoute(builder: (context) => Login()),
-            //         );
-            //         }
-            //  Navigator.push(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => Login()),
-            //       );
-
+            if (containsKey == true) {
+              print("true");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingMain()),
+              );
+            } else {
+              print("false");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
+            }
           }
         },
         icon: Icon(icon),
