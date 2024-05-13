@@ -54,36 +54,32 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                       ),
                       Container(
                           width: 350.w,
-                          child: Positioned(
-                              top: 15.h,
+                          child: Container(
                               child: // 반려동물 정보
                                   Container(
-                                width: 343.w,
-                                // height: 410.h,
-                                margin:
-                                    EdgeInsets.fromLTRB(3.w, 10.h, 3.w, 10.h),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF5EBE0),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: ViewPetInfo(),
-                              ))),
+                            width: 343.w,
+                            // height: 410.h,
+                            margin: EdgeInsets.fromLTRB(3.w, 10.h, 3.w, 10.h),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: ViewPetInfo(),
+                          ))),
                       Container(
                           width: 350.w,
-                          child: Positioned(
-                              top: 15.h,
+                          child: Container(
                               child: // 추가 정보
                                   Container(
-                                width: 343.w,
-                                // height: 410.h,
-                                margin:
-                                    EdgeInsets.fromLTRB(3.w, 10.h, 3.w, 10.h),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF5EBE0),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: ViewPetAddInfo(),
-                              )))
+                            width: 343.w,
+                            // height: 410.h,
+                            margin: EdgeInsets.fromLTRB(3.w, 10.h, 3.w, 10.h),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: ViewPetAddInfo(),
+                          )))
                     ],
                   ),
                 )
