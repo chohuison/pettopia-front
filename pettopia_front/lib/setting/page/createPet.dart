@@ -89,7 +89,7 @@ class _CreatePetState extends State<CreatePet> {
                   ),
                   //반려동물 정보 콘테이너
                   Container(
-                      margin: EdgeInsets.only(top: 10.h),
+                      margin: EdgeInsets.only(top: 5.h),
                       decoration: BoxDecoration(
                         color: Color(0xFFF5EBE0),
                         border: Border.all(
@@ -99,11 +99,11 @@ class _CreatePetState extends State<CreatePet> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       width: 350.w,
-                      height: 370.h,
+                      height: 380.h,
                       child: CreatePetInformation(onHandlePetInformation: onHandlePetInformation,),),
                   //보호자 정보 콘테이너
                   Container(
-                      margin: EdgeInsets.only(top: 10.h),
+                      margin: EdgeInsets.only(top: 5.h),
                       decoration: BoxDecoration(
                         color: Color(0xFFF5EBE0),
                         border: Border.all(
