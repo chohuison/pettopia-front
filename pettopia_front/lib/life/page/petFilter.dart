@@ -102,7 +102,7 @@ class _PetFilterSearchState extends State<PetFilter>
                   margin:
                       EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
                   decoration: BoxDecoration(
-                    color: Color(0xFFD5BDAF),
+                    color: Color(0xFFE3D5CA),
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Column(children: <Widget>[
@@ -121,7 +121,7 @@ class _PetFilterSearchState extends State<PetFilter>
                               color: Colors.black,
                             ),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 229, 211, 198),
+                          color: Color(0xFFF5EBE0),
                           borderRadius: BorderRadius.circular(25),
                           border: Border.all(
                             width: 1,

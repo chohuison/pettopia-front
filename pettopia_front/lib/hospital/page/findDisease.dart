@@ -34,13 +34,13 @@ class _FindDiseaseState extends State<FindDisease>
 
   //ai랑 연결
   void _buttonController() async {
-    List<Map<String,dynamic>> _findDiseae= await aiServer.getPetDiseaseRecommendation();;
-   if(mounted)
-    setState(() {
-          _diseaseList=_findDiseae;
-        
-    });
-  
+    List<Map<String, dynamic>> _findDiseae =
+        await aiServer.getPetDiseaseRecommendation();
+    ;
+    if (mounted)
+      setState(() {
+        _diseaseList = _findDiseae;
+      });
   }
 
   @override
@@ -71,7 +71,7 @@ class _FindDiseaseState extends State<FindDisease>
                     margin: EdgeInsets.symmetric(
                         vertical: 1.0.h, horizontal: 20.0.w),
                     decoration: BoxDecoration(
-                      color: Color(0xFFD5BDAF),
+                      color: Color(0xFFE3D5CA),
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: Column(
