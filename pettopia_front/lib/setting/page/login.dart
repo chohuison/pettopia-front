@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
     super.initState();
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse('http://10.0.2.2:8080/oauth2/authorization/kakao'))
+      ..loadRequest(Uri.parse('http://43.200.68.44:8080/oauth2/authorization/kakao'))
       ..setNavigationDelegate(NavigationDelegate(
         onNavigationRequest: (NavigationRequest request) {
           print("Navigating to: ${request.url}");
