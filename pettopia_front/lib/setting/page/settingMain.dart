@@ -15,7 +15,7 @@ class SettingMain extends StatefulWidget {
 }
 
 class _SettingMainhState extends State<SettingMain> {
-    final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   List<Map<String, dynamic>> _getList() {
     List<Map<String, dynamic>> petList = [
       {"dog_nm": "초코", "pk": 3},
@@ -109,11 +109,14 @@ class _SettingMainhState extends State<SettingMain> {
                       )),
             );
           } else if (index == 2) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ViewPetInformation()));
-          }else if (index ==3){
-                await _secureStorage.deleteAll();
-            
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ViewPetInformation(
+                          petList: _getList(),
+                        )));
+          } else if (index == 3) {
+            await _secureStorage.deleteAll();
           }
         },
         style: ButtonStyle(
