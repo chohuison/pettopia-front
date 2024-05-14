@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/main.dart';
@@ -19,47 +19,63 @@ class _LoginState extends State<Login> {
   final userServer = Users();
   late WebViewController _webViewController= WebViewController();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  late String _serverUrl="";
 
+ @override
+void initState() {
+  super.initState();
+  _initializeWebview();
+}
 
-  @override
-  void initState() {
-    super.initState();
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse('http://43.200.68.44:8080/oauth2/authorization/kakao'))
-      ..setNavigationDelegate(NavigationDelegate(
-        onNavigationRequest: (NavigationRequest request) {
-          print("Navigating to: ${request.url}");
-          return NavigationDecision.navigate;
-        },
-        onPageFinished: (String url) {
-          _webViewController
-              .runJavaScriptReturningResult("document.body.outerHTML")
-              .then((html) {
-                print("Page finished loading. URL: $url");
-                if (url.contains("code=")) {
-                  print("OAuth code found in URL:");
-                  print(html);
-        
-                  print(html.runtimeType);
-                  String strHtml = html as String;
-                  split(strHtml);
-                  // return NavigationDecision.prevent;
+void _initializeWebview() async {
+  await _getServerUrl();
+  String url = _serverUrl + "oauth2/authorization/kakao";
+  print(url);
+  _webViewController = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse(url))
+    ..setNavigationDelegate(NavigationDelegate(
+      onNavigationRequest: (NavigationRequest request) {
+        print("Navigating to: ${request.url}");
+        return NavigationDecision.navigate;
+      },
+      onPageFinished: (String url) {
+        _webViewController
+            .runJavaScriptReturningResult("document.body.outerHTML")
+            .then((html) {
+          print("Page finished loading. URL: $url");
+          if (url.contains("code=")) {
+            print("OAuth code found in URL:");
+            print(html);
 
-                  
-                 // MyApp 또는 원하는 페이지로 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
-                  );
-                }
-              })
-              .catchError((error) {
-                print("Error getting HTML: $error");
-              });
-        },
-      ));
+            print(html.runtimeType);
+            String strHtml = html as String;
+            split(strHtml);
+            // return NavigationDecision.prevent;
+
+            // MyApp 또는 원하는 페이지로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
+            );
+          }
+        }).catchError((error) {
+          print("Error getting HTML: $error");
+        });
+      },
+    ));
+}
+
+  Future<void> _getServerUrl() async {
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print("Error loading .env file: $e"); // 오류 메시지 출력
   }
+  _serverUrl = dotenv.env['DB_SERVER_URI'] ?? 'YOUR_KAKAO_APP_KEY';
+  print(_serverUrl);
+}
+  
   void split(String html){
     print("넘어온 html");
     print(html);
