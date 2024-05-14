@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/enum/PetBreedList.dart';
+
 import 'package:pettopia_front/setting/widget/speciesSelectBox.dart';
 
 class CreatePetInformation extends StatefulWidget {
-  final Function(String, String, String, LiveType, LiveType,LiveType,String) onHandlePetInformation;
+  final Function(String, String,String, int, int, int,int,String) onHandlePetInformation;
   const CreatePetInformation({
     Key? key,
               required this.onHandlePetInformation,
@@ -28,11 +29,12 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
   String _petNumber="";
   String _petName="";
   String _birth="";
-  late LiveType? _fur=LiveType.TRUE;
-  late LiveType? _sex = LiveType.TRUE;
-  late LiveType? _neutering = LiveType.TRUE;
+  late int _fur=0;
+  late int _sex = 0;
+  late int _neutering = 0;
   PetBreedList _petBreedList = PetBreedList();
-  late int _speciesPk=0;
+  late int _speciesPk=1;
+  late String _widght="";
 
  @override
   void initState() {
@@ -43,46 +45,70 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
   }
  
 
-    void _onFurUpdate(LiveType? value) {
+    void _onFurUpdate(int? value) {
     setState(() {
-      _fur = value;
+      _fur = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
- void _onSexUpdate(LiveType? value) {
+  void _onWightUpdate(String value){
+
     setState(() {
-      _sex = value;
+      _widght = value!;
     });
-      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
-   void _onnNuteringUpdate(LiveType? value) {
+ void _onSexUpdate(int? value) {
     setState(() {
-      _neutering = value;
+      _sex = value!;
     });
-      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+      widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+  }
+
+   void _onnNuteringUpdate(int? value) {
+    setState(() {
+      _neutering = value!;
+    });
+  widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
   void onSeleted(String value, int pk){
-    _species=value;
+      setState(() {
+       _species=value;
     _speciesPk=pk;
-      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+    });
+    print(value);
+    print(pk);
+    print(_species);
+    print(_speciesPk);
+  
+  
+     widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
   void _petNumberController(String value){
-    _petNumber=value;
-      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+     setState(() {
+     _petNumber=value;
+    });
+  
+      
+   widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
   void _petNameController(String value){
-    _petName = value;
-      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+        setState(() {
+ _petName = value;
+    });
+    print(_petName);
+   
+   widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
   void _birthController(String value){
     _birth=value;
-      widget.onHandlePetInformation(_petNumber, _petName,_species, _fur!, _sex!,_neutering!,_birth);
+  widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
   }
 
   @override
@@ -135,7 +161,9 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
                         width: 150.w,
                         height: 25.h,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                        
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Color(0xFFAFA59B)),
@@ -159,8 +187,9 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
           margin: EdgeInsets.only(top: 5.h, bottom: 5.h, left: 16.w),
           child: Column(
             children: <Widget>[
-           _textFieldContainer("번호*","반려동물 등록 번호를 입력해주세요",0,10,_petNumberController),
-           _textFieldContainer("이름*","이름을 입력해주세요",30,10, _petNameController),
+           _textFieldContainer("번호*","반려동물 등록 번호를 입력해주세요",0,10,_petNumberController,true),
+           _textFieldContainer("이름*","이름을 입력해주세요",30,10, _petNameController,false),
+             _textFieldContainer("몸무게*","몸무게 입력해주세요",30,10, _onWightUpdate,true),
            Container(
             height: 150.h,
           margin: EdgeInsets.only(left:18.w),
@@ -205,7 +234,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
            ),
            
        
-                     _textFieldContainer("생년월일*","YYYY-MM-DD",40,10,_birthController),
+                     _textFieldContainer("생년월일*","YYYYMMDD",40,10,_birthController,true),
             ],
           ))
     ]);
@@ -227,7 +256,7 @@ Widget _typeContainer(String name) {
       )));
 }
 
-Widget _textFieldContainer(String containerName, String labelText, int horizontal, int vertical,Function contorller){
+Widget _textFieldContainer(String containerName, String labelText, int horizontal, int vertical,Function contorller,bool isDigit){
   return   Container(
                   margin: EdgeInsets.only(bottom: 5.h),
                   width: 300.w,
@@ -242,6 +271,7 @@ Widget _textFieldContainer(String containerName, String labelText, int horizonta
                                 contorller(text);
                                 
                               },
+                              keyboardType: isDigit ? TextInputType.number : null,
                               decoration: InputDecoration(
                                 hintText: labelText,
                                  contentPadding: EdgeInsets.symmetric(horizontal: horizontal.w,vertical: vertical.h), 
@@ -258,7 +288,7 @@ Widget _textFieldContainer(String containerName, String labelText, int horizonta
 
 
 
-Widget _radio(String containerName, String option1, String option2, LiveType selectedValue, Function(LiveType)contorller, int sizedBoxWidth) {
+Widget _radio(String containerName, String option1, String option2, int selectedValue, Function(int) controller, int sizedBoxWidth) {
   return Container(
     margin: EdgeInsets.only(bottom: 5.h),
     width: 300.w,
@@ -270,22 +300,24 @@ Widget _radio(String containerName, String option1, String option2, LiveType sel
           width: 170.w,
           child: Row(
             children: <Widget>[
-              Radio<LiveType>(
-                value: LiveType.TRUE,
+              Radio<int>(
+                value: 0,
                 groupValue: selectedValue,
-                onChanged: (LiveType? value) {
-                 selectedValue = value!;
-                 contorller(selectedValue);
+                onChanged: (int? value) {
+                  if (value != null) {
+                    controller(value);
+                  }
                 },
               ),
               Text(option1, style: TextStyle(fontSize: 13.sp)),
               SizedBox(width: sizedBoxWidth.w), // 텍스트 간격 조정
-              Radio<LiveType>(
-                value: LiveType.FALSE,
+              Radio<int>(
+                value: 1,
                 groupValue: selectedValue,
-                onChanged: (LiveType? value) {
-                       selectedValue = value!;
-                           contorller(selectedValue);
+                onChanged: (int? value) {
+                  if (value != null) {
+                    controller(value);
+                  }
                 },
               ),
               Text(option2, style: TextStyle(fontSize: 13.sp)),
@@ -296,3 +328,4 @@ Widget _radio(String containerName, String option1, String option2, LiveType sel
     ),
   );
 }
+
