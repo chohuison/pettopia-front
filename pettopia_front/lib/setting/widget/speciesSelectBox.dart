@@ -101,6 +101,8 @@ class _SpeciesSelectBoxState extends State<SpeciesSelectBox>
                           _selectBoxValue=record;
                           _selectBoxValuePk=widget.petName[index]['pk'];
                         });
+                        print("pk:");
+                        print(_selectBoxValuePk);
                         widget.onSpeciesSelected!(_selectBoxValue,_selectBoxValuePk);
                      
                       },
