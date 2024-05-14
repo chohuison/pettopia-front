@@ -1,20 +1,30 @@
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Pet{
-  final String serverUrl = 'http://43.200.68.44:8080/api/v1/';
+  String _serverDbUrl="";
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   Pet();
 
+  Future<void> _getServerUrl() async {
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print("Error loading .env file: $e"); // 오류 메시지 출력
+  }
+  _serverDbUrl = dotenv.env['DB_SERVER_URI'] ?? 'YOUR_KAKAO_APP_KEY';
+  print(_serverDbUrl);
+}
+
   Future<String> getPresignedUrl() async{
 
   String? assessToken= await _secureStorage.read(key: 'accessToken');
-  String finalUrl = serverUrl+'s3/presigned';
+  String finalUrl = _serverDbUrl+'s3/presigned';
   print(finalUrl);
   final uri = Uri.parse(finalUrl);
   Map<String,String> headers = {
@@ -40,11 +50,12 @@ if (response.statusCode == 200) {
   }
 
   Future<void> createPet(Map<String,dynamic> petInfo)async{
+     await _getServerUrl();
     
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-    String finalUrl = serverUrl+"pet/info/";
+    String finalUrl = _serverDbUrl+"api/v1/pet/info/";
     final url = Uri.parse(finalUrl);
     final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', 
