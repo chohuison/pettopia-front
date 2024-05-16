@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/LiveType.dart';
 
 class Eat extends StatefulWidget {
-  final Function(String, LiveType, String) onHandleEat;
+  final Function(String, int, String) onHandleEat;
   const Eat({
     Key? key,
     required this.onHandleEat,
@@ -21,11 +21,11 @@ class _EatState extends State<Eat>
   bool get wantKeepAlive => true;
   String _eatCount ="";
   String _snackCount="";
-  LiveType _eatKine = LiveType.TRUE;
+  int _eatKine = 0;
   void _handleEatCount (String eatCount){
     _eatCount=eatCount;
   }
-  void _handleEatKind(LiveType liveType){
+  void _handleEatKind(int liveType){
     setState(() {
       _eatKine=liveType;
     });
@@ -87,7 +87,7 @@ class _EatState extends State<Eat>
 
   
     Widget _eatKindRadio(String containerName, String option1, String option2,
-      String option3, LiveType selectedValue, Function(LiveType) contorller) {
+      String option3, int selectedValue, Function(int) contorller) {
     return Container(
       width: 300.w,
   
@@ -110,10 +110,10 @@ class _EatState extends State<Eat>
                   // color:Colors.orange,
                   child:Row(
                     children: <Widget>[
-                        Radio<LiveType>(
-                  value: LiveType.TRUE,
+                        Radio<int>(
+                  value: 0,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
@@ -129,10 +129,10 @@ class _EatState extends State<Eat>
                   // color:Colors.blue,
                   child:Row(
                     children: <Widget>[
-                        Radio<LiveType>(
-                  value: LiveType.MIDIUM,
+                        Radio<int>(
+                  value: 1,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
@@ -149,10 +149,10 @@ class _EatState extends State<Eat>
                   // color:Colors.purple,
                   child:Row(
                     children: <Widget>[
-                        Radio<LiveType>(
-                  value: LiveType.FALSE,
+                        Radio<int>(
+                  value: 2,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },

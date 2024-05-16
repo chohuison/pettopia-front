@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/LiveType.dart';
 
 class LifeStyleHabits extends StatefulWidget {
-  final Function(LiveType, LiveType) onHandleLifeStyleHabits;
+  final Function(int, int) onHandleLifeStyleHabits;
   const LifeStyleHabits({
     Key? key,
     required this.onHandleLifeStyleHabits,
@@ -20,10 +20,10 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
   @override
   bool get wantKeepAlive => true;
 
-  late LiveType? _enviorment = LiveType.TRUE; // true는 실내, false는 야외
-  late LiveType? _exercise = LiveType.TRUE;
+  late int? _enviorment = 0; // true는 실내, false는 야외
+  late int? _exercise = 1;
 
-  void _enviormentHandler(LiveType value) {
+  void _enviormentHandler(int value) {
     setState(() {
         _enviorment = value;
     });
@@ -31,7 +31,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
     widget.onHandleLifeStyleHabits(_enviorment!, _exercise!);
   }
 
-  void _exerciseHandler(LiveType value) {
+  void _exerciseHandler(int value) {
     setState(() {
       _exercise = value;
     });
@@ -102,8 +102,8 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
       String containerName,
       String option1,
       String option2,
-      LiveType selectedValue,
-      Function(LiveType) contorller,
+      int selectedValue,
+      Function(int) contorller,
       int sizedBoxWidth) {
     return Container(
       
@@ -117,20 +117,20 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
             width: 170.w,
             child: Row(
               children: <Widget>[
-                Radio<LiveType>(
-                  value: LiveType.TRUE,
+                Radio<int>(
+                  value: 0,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
                 ),
                 Text(option1, style: TextStyle(fontSize: 13.sp)),
                 SizedBox(width: sizedBoxWidth.w), // 텍스트 간격 조정
-                Radio<LiveType>(
-                  value: LiveType.FALSE,
+                Radio<int>(
+                  value: 1,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
@@ -145,7 +145,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
   }
 
   Widget _exerciseRadio(String containerName, String option1, String option2,
-      String option3, LiveType selectedValue, Function(LiveType) contorller) {
+      String option3, int selectedValue, Function(int) contorller) {
     return Container(
       width: 300.w,
       height: 90.h,
@@ -170,10 +170,10 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                   // color:Colors.orange,
                   child:Row(
                     children: <Widget>[
-                        Radio<LiveType>(
-                  value: LiveType.TRUE,
+                        Radio<int>(
+                  value: 0,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
@@ -189,10 +189,10 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                   // color:Colors.blue,
                   child:Row(
                     children: <Widget>[
-                        Radio<LiveType>(
-                  value: LiveType.MIDIUM,
+                        Radio<int>(
+                  value:1,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
@@ -208,10 +208,10 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
                   // color:Colors.purple,
                   child:Row(
                     children: <Widget>[
-                        Radio<LiveType>(
-                  value: LiveType.FALSE,
+                        Radio<int>(
+                  value: 2,
                   groupValue: selectedValue,
-                  onChanged: (LiveType? value) {
+                  onChanged: (int? value) {
                     selectedValue = value!;
                     contorller(selectedValue);
                   },
