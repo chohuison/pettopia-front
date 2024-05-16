@@ -5,6 +5,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 
 import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/lifeStyleHablits.dart';
 import 'package:pettopia_front/setting/widget/Eat.dart';
 import 'package:pettopia_front/setting/widget/medicen.dart';
@@ -20,20 +21,20 @@ class PetAddInformation extends StatefulWidget {
 class _PetAddInformationState extends State<PetAddInformation> {
   int _totalContainerHeight = 750;
   int _medicenContainerWidget = 190;
-  late LiveType _enviorment = LiveType.TRUE;
-  late LiveType? _exercise = LiveType.TRUE;
+  late int _enviorment = 0;
+  late int? _exercise = 0;
   late int? _eatCount = 0;
   late int? _snackCount = 0;
-  late LiveType? _eatKind = LiveType.TRUE;
-  late String _petName = widget.petList.first['dog_nm'];
-  late int _petPk = widget.petList.first['pk'];
+  late int? _eatKind = 0;
+  late String _petName = widget.petList.first['dogNm'];
+  late int _petPk = widget.petList.first['petPk'];
   //medicenName과 medicenCount가 null이 아니면 이것도 db에 넣어줄거임 
   late String _mecidenName = "";
   late String _medicenCount = "";
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
   List<Widget>containerList=[];
-
+  Pet _petServer = Pet();
   void _medecinHandler(String name, String count) {
     _mecidenName = name;
     _medicenCount = count;
@@ -73,15 +74,28 @@ class _PetAddInformationState extends State<PetAddInformation> {
 
 }
 
-  void onHandleLifeStyleHablits(LiveType enviorment, LiveType exercise) {
+  void onHandleLifeStyleHablits(int enviorment, int exercise) {
     _enviorment = enviorment;
     _exercise = exercise;
   }
 
-  void onHandleEat(String eatCount, LiveType eatKind, String snackCount) {
+  void onHandleEat(String eatCount, int eatKind, String snackCount) {
     _eatCount = int.parse(eatCount);
     _eatKind = eatKind;
     _snackCount = int.parse(snackCount);
+  }
+
+  void _saveButton(){
+    Map<String,dynamic> data = {
+      'environment':_enviorment,
+      'exercise':_exercise,
+      'foodCnt':_eatCount,
+      'foodKind':_eatCount,
+      'snackCnt':_snackCount
+
+    };
+    print(data);
+    _petServer.createAddPet(data, _petPk);
   }
 
   @override
@@ -195,7 +209,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {_saveButton();},
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Color(0xFFAFA59B)),
