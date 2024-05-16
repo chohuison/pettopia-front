@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
@@ -16,12 +17,13 @@ class SettingMain extends StatefulWidget {
 
 class _SettingMainhState extends State<SettingMain> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-  List<Map<String, dynamic>> _getList() {
-    List<Map<String, dynamic>> petList = [
-      {"dog_nm": "초코", "pk": 3},
-      {"dog_nm": "나비", "pk": 4}
-    ];
-    return petList;
+  List <Map<String,dynamic>> _petList =[];
+  Pet _petServer = Pet();
+  Future<void> _getList() async {
+       _petList = await _petServer.getPetList();
+
+  
+
   }
 
   @override
@@ -101,19 +103,23 @@ class _SettingMainhState extends State<SettingMain> {
               MaterialPageRoute(builder: (context) => CreatePet()),
             );
           } else if (index == 1) {
+           await _getList();
+            print("가져온 petList");
+            print(_petList);
             Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PetAddInformation(
-                        petList: _getList(),
+                        petList: _petList,
                       )),
             );
+    
           } else if (index == 2) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ViewPetInformation(
-                          petList: _getList(),
+                          petList: _petList,
                         )));
           } else if (index == 3) {
             await _secureStorage.deleteAll();

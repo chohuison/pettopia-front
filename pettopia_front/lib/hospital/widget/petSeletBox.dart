@@ -28,8 +28,8 @@ class _PetSelectBoxState extends State<PetSelectBox>
   @override
   void initState() {
     super.initState();
-   _selectBoxValue=widget.petName.first['dog_nm'];
-   _selectBoxValuePk=widget.petName.first['pk'];
+   _selectBoxValue=widget.petName.first['dogNm'];
+   _selectBoxValuePk=widget.petName.first['petPk'];
   }
 
   @override
@@ -93,13 +93,13 @@ class _PetSelectBoxState extends State<PetSelectBox>
                   itemCount: widget.petName.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (widget.petName != null && index < widget.petName.length) {
-                      final record = widget.petName[index]['dog_nm']!;
+                      final record = widget.petName[index]['dogNm']!;
                       return GestureDetector(
                       onTap: () {
                         setState(() {
                           _isOpen = !_isOpen;
                           _selectBoxValue=record;
-                          _selectBoxValuePk=widget.petName[index]['pk'];
+                          _selectBoxValuePk=widget.petName[index]['petPk'];
                         });
                         widget.onRegionSelected!(_selectBoxValue,_selectBoxValuePk);
                      
