@@ -63,10 +63,10 @@ class _CreatePetState extends State<CreatePet> {
         'dogNm': _petName,
         'speciesPk': _breedPk,
         'hair': _fur,
-        'secNm': _getBoolType(_sex),
+        'sexNm': _getBoolType(_sex),
         'neuterYn': _getBoolType(_neutering),
         'birth': int.parse(_birth),
-        'wight': double.parse(_wight),
+        'weight': double.parse(_wight),
         'protectorName': _parentName,
         'protectorPhoneNum': _parentPhoneNum
       };
