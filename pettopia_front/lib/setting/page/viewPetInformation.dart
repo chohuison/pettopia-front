@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/ViewpetAddInfo.dart';
 import 'package:pettopia_front/setting/widget/viewPetInfo.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 
 class ViewPetInformation extends StatefulWidget {
   final List<Map<String, dynamic>> petList;
-  const ViewPetInformation({Key? key, required this.petList}) : super(key: key);
+  final Map<String,dynamic>petInfo;
+  final Map<String,dynamic>petAddInfo;
+  const ViewPetInformation({Key? key, required this.petList,required this.petInfo, required this.petAddInfo}) : super(key: key);
 
   @override
   _ViewPetInformationState createState() => _ViewPetInformationState();
@@ -19,10 +22,35 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
   // int _medicenContainerWidget = 190;
   late String _petName = widget.petList.first['dog_nm'];
   late int _petPk = widget.petList.first['pk'];
+  Map<String,dynamic> _petInfo ={};
+  Map<String,dynamic> _petAddInfo={};
+  Pet _petServer = new Pet();
+@override
+  void initState() {
+    super.initState();
+    _petInfo = widget.petInfo;
+    _petAddInfo=widget.petAddInfo;
 
+  }
   void _petNameHandler(String value, int valuePk) {
-    _petName = value;
+    setState(() {
+         _petName = value;
     _petPk = valuePk;
+    });
+ _getPetInfo();
+  }
+
+  void _getPetInfo () async {
+    Map<String ,dynamic> newPetInfo =  await _petServer.getPetInfo(_petPk);
+    setState(() {
+      _petInfo = newPetInfo;
+    });
+  }
+  void _getPetAddInfo() async{
+        Map<String ,dynamic> newPetAddInfo =  await _petServer.getAddPetInfo(_petPk);
+    setState(() {
+      _petAddInfo = newPetAddInfo;
+    });
   }
 
   @override
@@ -81,7 +109,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                         color: Color(0xFFF5EBE0),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      child: ViewPetInfo(),
+                                      child: ViewPetInfo(petinfo: _petInfo,),
                                     ))),
                                 Container(
                                     width: 350.w,
@@ -96,7 +124,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                         color: Color(0xFFF5EBE0),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      child: ViewPetAddInfo(),
+                                      child: ViewPetAddInfo(petAddInfo:_petAddInfo ),
                                     )))
                               ],
                             )),

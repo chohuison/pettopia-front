@@ -18,12 +18,19 @@ class SettingMain extends StatefulWidget {
 class _SettingMainhState extends State<SettingMain> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   List <Map<String,dynamic>> _petList =[];
+   Map<String,dynamic> _petInfo={};
+   Map<String,dynamic> _petAddInfo={};
+
   Pet _petServer = Pet();
   Future<void> _getList() async {
        _petList = await _petServer.getPetList();
+  }
 
-  
-
+  Future <void>_getPetInfo() async{
+    _petInfo = await _petServer.getPetInfo(_petList.first['petPk'] );
+  }
+  Future <void> _getPetAddInfo() async {
+    _petAddInfo = await _petServer.getAddPetInfo(_petList.first['petPk']);
   }
 
   @override
@@ -115,11 +122,17 @@ class _SettingMainhState extends State<SettingMain> {
             );
     
           } else if (index == 2) {
+            await _getList();
+            await _getPetInfo();
+            await _getPetAddInfo();
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ViewPetInformation(
                           petList: _petList,
+                          petInfo : _petInfo,
+                          petAddInfo : _petAddInfo,
                         )));
           } else if (index == 3) {
             await _secureStorage.deleteAll();

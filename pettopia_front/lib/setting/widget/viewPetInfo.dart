@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/enum/PetBreedList.dart';
 
 class ViewPetInfo extends StatefulWidget {
-  const ViewPetInfo({Key? key}) : super(key: key);
-
+  final Map<String,dynamic>petinfo;
+ 
+  const ViewPetInfo({Key? key, required this.petinfo}) : super(key: key);
+  
   @override
   _ViewPetInfoState createState() => _ViewPetInfoState();
 }
@@ -12,6 +15,26 @@ class _ViewPetInfoState extends State<ViewPetInfo>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  PetBreedList _list = PetBreedList();
+   Map<String,dynamic> _petInfo={};
+   
+
+  String _getSex(bool value){
+    if(value == true){
+      return "남";
+    }
+    else{
+      return "여";
+    }
+  }
+  String _getNeuterYn(bool value){
+    if(value == true){
+      return "o";
+    }
+    else{
+      return "x";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +85,14 @@ class _ViewPetInfoState extends State<ViewPetInfo>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "뽀삐",
+                                  widget.petinfo['dogNm'],
                                   style: TextStyle(fontSize: 15.sp),
                                 ),
                                 Text(
-                                  "(말티즈)",
+                                  _list.getSpicesNmae( widget.petinfo['speciesName']),
                                   style: TextStyle(fontSize: 15.sp),
                                 ),
-                                Text("000000000000"),
+                                Text(  widget.petinfo['dogRegNo'].toString(),),
                               ],
                             ),
                           )
@@ -84,15 +107,15 @@ class _ViewPetInfoState extends State<ViewPetInfo>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _typeContainer("성별", "남"),
-                  _typeContainer("중성화", "O")
+                  _typeContainer("성별", _getSex(widget.petinfo['sexNm'])),
+                  _typeContainer("중성화", _getNeuterYn(widget.petinfo['neuterYn']))
                 ],
               ),
             ),
             // 반려동물 생년월일
             Container(
               width: 280.w,
-              child: _typeContainer("생년월일", "2018-01-01"),
+              child: _typeContainer("생년월일", widget.petinfo['birth'].toString()),
               margin: EdgeInsets.only(bottom: 10.h),
             ), // -> 반려동물 정보 end
 
@@ -107,9 +130,8 @@ class _ViewPetInfoState extends State<ViewPetInfo>
               width: 280.w,
               child: Column(
                 children: <Widget>[
-                  _typeContainer("이름", "변아영"),
-                  _typeContainer("연락처", "010-1234-5678"),
-                  _typeContainer("생년월일", "2002-06-04")
+                  _typeContainer("이름", widget.petinfo['protectorName']),
+                  _typeContainer("연락처",widget.petinfo['protectorPhoneNum']),
                 ],
               ),
             ), // -> 보호자 정보 end
