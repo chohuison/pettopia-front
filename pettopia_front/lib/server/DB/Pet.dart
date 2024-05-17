@@ -139,5 +139,73 @@ if (response.statusCode == 200) {
   }
   }
 
+  //반려동물 기본 정보 가져오기 
+    Future<Map<String,dynamic>> getPetInfo(int petPk) async{
+    await _getServerUrl();
+    
+        String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+
+    String finalUrl = _serverDbUrl+"api/v1/pet/info/$petPk";
+    
+    final url = Uri.parse(finalUrl);
+    print(url);
+    final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', 
+   };
+
+    final response = await http.get(
+    url,
+    headers: headers,
+    
+  );
+
+  if(response.statusCode == 200){
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    final Map<String,dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      
+
+    print(jsonData);
+    return jsonData; // 결과 반환
+  }else{
+ throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
+  }
+  }
+
+    //반려동물 추가 정보 가져오기 
+    Future<Map<String,dynamic>> getAddPetInfo(int petPk) async{
+    await _getServerUrl();
+    
+        String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+
+    String finalUrl = _serverDbUrl+"api/v1/pet/extrainfo/$petPk";
+    
+    final url = Uri.parse(finalUrl);
+    print(url);
+    final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', 
+   };
+
+    final response = await http.get(
+    url,
+    headers: headers,
+    
+  );
+
+  if(response.statusCode == 200){
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    final Map<String,dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      
+
+    print(jsonData);
+    return jsonData; // 결과 반환
+  }else{
+ throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
+  }
+  }
+
 
 }
