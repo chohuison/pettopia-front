@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/setting/widget/createPetInformationValue.dart';
 import 'package:pettopia_front/setting/widget/createPetParentValue.dart';
@@ -26,9 +27,11 @@ class _CreatePetState extends State<CreatePet> {
   late String _wight = "";
   Pet _pet = Pet();
   late String errMesg = "";
+  XFile? _file;
 
   void onHandlePetInformation(
-      String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
+      XFile xfile,String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
+    _file=xfile;
     _petNumber = petNum;
     _petName = petName;
     _breedPk = breedPk;
@@ -59,7 +62,7 @@ class _CreatePetState extends State<CreatePet> {
       });
     } else {
       Map<String, dynamic> petInfo = {
-        'dogRegNo': int.parse(_petNumber),
+        'dogRegNo':_petNumber,
         'dogNm': _petName,
         'speciesPk': _breedPk,
         'hair': _fur,
@@ -72,6 +75,7 @@ class _CreatePetState extends State<CreatePet> {
       };
       print(petInfo);
       _pet.createPet(petInfo);
+      _pet.seUploat(_file!);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyApp()),

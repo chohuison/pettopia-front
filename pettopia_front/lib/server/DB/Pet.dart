@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Pet{
   String _serverDbUrl="";
@@ -22,9 +23,9 @@ class Pet{
 }
 //s3url
   Future<String> getPresignedUrl() async{
-
+    await _getServerUrl();
   String? assessToken= await _secureStorage.read(key: 'accessToken');
-  String finalUrl = _serverDbUrl+'s3/presigned';
+  String finalUrl = _serverDbUrl+'api/v1/s3/presigned';
   print(finalUrl);
   final uri = Uri.parse(finalUrl);
   Map<String,String> headers = {
@@ -39,15 +40,44 @@ if (response.statusCode == 200) {
     // UTF-8로 응답을 디코딩하고 JSON 파싱
     print(response);
     print(jsonDecode(utf8.decode(response.bodyBytes)));
+    Map<String,dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+
     // final String jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         // print("jsonData: ");
         // print(jsonData);
    
-    return "jsonData"; // 결과 반환
+    return data["presigned_url"]; // 결과 반환
   } else {
     throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
   }
   }
+  //s3사진 업로드
+ Future<void> seUploat(XFile xFile) async {
+  String presignedUrl = await getPresignedUrl();
+  final url = Uri.parse(presignedUrl);
+  final File imageFile = File(xFile.path);
+
+  // try {
+
+  //   final response = await http.put(
+  //     url,
+  //     body: await imageFile.readAsBytes(),
+  //     headers: {
+  //       'Content-Type': 'image/jpeg',
+  //     },
+  //   );
+  // } catch (e) {
+  //   print("이미지 업로드 오류 : $e");
+  // }
+
+  final request = http.MultipartRequest('PUT', url)
+  ..fields['filename'] = "fileName" // 파일 이름을 요청 본문에 포함
+  ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+final response = await request.send();
+}
+
+
 
   //petList가져오기
   Future<List<Map<String,dynamic>>> getPetList() async{
@@ -91,7 +121,8 @@ if (response.statusCode == 200) {
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-    String finalUrl = _serverDbUrl+"api/v1/pet/info/";
+    String finalUrl = _serverDbUrl+"api/v1/pet/info";
+    print(finalUrl);
     final url = Uri.parse(finalUrl);
     final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', 

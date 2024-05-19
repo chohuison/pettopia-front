@@ -41,7 +41,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
   late String _type = "";
   late int _count = 0;
   late int _age = 0;
-  late int _pk = widget.petList.first['pk'];
+  late int _pk = widget.petList.first['petPk'];
   final shotRecordsServer = ShotRecords();
   String _errorText = "";
 
