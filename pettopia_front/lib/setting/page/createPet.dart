@@ -59,7 +59,7 @@ class _CreatePetState extends State<CreatePet> {
       });
     } else {
       Map<String, dynamic> petInfo = {
-        'dogRegNo': int.parse(_petNumber),
+        'dogRegNo':_petNumber,
         'dogNm': _petName,
         'speciesPk': _breedPk,
         'hair': _fur,

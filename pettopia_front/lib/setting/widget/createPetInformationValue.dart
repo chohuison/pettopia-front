@@ -1,114 +1,133 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/enum/PetBreedList.dart';
 
 import 'package:pettopia_front/setting/widget/speciesSelectBox.dart';
 
 class CreatePetInformation extends StatefulWidget {
-  final Function(String, String,String, int, int, int,int,String) onHandlePetInformation;
+  final Function(String, String, String, int, int, int, int, String)
+      onHandlePetInformation;
   const CreatePetInformation({
     Key? key,
-              required this.onHandlePetInformation,
+    required this.onHandlePetInformation,
   }) : super(
           key: key,
-
         );
 
   @override
   _CreatePetInformationState createState() => _CreatePetInformationState();
 }
 
-class _CreatePetInformationState extends State<CreatePetInformation>  with AutomaticKeepAliveClientMixin {
-    @override
+class _CreatePetInformationState extends State<CreatePetInformation>
+    with AutomaticKeepAliveClientMixin {
+  @override
   bool get wantKeepAlive => true;
-  late List<Map<String,dynamic>>_speciesList =[];
-  late String _species="";
-  String _petNumber="";
-  String _petName="";
-  String _birth="";
-  late int _fur=0;
+  late List<Map<String, dynamic>> _speciesList = [];
+  late String _species = "";
+  String _petNumber = "";
+  String _petName = "";
+  String _birth = "";
+  late int _fur = 0;
   late int _sex = 0;
   late int _neutering = 0;
   PetBreedList _petBreedList = PetBreedList();
-  late int _speciesPk=1;
-  late String _widght="";
+  late int _speciesPk = 1;
+  late String _widght = "";
+  XFile? _file;
 
- @override
+  @override
   void initState() {
     super.initState();
- _speciesList = _petBreedList.getSpecies();
+    _speciesList = _petBreedList.getSpecies();
 
     _species = _speciesList.first['species'];
   }
- 
 
-    void _onFurUpdate(int? value) {
+  void _onFurUpdate(int? value) {
     setState(() {
       _fur = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
-  void _onWightUpdate(String value){
-
+  void _onWightUpdate(String value) {
     setState(() {
       _widght = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
- void _onSexUpdate(int? value) {
+  void _onSexUpdate(int? value) {
     setState(() {
       _sex = value!;
     });
-      widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
-   void _onnNuteringUpdate(int? value) {
+  void _onnNuteringUpdate(int? value) {
     setState(() {
       _neutering = value!;
     });
-  widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
-  void onSeleted(String value, int pk){
-      setState(() {
-       _species=value;
-    _speciesPk=pk;
+  void onSeleted(String value, int pk) {
+    setState(() {
+      _species = value;
+      _speciesPk = pk;
     });
     print(value);
     print(pk);
     print(_species);
     print(_speciesPk);
-  
-  
-     widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
-  void _petNumberController(String value){
-     setState(() {
-     _petNumber=value;
+  void _petNumberController(String value) {
+    setState(() {
+      _petNumber = value;
     });
-  
-      
-   widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
-  void _petNameController(String value){
-        setState(() {
- _petName = value;
+  void _petNameController(String value) {
+    setState(() {
+      _petName = value;
     });
     print(_petName);
-   
-   widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
   }
 
-  void _birthController(String value){
-    _birth=value;
-  widget.onHandlePetInformation(_petNumber, _petName,_widght,_speciesPk, _fur!, _sex!,_neutering!,_birth);
+  void _birthController(String value) {
+    _birth = value;
+    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
+  }
+
+  Future<void> _getGallery() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage == null) {
+      return;
+    }
+    setState(() {
+      _file = pickedImage;
+    });
   }
 
   @override
@@ -131,7 +150,16 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
                 margin: EdgeInsets.only(left: 17.w, top: 16.h),
                 width: 60.w,
                 height: 60.h,
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                  // color: Colors.blue, // Background color of the container
+                  border: Border.all(
+                    color: Color(0xFFD5BDAF),
+                    width: 2.0, // Border width
+                  ),
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+                child: _file == null ? Container() : Image.file(File(_file!.path),
+                fit:BoxFit.cover)
               ),
               Container(
                   margin: EdgeInsets.only(left: 50.w, top: 20.h),
@@ -162,7 +190,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
                         height: 25.h,
                         child: ElevatedButton(
                           onPressed: () {
-                        
+                            _getGallery();
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
@@ -187,54 +215,52 @@ class _CreatePetInformationState extends State<CreatePetInformation>  with Autom
           margin: EdgeInsets.only(top: 5.h, bottom: 5.h, left: 16.w),
           child: Column(
             children: <Widget>[
-           _textFieldContainer("번호*","반려동물 등록 번호를 입력해주세요",0,10,_petNumberController,true),
-           _textFieldContainer("이름*","이름을 입력해주세요",30,10, _petNameController,false),
-             _textFieldContainer("몸무게*","몸무게 입력해주세요",30,10, _onWightUpdate,true),
-           Container(
-            height: 150.h,
-          margin: EdgeInsets.only(left:18.w),
-            child: Stack(
-              children: [
-             
-                Positioned(
-                  top:40.h,
-                  child: 
-                Container(
-                  child:Column(
-                    children: <Widget>[
-      _radio("단장모*", "단모", "장모", _fur!,_onFurUpdate,10),
-            _radio("성별*", "남", "여", _sex!,_onSexUpdate,22),
-            _radio("중성화*", "O", "X", _neutering!,_onnNuteringUpdate,24),
-                    ],
-                  )
-                )),
-                   Positioned(child: 
-                   Container(
-                  // width:400.w,
-                  height:95.h,
-                  // color: Colors.blue,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: 60.h),
-                        width:90.w,
-                        height:30.h,
-                      child:_typeContainer("품종*"),
+              _textFieldContainer("번호*", "반려동물 등록 번호를 입력해주세요", 0, 10,
+                  _petNumberController, false),
+              _textFieldContainer(
+                  "이름*", "이름을 입력해주세요", 30, 10, _petNameController, false),
+              _textFieldContainer(
+                  "몸무게*", "몸무게 입력해주세요", 30, 10, _onWightUpdate, true),
+              Container(
+                height: 150.h,
+                margin: EdgeInsets.only(left: 18.w),
+                child: Stack(
+                  children: [
+                    Positioned(
+                        top: 40.h,
+                        child: Container(
+                            child: Column(
+                          children: <Widget>[
+                            _radio("단장모*", "단모", "장모", _fur!, _onFurUpdate, 10),
+                            _radio("성별*", "남", "여", _sex!, _onSexUpdate, 22),
+                            _radio("중성화*", "O", "X", _neutering!,
+                                _onnNuteringUpdate, 24),
+                          ],
+                        ))),
+                    Positioned(
+                        child: Container(
+                      // width:400.w,
+                      height: 95.h,
+                      // color: Colors.blue,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(bottom: 60.h),
+                            width: 90.w,
+                            height: 30.h,
+                            child: _typeContainer("품종*"),
+                          ),
+                          SpeciesSelectBox(
+                              onSpeciesSelected: onSeleted,
+                              petName: _speciesList)
+                        ],
                       ),
-                
-                      SpeciesSelectBox(onSpeciesSelected:onSeleted, petName:_speciesList)
-                    ],
-                  ),
-                
-                )),
-                    
-                
-              ],
-            ),
-           ),
-           
-       
-                     _textFieldContainer("생년월일*","YYYYMMDD",40,10,_birthController,true),
+                    )),
+                  ],
+                ),
+              ),
+              _textFieldContainer(
+                  "생년월일*", "YYYYMMDD", 40, 10, _birthController, true),
             ],
           ))
     ]);
@@ -245,7 +271,7 @@ Widget _typeContainer(String name) {
   return Container(
       width: 80.w,
       height: 30.h,
-       margin: EdgeInsets.only(right: 15.w),
+      margin: EdgeInsets.only(right: 15.w),
       decoration: BoxDecoration(
         color: Color(0xFFD5BDAF),
         borderRadius: BorderRadius.circular(20.0),
@@ -256,39 +282,40 @@ Widget _typeContainer(String name) {
       )));
 }
 
-Widget _textFieldContainer(String containerName, String labelText, int horizontal, int vertical,Function contorller,bool isDigit){
-  return   Container(
-                  margin: EdgeInsets.only(bottom: 5.h),
-                  width: 300.w,
-                  height: 30.h,
-                  child: Row(
-                    children: <Widget>[
-                      _typeContainer(containerName),
-                       Container(
-                          width: 170.w,
-                          child: TextField(
-                              onChanged: (text) {
-                                contorller(text);
-                                
-                              },
-                              keyboardType: isDigit ? TextInputType.number : null,
-                              decoration: InputDecoration(
-                                hintText: labelText,
-                                 contentPadding: EdgeInsets.symmetric(horizontal: horizontal.w,vertical: vertical.h), 
-                               
-                                hintStyle: TextStyle(fontSize: 11.0.sp, color: Color(0xFFAFA59B),),
-                                   border: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color(0xFFD5BDAF)),
-    ),
-                              ))),
-                    ],
-                  ));
-
+Widget _textFieldContainer(String containerName, String labelText,
+    int horizontal, int vertical, Function contorller, bool isDigit) {
+  return Container(
+      margin: EdgeInsets.only(bottom: 5.h),
+      width: 300.w,
+      height: 30.h,
+      child: Row(
+        children: <Widget>[
+          _typeContainer(containerName),
+          Container(
+              width: 170.w,
+              child: TextField(
+                  onChanged: (text) {
+                    contorller(text);
+                  },
+                  keyboardType: isDigit ? TextInputType.number : null,
+                  decoration: InputDecoration(
+                    hintText: labelText,
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: horizontal.w, vertical: vertical.h),
+                    hintStyle: TextStyle(
+                      fontSize: 11.0.sp,
+                      color: Color(0xFFAFA59B),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD5BDAF)),
+                    ),
+                  ))),
+        ],
+      ));
 }
 
-
-
-Widget _radio(String containerName, String option1, String option2, int selectedValue, Function(int) controller, int sizedBoxWidth) {
+Widget _radio(String containerName, String option1, String option2,
+    int selectedValue, Function(int) controller, int sizedBoxWidth) {
   return Container(
     margin: EdgeInsets.only(bottom: 5.h),
     width: 300.w,
@@ -328,4 +355,3 @@ Widget _radio(String containerName, String option1, String option2, int selected
     ),
   );
 }
-

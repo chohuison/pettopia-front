@@ -30,6 +30,7 @@ void initState() {
 void _initializeWebview() async {
   await _getServerUrl();
   String url = _serverUrl + "oauth2/authorization/kakao";
+    // String url = 'http://10.0.2.2/' + "oauth2/authorization/kakao";
   print(url);
   _webViewController = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
