@@ -51,30 +51,26 @@ if (response.statusCode == 200) {
     throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
   }
   }
-  //s3사진 업로드
+  //s3사진 업로드//
  Future<void> seUploat(XFile xFile) async {
   String presignedUrl = await getPresignedUrl();
   final url = Uri.parse(presignedUrl);
   final File imageFile = File(xFile.path);
 
-  // try {
+  try {
 
-  //   final response = await http.put(
-  //     url,
-  //     body: await imageFile.readAsBytes(),
-  //     headers: {
-  //       'Content-Type': 'image/jpeg',
-  //     },
-  //   );
-  // } catch (e) {
-  //   print("이미지 업로드 오류 : $e");
-  // }
+    final response = await http.put(
+      url,
+      body: await imageFile.readAsBytes(),
+      headers: {
+        'Content-Type': 'image/jpeg',
+      },
+    );
+  } catch (e) {
+    print("이미지 업로드 오류 : $e");
+  }
 
-  final request = http.MultipartRequest('PUT', url)
-  ..fields['filename'] = "fileName" // 파일 이름을 요청 본문에 포함
-  ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
-
-final response = await request.send();
+ 
 }
 
 
