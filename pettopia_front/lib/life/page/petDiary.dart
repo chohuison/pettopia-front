@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
+import 'package:pettopia_front/hospital/widget/calendar.dart';
 
 class PetDiary extends StatefulWidget {
   const PetDiary({Key? key}) : super(key: key);
@@ -56,6 +57,7 @@ class _PetDiaryState extends State<PetDiary>
                       color: Color(0xFFE3D5CA),
                       borderRadius: BorderRadius.circular(25),
                     ),
+                    child: Calendar(index: 1),
                   ),
                 ],
               ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ViewPetAddInfo extends StatefulWidget {
-  const ViewPetAddInfo({Key? key}) : super(key: key);
+  final Map<String,dynamic> petAddInfo;
+  const ViewPetAddInfo({Key? key, required this.petAddInfo}) : super(key: key);
 
   @override
   _ViewPetAddInfoState createState() => _ViewPetAddInfoState();
@@ -12,6 +13,40 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+  String _getEnviorment(int value){
+    if(value ==0 ){
+      return "실내";
+    
+    }
+    else{
+      return "실외";
+    }
+  }
+
+  String _getExercise(int value){
+    if(value ==0 ){
+      return "저(일주일에 1시간 이하)";
+    }
+    else if(value ==1){
+      return "중(매일 30분 이하)";
+    }
+    else{
+      return "고(매일 1시간 이상)";
+    }
+  }
+
+  String _getFoodKind(int value){
+    if(value ==0){
+      return "사료만";
+      
+    }
+    else if(value ==1){
+      return "사료+사람음식";
+    }
+    else{
+      return "사람 음식 위주";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +68,10 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
               width: 280.w,
               child: Column(
                 children: <Widget>[
-                  _typeContainer("생활환경", "실내"),
-                  _typeContainer("운동강도", "중(매일 30분 이하)"),
-                  _typeContainer("식사", "3회(전용 사료 + 사람 음식)"),
-                  _typeContainer("간식", "2회"),
+                  _typeContainer("생활환경", _getEnviorment(widget.petAddInfo['environment'])),
+                  _typeContainer("운동강도", _getExercise(widget.petAddInfo['exercise'])),
+                  _typeContainer("식사", _getFoodKind(widget.petAddInfo['foodKind'])),
+                  _typeContainer("간식", widget.petAddInfo['snackCnt'].toString()),
                   _typeContainer("약", "O"),
                   // ToDo
                   // 약 동적생성해야 함
