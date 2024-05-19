@@ -6,11 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/enum/PetBreedList.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 
 import 'package:pettopia_front/setting/widget/speciesSelectBox.dart';
 
 class CreatePetInformation extends StatefulWidget {
-  final Function(String, String, String, int, int, int, int, String)
+  final Function(XFile,String, String, String, int, int, int, int, String)
       onHandlePetInformation;
   const CreatePetInformation({
     Key? key,
@@ -52,7 +53,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _fur = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+    widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -60,7 +61,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _widght = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -68,7 +69,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _sex = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -76,7 +77,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _neutering = value!;
     });
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -89,8 +90,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     print(pk);
     print(_species);
     print(_speciesPk);
-
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -99,7 +99,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
       _petNumber = value;
     });
 
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -109,13 +109,16 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     });
     print(_petName);
 
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
   void _birthController(String value) {
-    _birth = value;
-    widget.onHandlePetInformation(_petNumber, _petName, _widght, _speciesPk,
+   setState(() {
+      _birth = value;
+   });
+   
+   widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
   }
 
@@ -128,6 +131,10 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _file = pickedImage;
     });
+    widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
+        _fur!, _sex!, _neutering!, _birth);
+    Pet pet = Pet();
+    pet.seUploat(_file!);
   }
 
   @override
