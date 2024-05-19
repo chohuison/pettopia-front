@@ -20,6 +20,6 @@ class _ShortWriteBarState extends State<ShortWrite> with AutomaticKeepAliveClien
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Calendar();
+    return Calendar(index: 0);
   }
 }

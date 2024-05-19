@@ -27,12 +27,12 @@ class _PetAddInformationState extends State<PetAddInformation> {
   late LiveType? _eatKind = LiveType.TRUE;
   late String _petName = widget.petList.first['dog_nm'];
   late int _petPk = widget.petList.first['pk'];
-  //medicenName과 medicenCount가 null이 아니면 이것도 db에 넣어줄거임 
+  //medicenName과 medicenCount가 null이 아니면 이것도 db에 넣어줄거임
   late String _mecidenName = "";
   late String _medicenCount = "";
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
-  List<Widget>containerList=[];
+  List<Widget> containerList = [];
 
   void _medecinHandler(String name, String count) {
     _mecidenName = name;
@@ -44,19 +44,18 @@ class _PetAddInformationState extends State<PetAddInformation> {
     _petPk = valuePk;
   }
 
-  void _addMedicen(int pk,String medicenName, String medicenCount ){
-  
+  void _addMedicen(int pk, String medicenName, String medicenCount) {
     setState(() {
-       _medicenWidgetValue.add({'pk':pk,'medicenName': medicenName, 'medicenCount':medicenCount});
-   _totalContainerHeight=_totalContainerHeight+190;
-   _medicenContainerWidget=_medicenContainerWidget+190;
-   containerList.add(_mecicenContainer(pk,medicenName,medicenCount));
+      _medicenWidgetValue.add(
+          {'pk': pk, 'medicenName': medicenName, 'medicenCount': medicenCount});
+      _totalContainerHeight = _totalContainerHeight + 190;
+      _medicenContainerWidget = _medicenContainerWidget + 190;
+      containerList.add(_mecicenContainer(pk, medicenName, medicenCount));
     });
-   
   }
 
   void _deleteMedicen(int pk) {
-         setState(() {
+    setState(() {
       containerList.removeWhere((widget) {
         if (widget.key is ValueKey) {
           return (widget.key as ValueKey).value == pk;
@@ -65,13 +64,11 @@ class _PetAddInformationState extends State<PetAddInformation> {
       });
     });
     setState(() {
-        _medicenWidgetValue.removeWhere((item) => item['pk'] == pk);
-        _medicenContainerWidget=_medicenContainerWidget-190;
-        _totalContainerHeight=_totalContainerHeight-190;
-
+      _medicenWidgetValue.removeWhere((item) => item['pk'] == pk);
+      _medicenContainerWidget = _medicenContainerWidget - 190;
+      _totalContainerHeight = _totalContainerHeight - 190;
     });
-
-}
+  }
 
   void onHandleLifeStyleHablits(LiveType enviorment, LiveType exercise) {
     _enviorment = enviorment;
@@ -184,7 +181,10 @@ class _PetAddInformationState extends State<PetAddInformation> {
                           color: Color(0xFFF5EBE0),
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        child: Medicen(onHandleMedicen: _medecinHandler, addMedicen:_addMedicen,)),
+                        child: Medicen(
+                          onHandleMedicen: _medecinHandler,
+                          addMedicen: _addMedicen,
+                        )),
 
                     Container(
                       margin: EdgeInsets.only(top: 5.h),
@@ -237,7 +237,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
 
   Widget _mecicenContainer(int pk, String medicenName, String count) {
     return Container(
-      key: ValueKey(pk), 
+        key: ValueKey(pk),
         width: 350.w,
         height: 170.h,
         margin:
