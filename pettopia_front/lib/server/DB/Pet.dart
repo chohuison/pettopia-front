@@ -51,7 +51,7 @@ if (response.statusCode == 200) {
     throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
   }
   }
-  //s3사진 업로드
+  //s3사진 업로드//
  Future<void> seUploat(XFile xFile) async {
   String presignedUrl = await getPresignedUrl();
   final url = Uri.parse(presignedUrl);
