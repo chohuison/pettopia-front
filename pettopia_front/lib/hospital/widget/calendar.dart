@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'package:pettopia_front/hospital/widget/shortWriteValue.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -17,17 +18,14 @@ class _CalendarState extends State<Calendar>
   bool get wantKeepAlive => true;
 
   DateTime? _selectedDate;
+   List <Map<String,dynamic>> _petList =[];
+    Pet _petServer = Pet();
 
-  //d여기서 이름 받아오는 코드 짜면 됨
-  List<Map<String,dynamic>> getList(){
- List<Map<String,dynamic>> petList=[
-  {"dog_nm":"초코", "pk":3},
-    {"dog_nm":"나비", "pk":4}
-
-  ];
-    return petList;
+   Future<void> _getList() async {
+       _petList = await _petServer.getPetList();
   }
 
+    
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -46,7 +44,7 @@ class _CalendarState extends State<Calendar>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ShortWriteValue(selectedDay: _selectedDate!,petList: getList(),),
+              builder: (context) => ShortWriteValue(selectedDay: _selectedDate!,petList: _petList),
             ),
           );
         },

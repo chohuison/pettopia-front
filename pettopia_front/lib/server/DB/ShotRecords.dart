@@ -1,15 +1,26 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ShotRecords{
-  final String serverUrl='http://10.0.2.2:8080/api/v1/shot_records/';
+    String _serverDbUrl="";
+  final String serverUrl='/api/v1/shot_records/';
     final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   
   ShotRecords();
+
+   Future<void> _getServerUrl() async {
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print("Error loading .env file: $e"); // 오류 메시지 출력
+  }
+  _serverDbUrl = dotenv.env['DB_SERVER_URI'] ?? 'YOUR_KAKAO_APP_KEY';
+  print(_serverDbUrl);
+}
   
   Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, int age){
     return{
@@ -28,7 +39,8 @@ class ShotRecords{
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-    final url = Uri.parse(serverUrl);
+    String finalUrl = _serverDbUrl+"api/v1/shot_records/";
+    final url = Uri.parse(finalUrl);
     final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', 
    };

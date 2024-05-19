@@ -91,7 +91,9 @@ if (response.statusCode == 200) {
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-    String finalUrl = _serverDbUrl+"api/v1/pet/info/";
+    String finalUrl = _serverDbUrl+"api/v1/pet/info";
+    print(finalUrl);
+        // String finalUrl = "http://10.0.2.2/"+"api/v1/pet/info";
     final url = Uri.parse(finalUrl);
     final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', 
