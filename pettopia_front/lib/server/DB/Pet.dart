@@ -52,7 +52,7 @@ if (response.statusCode == 200) {
   }
   }
   //s3사진 업로드//
- Future<void> seUploat(XFile xFile) async {
+ Future<String> seUploat(XFile xFile) async {
   String presignedUrl = await getPresignedUrl();
   final url = Uri.parse(presignedUrl);
   final File imageFile = File(xFile.path);
@@ -66,8 +66,10 @@ if (response.statusCode == 200) {
         'Content-Type': 'image/jpeg',
       },
     );
+    return presignedUrl.split("?")[0];
+    
   } catch (e) {
-    print("이미지 업로드 오류 : $e");
+    return "error $e";
   }
 
  

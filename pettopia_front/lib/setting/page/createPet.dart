@@ -28,6 +28,7 @@ class _CreatePetState extends State<CreatePet> {
   Pet _pet = Pet();
   late String errMesg = "";
   XFile? _file;
+  String _profile = "";
 
   void onHandlePetInformation(
       XFile xfile,String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
@@ -51,7 +52,8 @@ class _CreatePetState extends State<CreatePet> {
     return value == 0;
   }
 
-  void _saveButtonHandle() {
+  Future<void> _saveButtonHandle() async {
+    
     if (_petNumber == "" ||
         _petName == "" ||
         _birth == "" ||
@@ -73,9 +75,14 @@ class _CreatePetState extends State<CreatePet> {
         'protectorName': _parentName,
         'protectorPhoneNum': _parentPhoneNum
       };
+          if(_file != null){
+        _profile = await _pet.seUploat(_file!);
+        petInfo['profile'] = _profile;
+      }
+    
       print(petInfo);
       _pet.createPet(petInfo);
-      _pet.seUploat(_file!);
+  
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyApp()),
