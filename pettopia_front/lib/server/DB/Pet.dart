@@ -51,6 +51,7 @@ if (response.statusCode == 200) {
     throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
   }
   }
+
   //s3사진 업로드//
  Future<String> seUploat(XFile xFile) async {
   String presignedUrl = await getPresignedUrl();
@@ -85,7 +86,7 @@ if (response.statusCode == 200) {
     print("accessToken");
     print(assessToken);
 
-    String finalUrl = _serverDbUrl+"api/v1/pet/list/";
+    String finalUrl = _serverDbUrl+"api/v1/pet/list";
     
     final url = Uri.parse(finalUrl);
     print(url);
@@ -140,6 +141,7 @@ if (response.statusCode == 200) {
     print("Failed to create shot record. Status code :${response.body}");
   }
   }
+  
 //반려동물 추가정보 작성
    Future<void> createAddPet(Map<String,dynamic> petInfo, int petPk)async{
      await _getServerUrl();

@@ -44,6 +44,7 @@ class _CreatePetParentValueState extends State<CreatePetParentValue>  with Autom
        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp ),)
      ),
      _textFieldContainer("이름*", "보호자 이름을 입력해주세요",15,10,parentNameChange),
+     SizedBox(height: 2.h),
      _textFieldContainer("연락처*","010-****-****",50,10,parentPhoneNumChange)
     ]);
   }

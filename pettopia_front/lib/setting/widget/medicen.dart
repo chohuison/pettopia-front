@@ -32,12 +32,12 @@ class __MedicenStatetate extends State<Medicen>
   
   void _handleName(String value) {
     _name = value;
-    widget.onHandleMedicen(_count, _name);
+    widget.onHandleMedicen(_name,_count, );
   }
 
   void _handleCount(String value) {
     _count = value;
-    widget.onHandleMedicen(_count, _name);
+  widget.onHandleMedicen(_name,_count, );
   }
 
   @override

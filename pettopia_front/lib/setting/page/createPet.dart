@@ -157,7 +157,7 @@ class _CreatePetState extends State<CreatePet> {
                       petParentValueHandle: petParentValueHandle,
                     ),
                     width: 350.w,
-                    height: 105.h,
+                    height: 110.h,
                   ),
                   // 필수 입력값 입력하지 않은 경우
                   Center(
