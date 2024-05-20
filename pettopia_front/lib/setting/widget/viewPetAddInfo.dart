@@ -75,6 +75,7 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
                   _typeContainer("간식", widget.petAddInfo['snackCnt'].toString()),
                   _typeContainer("약", "O"),
                   SizedBox(height: 10.h,),
+                  if(widget.medicen.length>0)
                   ...widget.medicen.map((medicine) {
               return _mecicenContainer( medicine['name'] , medicine['cnt'].toString());
             }).toList(),
