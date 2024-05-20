@@ -20,14 +20,13 @@ class _CalendarState extends State<Calendar>
   late int _index;
 
   DateTime? _selectedDate;
-   List <Map<String,dynamic>> _petList =[];
-    Pet _petServer = Pet();
+  List<Map<String, dynamic>> _petList = [];
+  Pet _petServer = Pet();
 
-   Future<void> _getList() async {
-       _petList = await _petServer.getPetList();
+  Future<void> _getList() async {
+    _petList = await _petServer.getPetList();
   }
 
-    
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -46,12 +45,18 @@ class _CalendarState extends State<Calendar>
           setState(() {
             _selectedDate = selectedDay;
           });
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ShortWriteValue(selectedDay: _selectedDate!,petList: _petList),
-            ),
-          );
+          if (_index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ShortWriteValue(
+                    selectedDay: _selectedDate!, petList: _petList),
+              ),
+            );
+          }
+          else if(_index == 1) {
+            
+          }
         },
       ),
     );
