@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ViewPetAddInfo extends StatefulWidget {
   final Map<String,dynamic> petAddInfo;
-  const ViewPetAddInfo({Key? key, required this.petAddInfo}) : super(key: key);
+  final List<dynamic> medicen;
+  const ViewPetAddInfo({Key? key, required this.petAddInfo,required this.medicen}) : super(key: key);
 
   @override
   _ViewPetAddInfoState createState() => _ViewPetAddInfoState();
@@ -52,7 +53,7 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-        width: 300.w,
+        width: 400.w,
         child: Column(
           children: <Widget>[
             SizedBox(
@@ -65,7 +66,7 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
               ),
             ),
             Container(
-              width: 280.w,
+              width: 350.w,
               child: Column(
                 children: <Widget>[
                   _typeContainer("생활환경", _getEnviorment(widget.petAddInfo['environment'])),
@@ -73,6 +74,10 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
                   _typeContainer("식사", _getFoodKind(widget.petAddInfo['foodKind'])),
                   _typeContainer("간식", widget.petAddInfo['snackCnt'].toString()),
                   _typeContainer("약", "O"),
+                  SizedBox(height: 10.h,),
+                  ...widget.medicen.map((medicine) {
+              return _mecicenContainer( medicine['name'] , medicine['cnt'].toString());
+            }).toList(),
                   // ToDo
                   // 약 동적생성해야 함
                 ],
@@ -93,7 +98,7 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
         Container(
             width: 80.w,
             height: 30.h,
-            margin: EdgeInsets.fromLTRB(0, 10.h, 10.w, 0),
+            margin: EdgeInsets.fromLTRB(30.w, 10.h, 10.w, 0),
             decoration: BoxDecoration(
               color: Color(0xFFD5BDAF),
               borderRadius: BorderRadius.circular(20.0),
@@ -126,5 +131,59 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
         ),
       ),
     );
+  }
+
+     Widget _typeMedicenContainer(String name) {
+    return Container(
+        width: 80.w,
+        height: 30.h,
+        margin: EdgeInsets.only(
+          right: 10.w,
+        ),
+        decoration: BoxDecoration(
+          color: Color(0xFFD5BDAF),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Center(
+            child: Text(
+          name,
+        )));
+  }
+
+  Widget _mecicenContainer(String medicenName, String count) {
+    return Container(
+  
+        width: 400.w,
+        height: 150.h,
+        margin:
+            EdgeInsets.only(left: 15.w, top: 0.h, right: 15.w, bottom: 10.h),
+        decoration: BoxDecoration(
+          color: Color(0xFFF5EBE0),
+          borderRadius: BorderRadius.circular(40),
+          border: Border.all(
+      color: Color(0xFFD5BDAF), // 테두리 색
+      width: 2.0, // 테두리 두께
+    ),
+        ),
+        child: Container(
+          margin: EdgeInsets.only(top: 20.h, left: 37.w),
+          child: Column(
+            children: [
+              Text(
+                "약",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+              ),
+              Row(
+                children: <Widget>[_typeMedicenContainer("이름"), Center(child:Text(medicenName))],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                children: <Widget>[_typeMedicenContainer("투약 횟수"), Center(child:Text(count))],
+              ),
+            ],
+          ),
+        ));
   }
 }

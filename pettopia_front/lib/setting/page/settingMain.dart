@@ -20,6 +20,8 @@ class _SettingMainhState extends State<SettingMain> {
   List <Map<String,dynamic>> _petList =[];
    Map<String,dynamic> _petInfo={};
    Map<String,dynamic> _petAddInfo={};
+   List<dynamic> _medicenList = [];
+   int _height = 800;
 
   Pet _petServer = Pet();
   Future<void> _getList() async {
@@ -30,7 +32,10 @@ class _SettingMainhState extends State<SettingMain> {
     _petInfo = await _petServer.getPetInfo(_petList.first['petPk'] );
   }
   Future <void> _getPetAddInfo() async {
-    _petAddInfo = await _petServer.getAddPetInfo(_petList.first['petPk']);
+    Map<String,dynamic>petAddExtraInfo = await _petServer.getAddPetInfo(_petList.first['petPk']);
+    _petAddInfo = petAddExtraInfo['petExtraInfo'];
+    _medicenList=petAddExtraInfo['responseMedicineList']['list'];
+    _height = _medicenList.length * 160 + 800;
   }
 
   @override
@@ -133,6 +138,8 @@ class _SettingMainhState extends State<SettingMain> {
                           petList: _petList,
                           petInfo : _petInfo,
                           petAddInfo : _petAddInfo,
+                          medicen: _medicenList,
+                          height: _height,
                         )));
           } else if (index == 3) {
             await _secureStorage.deleteAll();
