@@ -5,14 +5,15 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:pettopia_front/hospital/widget/shortWriteValue.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({Key? key}) : super(key: key);
+class DiaryCalendar extends StatefulWidget {
+  final Function(DateTime) onHandleDate;
+  const DiaryCalendar({Key? key, required this.onHandleDate}) : super(key: key);
 
   @override
-  _CalendarState createState() => _CalendarState();
+  _DiaryCalendarState createState() => _DiaryCalendarState();
 }
 
-class _CalendarState extends State<Calendar>
+class _DiaryCalendarState extends State<DiaryCalendar>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -43,13 +44,6 @@ class _CalendarState extends State<Calendar>
           setState(() {
             _selectedDate = selectedDay;
           });
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ShortWriteValue(
-                  selectedDay: _selectedDate!, petList: _petList),
-            ),
-          );
         },
       ),
     );

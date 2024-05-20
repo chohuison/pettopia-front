@@ -3,13 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/region.dart';
 
 class PetSelectBox extends StatefulWidget {
-  final void Function(String selectValue, int selectValuePk)?
-      onRegionSelected;
-  final List<Map<String,dynamic>> petName;
-  
-  
+  final void Function(String selectValue, int selectValuePk)? onRegionSelected;
+  final List<Map<String, dynamic>> petName;
 
-  const PetSelectBox({Key? key, required this.onRegionSelected, required this.petName})
+  const PetSelectBox(
+      {Key? key, required this.onRegionSelected, required this.petName})
       : super(key: key);
 
   @override
@@ -21,15 +19,15 @@ class _PetSelectBoxState extends State<PetSelectBox>
   @override
   bool get wantKeepAlive => true;
   bool _isOpen = false;
-  late String _selectBoxValue;
-  late int _selectBoxValuePk;
- 
+  late String _selectBoxValue = "";
+  late int _selectBoxValuePk = 0;
 
   @override
   void initState() {
     super.initState();
-   _selectBoxValue=widget.petName.first['dogNm'];
-   _selectBoxValuePk=widget.petName.first['petPk'];
+    print(widget.petName);
+    _selectBoxValue = widget.petName.first['dogNm'];
+    _selectBoxValuePk = widget.petName.first['petPk'];
   }
 
   @override
@@ -42,26 +40,22 @@ class _PetSelectBoxState extends State<PetSelectBox>
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top:5.h, left: 20.w),
+              margin: EdgeInsets.only(top: 5.h, left: 20.w),
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 100.w,
-                    height: 30.h,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black, width: 1),
-                    ),
-                    child:Center(
-                      child:Text(_selectBoxValue)
-                    )
-                  ),
+                      width: 100.w,
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black, width: 1),
+                      ),
+                      child: Center(child: Text(_selectBoxValue))),
                   GestureDetector(
                       onTap: () {
                         setState(() {
                           _isOpen = !_isOpen;
                         });
-                    
                       },
                       child: Container(
                         width: 30.w,
@@ -81,7 +75,7 @@ class _PetSelectBoxState extends State<PetSelectBox>
             ),
             if (_isOpen)
               Container(
-                     margin: EdgeInsets.only(right:10.w),
+                margin: EdgeInsets.only(right: 10.w),
                 width: 100.w,
                 height: 30.h,
                 decoration: BoxDecoration(
@@ -89,28 +83,31 @@ class _PetSelectBoxState extends State<PetSelectBox>
                   border: Border.all(color: Colors.black, width: 1),
                 ),
                 child: ListView.separated(
-                   padding: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
                   itemCount: widget.petName.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if (widget.petName != null && index < widget.petName.length) {
+                    if (widget.petName != null &&
+                        index < widget.petName.length) {
                       final record = widget.petName[index]['dogNm']!;
                       return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isOpen = !_isOpen;
-                          _selectBoxValue=record;
-                          _selectBoxValuePk=widget.petName[index]['petPk'];
-                        });
-                        widget.onRegionSelected!(_selectBoxValue,_selectBoxValuePk);
-                     
-                      },
-                      child:Center( child: Text(record)) );
-                    } 
-                  }, separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          onTap: () {
+                            setState(() {
+                              _isOpen = !_isOpen;
+                              _selectBoxValue = record;
+                              _selectBoxValuePk =
+                                  widget.petName[index]['petPk'];
+                            });
+                            widget.onRegionSelected!(
+                                _selectBoxValue, _selectBoxValuePk);
+                          },
+                          child: Center(child: Text(record)));
+                    }
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
                 ),
               )
           ],
         ));
   }
 }
-
