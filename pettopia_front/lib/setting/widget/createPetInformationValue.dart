@@ -40,6 +40,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
   late int _speciesPk = 1;
   late String _widght = "";
   XFile? _file;
+  String _profile = "";
 
   @override
   void initState() {
@@ -133,8 +134,8 @@ widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
     });
     widget.onHandlePetInformation(_file!,_petNumber, _petName, _widght, _speciesPk,
         _fur!, _sex!, _neutering!, _birth);
-    Pet pet = Pet();
-    pet.seUploat(_file!);
+   
+
   }
 
   @override
