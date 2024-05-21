@@ -60,9 +60,30 @@ String findSpeciesBySpeciesName(String speciesName) {
   return "";
 }
 
+int findSpeciesPk(String speciesName){
+   for (var pet in _speciesList) {
+    if (pet['speciesName'] == speciesName) {
+      return pet['pk']; // 일치하는 species 값을 반환합니다.
+    }
+  }
+
+  return 1;
+}
+
 String getSpicesNmae(String species){
    String speciesVlue = findSpeciesBySpeciesName(species);
 return speciesVlue;
+}
+
+String speciesNameByPk (int pk){
+    // 주어진 speciesName과 일치하는 항목을 찾기 위해 리스트를 순회합니다.
+  for (var pet in _speciesList) {
+    if (pet['pk'] == pk) {
+      return pet['speciesName']; // 일치하는 species 값을 반환합니다.
+    }
+  }
+  // 일치하는 값이 없으면 null을 반환합니다.
+  return "";
 }
 
 }
