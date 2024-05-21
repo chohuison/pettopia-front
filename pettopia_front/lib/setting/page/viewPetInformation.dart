@@ -22,8 +22,8 @@ class ViewPetInformation extends StatefulWidget {
 class _ViewPetInformationState extends State<ViewPetInformation> {
   // int _totalContainerHeight = 1000;
   // int _medicenContainerWidget = 190;
-  late String _petName = widget.petList.first['dog_nm'];
-  late int _petPk = widget.petList.first['pk'];
+  late String _petName = widget.petList.first['dogNm'];
+  late int _petPk = widget.petList.first['petPk'];
   Map<String,dynamic> _petInfo ={};
   Map<String,dynamic> _petAddInfo={};
   List<dynamic>_medicen = [];
@@ -121,7 +121,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                         color: Color(0xFFF5EBE0),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      child: ViewPetInfo(petinfo: _petInfo,),
+                                      child: ViewPetInfo(petinfo: _petInfo,petPk:_petPk ,),
                                     ))),
                                 Container(
                                     width: 350.w,

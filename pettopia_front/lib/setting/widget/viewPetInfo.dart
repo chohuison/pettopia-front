@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/enum/PetBreedList.dart';
+import 'package:pettopia_front/setting/page/modifyPet.dart';
 
 class ViewPetInfo extends StatefulWidget {
   final Map<String,dynamic>petinfo;
+  final int petPk;
  
-  const ViewPetInfo({Key? key, required this.petinfo}) : super(key: key);
+  const ViewPetInfo({Key? key, required this.petinfo, required this.petPk}) : super(key: key);
   
   @override
   _ViewPetInfoState createState() => _ViewPetInfoState();
@@ -117,7 +119,14 @@ class _ViewPetInfoState extends State<ViewPetInfo>
             // 반려동물 생년월일
             Container(
               width: 280.w,
-              child: _typeContainer("생년월일", widget.petinfo['birth'].toString()),
+              child:    _typeContainer("생년월일", widget.petinfo['birth'].toString()),
+           
+              margin: EdgeInsets.only(bottom: 10.h),
+            ), // -> 반려동물 정보 end
+  Container(
+              width: 280.w,
+              child:          _typeContainer("몸무게", widget.petinfo['weight'].toString()),
+           
               margin: EdgeInsets.only(bottom: 10.h),
             ), // -> 반려동물 정보 end
 
@@ -173,7 +182,14 @@ class _ViewPetInfoState extends State<ViewPetInfo>
       width: 100.w,
       margin: EdgeInsets.fromLTRB(0, 10.h, 10.w, 15.h),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          
+                Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ModifyPet(petInfo: widget.petinfo, petPk: widget.petPk,)),
+      );
+          
+        },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
         ),
