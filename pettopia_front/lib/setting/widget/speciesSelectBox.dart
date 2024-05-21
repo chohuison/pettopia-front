@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/enum/PetBreedList.dart';
 import 'package:pettopia_front/enum/region.dart';
 
 class SpeciesSelectBox extends StatefulWidget {
   final void Function(String selectValue, int selectValuePk)?
       onSpeciesSelected;
   final List<Map<String,dynamic>> petName;
-  
+  final int petPk;
+  final String petNameValue;
   
 
-  const SpeciesSelectBox({Key? key, required this.onSpeciesSelected, required this.petName})
+  const SpeciesSelectBox({Key? key, required this.onSpeciesSelected, required this.petName, required this.petPk, required this.petNameValue})
       : super(key: key);
 
   @override
@@ -23,13 +25,16 @@ class _SpeciesSelectBoxState extends State<SpeciesSelectBox>
   bool _isOpen = false;
   late String _selectBoxValue;
   late int _selectBoxValuePk;
+  PetBreedList _breedList = PetBreedList();
  
 
   @override
   void initState() {
     super.initState();
-   _selectBoxValue=widget.petName.first['species'];
-   _selectBoxValuePk=widget.petName.first['pk'];
+   _selectBoxValue=_breedList.findSpeciesBySpeciesName(widget.petNameValue);
+   _selectBoxValuePk=widget.petPk;
+   
+   print(_selectBoxValue);
   }
 
   @override

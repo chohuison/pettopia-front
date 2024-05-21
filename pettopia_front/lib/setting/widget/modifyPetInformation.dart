@@ -10,23 +10,25 @@ import 'package:pettopia_front/server/DB/Pet.dart';
 
 import 'package:pettopia_front/setting/widget/speciesSelectBox.dart';
 
-class CreatePetInformation extends StatefulWidget {
-  final Function(String,String, String, String, int, int, int, int, String)
+class ModifyPetInformation extends StatefulWidget {
+   final Function(String,String, String, String, int, int, int, int, String)
       onHandlePetInformation;
-  const CreatePetInformation({
+  final Map<String,dynamic> petInfo;
+  const ModifyPetInformation({
     Key? key,
     required this.onHandlePetInformation,
+    required this.petInfo,
   }) : super(
           key: key,
         );
 
   @override
-  _CreatePetInformationState createState() => _CreatePetInformationState();
+  _ModifyPetInformationState createState() => _ModifyPetInformationState();
 }
 
-class _CreatePetInformationState extends State<CreatePetInformation>
+class _ModifyPetInformationState extends State<ModifyPetInformation>
     with AutomaticKeepAliveClientMixin {
- @override
+  @override
   bool get wantKeepAlive => true;
   late List<Map<String, dynamic>> _speciesList = [];
   late String _species = "";
@@ -39,33 +41,42 @@ class _CreatePetInformationState extends State<CreatePetInformation>
   PetBreedList _petBreedList = PetBreedList();
   late int _speciesPk = 1;
   late String _widght = "";
-  XFile? _file = null;
+  XFile? _file;
   String _profile = "";
-  Pet _petServer = Pet();
+  int _breedPk =1;
+  String _breedName="";
+  String _wight ="";
+    Pet _petServer = Pet();
 
-  @override
+   @override
   void initState() {
     super.initState();
-    _speciesList = _petBreedList.getSpecies();
-
-    _species = _speciesList.first['speciesName'];
-    print(_species);
-    
+       _breedPk=_petBreedList.findSpeciesPk(widget.petInfo['speciesName']);
+   _petNumber = widget.petInfo['dogRegNo'];
+   _petName = widget.petInfo['dogNm'];
+   _birth = widget.petInfo['birth'].toString();
+   _fur = widget.petInfo['hair'];
+   _neutering = widget.petInfo['neuterYn'] == true ? 0 : 1;
+   _sex = widget.petInfo['sexNm'] == true ? 0 : 1;
+   _wight = widget.petInfo['weight'].toString();
+   _profile = widget.petInfo['profile'];
+   _speciesList =_petBreedList.getSpecies();
+   _breedName = _petBreedList.speciesNameByPk(_breedPk);
   }
-
+  
   void _onFurUpdate(int value) {
     setState(() {
-      _fur = value!;
+      _fur = value;
     });
-    widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+     widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
   void _onWightUpdate(String value) {
     setState(() {
-      _widght = value;
+      _wight = value;
     });
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -73,7 +84,8 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _sex = value;
     });
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    print(_sex);
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -81,7 +93,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _neutering = value;
     });
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -93,7 +105,8 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     print(value);
     print(pk);
     print(_species);
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    print(_speciesPk);
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -102,7 +115,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
       _petNumber = value;
     });
 
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -112,7 +125,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     });
     print(_petName);
 
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -121,7 +134,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
       _birth = value;
    });
    
-   widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
   }
 
@@ -131,11 +144,20 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     if (pickedImage == null) {
       return;
     }
-    setState(() {
+ 
+      setState(() {
       _file = pickedImage;
+
     });
-     _profile = await _petServer.seUploat(_file!);
-    widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+              String imagUrl =  await _petServer.seUploat(_file!);
+    setState(() {
+        
+      _profile =imagUrl;
+    });
+ 
+   
+      
+    widget.onHandlePetInformation(_profile,_petNumber, _petName, _wight, _speciesPk,
         _fur, _sex, _neutering, _birth);
    
 
@@ -161,6 +183,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                 margin: EdgeInsets.only(left: 17.w, top: 16.h),
                 width: 60.w,
                 height: 60.h,
+                 child:_profile != ""? Image.network(_profile) : Container(),
                 decoration: BoxDecoration(
                   // color: Colors.blue, // Background color of the container
                   border: Border.all(
@@ -169,8 +192,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                   ),
                   borderRadius: BorderRadius.circular(10.0), // Rounded corners
                 ),
-                child: _file == null ? Container() : Image.file(File(_file!.path),
-                fit:BoxFit.cover)
+        
               ),
               Container(
                   margin: EdgeInsets.only(left: 50.w, top: 20.h),
@@ -200,8 +222,8 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                         width: 150.w,
                         height: 25.h,
                         child: ElevatedButton(
-                          onPressed: () {
-                            _getGallery();
+                          onPressed: () async {
+                            await _getGallery();
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
@@ -226,12 +248,12 @@ class _CreatePetInformationState extends State<CreatePetInformation>
           margin: EdgeInsets.only(top: 5.h, bottom: 5.h, left: 16.w),
           child: Column(
             children: <Widget>[
-              _textFieldContainer("번호*", "반려동물 등록 번호를 입력해주세요", 0, 10,
+              _textFieldContainer("번호*", _petNumber, 0, 10,
                   _petNumberController, false),
               _textFieldContainer(
-                  "이름*", "이름을 입력해주세요", 30, 10, _petNameController, false),
+                  "이름*", _petName, 30, 10, _petNameController, false),
               _textFieldContainer(
-                  "몸무게*", "몸무게 입력해주세요", 30, 10, _onWightUpdate, true),
+                  "몸무게*", _wight, 30, 10, _onWightUpdate, true),
               Container(
                 height: 150.h,
                 margin: EdgeInsets.only(left: 18.w),
@@ -242,8 +264,8 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                         child: Container(
                             child: Column(
                           children: <Widget>[
-                            _radio("단장모*", "단모", "장모", _fur!, _onFurUpdate, 10),
-                            _radio("성별*", "남", "여", _sex!, _onSexUpdate, 22),
+                            _radio("단장모*", "단모", "장모",_fur, _onFurUpdate, 10),
+                            _radio("성별*", "남", "여", _sex, _onSexUpdate, 22),
                             _radio("중성화*", "O", "X", _neutering!,
                                 _onnNuteringUpdate, 24),
                           ],
@@ -264,9 +286,8 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                           SpeciesSelectBox(
                               onSpeciesSelected: onSeleted,
                               petName: _speciesList,
-                              petNameValue: _species,
-                              petPk:_speciesPk ,
-                            )
+                              petPk:_breedPk,
+                              petNameValue:_breedName,)
                         ],
                       ),
                     )),
@@ -274,7 +295,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                 ),
               ),
               _textFieldContainer(
-                  "생년월일*", "YYYYMMDD", 40, 10, _birthController, true),
+                  "생년월일*", _birth, 40, 10, _birthController, true),
             ],
           ))
     ]);
@@ -318,7 +339,7 @@ Widget _textFieldContainer(String containerName, String labelText,
                         horizontal: horizontal.w, vertical: vertical.h),
                     hintStyle: TextStyle(
                       fontSize: 11.0.sp,
-                      color: Color(0xFFAFA59B),
+                      color: Colors.black,
                     ),
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFD5BDAF)),
