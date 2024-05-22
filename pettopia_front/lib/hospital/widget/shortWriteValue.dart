@@ -37,7 +37,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
     _hospitalAppBar = _appBarList.getHospitalAppBar();
   }
 
-  late String _petName = widget.petList.first['dog_nm'];
+  late String _petName = widget.petList.first['dogNm'];
   late String _type = "";
   late int _count = 0;
   late int _age = 0;

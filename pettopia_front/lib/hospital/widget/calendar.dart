@@ -37,7 +37,8 @@ class _CalendarState extends State<Calendar>
         focusedDay: DateTime.now(),
         firstDay: DateTime(2020),
         lastDay: DateTime(2030),
-        onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
+        onDaySelected: (DateTime selectedDay, DateTime focusedDay) async {
+         await  _getList();
           setState(() {
             _selectedDate = selectedDay;
           });
