@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/hospital/page/deleteCheckPopup.dart';
 import 'package:pettopia_front/hospital/page/shortRecordModify.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 
 class ShortChartValue extends StatefulWidget {
   final Map<String, dynamic> value;
+
 
   const ShortChartValue({
     Key? key,
@@ -19,6 +21,13 @@ class ShortChartValueState extends State<ShortChartValue> {
 
   String _intToString(int value){
     return value.toString();
+  }
+
+    Pet _petServer = Pet();
+  List<Map<String,dynamic>> _petList = [];
+  Future<void> _getPetList () async{
+    _petList = await _petServer.getPetList();
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -87,10 +96,11 @@ class ShortChartValueState extends State<ShortChartValue> {
         width: 90.w,
         height: 30.h,
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async{
+            await _getPetList();
             Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ShortRecordModify(chartValue: widget.value,)),
+        MaterialPageRoute(builder: (context) => ShortRecordModify(chartValue: widget.value,petList: _petList,)),
       );
           },
           style: ButtonStyle(

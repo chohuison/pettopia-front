@@ -39,6 +39,7 @@ class ShotRecords{
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
+     await _getServerUrl();
     String finalUrl = _serverDbUrl+"api/v1/shot_records/";
     final url = Uri.parse(finalUrl);
     final headers ={'Content-Type': 'application/json',
@@ -66,7 +67,9 @@ class ShotRecords{
          String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-    final url = Uri.parse('$serverUrl$pk'); 
+         await _getServerUrl();
+    String serverUrl  = _serverDbUrl+"api/v1/shot_records/$pk";
+    final url = Uri.parse(serverUrl); 
     final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', };
     final body =jsonEncode(AddShotRecordRequestToJson(petPk, type, num, age));
@@ -92,7 +95,9 @@ class ShotRecords{
     print(assessToken);
      final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', };
-    final uri = Uri.parse('$serverUrl$pk'); 
+            await _getServerUrl();
+    String serverUrl  = _serverDbUrl+"api/v1/shot_records/$pk";
+    final uri = Uri.parse(serverUrl); 
     
     final response = await http.delete(uri,
      headers: headers,);
@@ -106,9 +111,12 @@ class ShotRecords{
   }
 
 Future<List<Map<String, dynamic>>> getChartList() async {
+      await _getServerUrl();
     String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
+    String serverUrl = _serverDbUrl+"api/v1/shot_records/";
+    print(serverUrl);
   final uri = Uri.parse(serverUrl); // 서버 URL 파싱
     Map<String,String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',
