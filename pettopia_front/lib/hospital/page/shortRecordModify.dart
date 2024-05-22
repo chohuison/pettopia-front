@@ -8,13 +8,15 @@ import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/shortWrite.dart';
 import 'package:pettopia_front/hospital/page/viewRecords.dart';
+import 'package:pettopia_front/hospital/widget/ModifyPetSelectBox.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/hospital/widget/shortRecordBar.dart';
 import 'package:pettopia_front/server/DB/ShotRecords.dart';
 
 class ShortRecordModify extends StatefulWidget {
   final Map<String, dynamic> chartValue;
-  const ShortRecordModify({Key? key, required this.chartValue})
+  final List<Map<String,dynamic>> petList;
+  const ShortRecordModify({Key? key, required this.chartValue, required this.petList})
       : super(key: key);
 
   @override
@@ -38,17 +40,13 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
   }
 
   late String _petName = widget.chartValue['petName'];
-  late int _pk= widget.chartValue['petPk'];
+  late int _pk = widget.chartValue['pk'];
+  late int _Petpk= widget.chartValue['petPk'];
   late String _type = widget.chartValue['type'];
   late String _count = widget.chartValue['num'].toString();
   late String _age = widget.chartValue['age'].toString();
   String _errorText ="";
-   List<Map<String,dynamic>> _petList=[
-  {"dog_nm":"초코", "pk":3},
-    {"dog_nm":"나비", "pk":4}
 
-  ];
-  
   void _typeHandler(String value) {
     setState(() {
       _type = value;
@@ -171,9 +169,10 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
                                           ),
                                         ),
                                       ),
-                                      PetSelectBox(
+                                      ModifyPetSelectBox(
                                           onRegionSelected: _petNameHandler,
-                                          petName: _petList)
+                                          petPk: _Petpk,
+                                          petNameList: widget.petList,)
                                     ],
                                   ))),
                         ]),
