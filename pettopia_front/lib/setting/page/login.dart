@@ -24,10 +24,10 @@ class _LoginState extends State<Login> {
  @override
 void initState() {
   super.initState();
-  _initializeWebview();
+  // _initializeWebview();
 }
 
-void _initializeWebview() async {
+void _kakaoWebViewSetting() async {
   await _getServerUrl();
   String url = _serverUrl + "oauth2/authorization/kakao";
     // String url = 'http://10.0.2.2/' + "oauth2/authorization/kakao";
@@ -119,11 +119,11 @@ void _initializeWebview() async {
   }
 
   void launchLogin() {
-    final loginUrl = 'http://10.0.2.2:8080/oauth2/authorization/kakao';
+   
   
         Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => WebViewPage(initialUrl: loginUrl, controller: _webViewController),
+        builder: (context) => WebViewPage( controller: _webViewController),
       ),
     );
   }
@@ -172,6 +172,7 @@ void _initializeWebview() async {
     child: IconButton(
       onPressed:(){
         print("버튼 누름");
+        _kakaoWebViewSetting();
         launchLogin();} , // 함수 호출
       icon: Image.asset(
         'assets/img/kakao_login.png',
@@ -241,10 +242,10 @@ Widget _googleLogin() {
 }
 
 class WebViewPage extends StatefulWidget {
-  final String initialUrl;
+
   final WebViewController controller;
 
-  WebViewPage({required this.initialUrl, required this.controller});
+  WebViewPage({ required this.controller});
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
