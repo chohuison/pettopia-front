@@ -101,6 +101,7 @@ class _RegionSelectBoxState extends State<RegionSelectBox>
                           _isOpen = !_isOpen;
                           _selectBoxValue=record;
                         });
+                        print(record);
                         widget.onRegionSelected!(record);
                      
                       },

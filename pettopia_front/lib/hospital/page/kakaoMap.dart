@@ -7,7 +7,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 class KakaoMap extends StatefulWidget {
   final double x;
   final double y;
-  const KakaoMap({Key? key, required this.x, required this.y})
+  final String name;
+  const KakaoMap({Key? key, required this.x, required this.y, required this.name})
       : super(key: key);
 
   @override
@@ -38,11 +39,11 @@ class _KakaoMapState extends State<KakaoMap>
     setState(() {
       _controller
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..loadHtmlString(_generateMapHtml(_kakaoAppKey, widget.x, widget.y));
+        ..loadHtmlString(_generateMapHtml(_kakaoAppKey, widget.x, widget.y,widget.name));
     });
   }
 
-  String _generateMapHtml(String kakaoAppKey, double x, double y) {
+  String _generateMapHtml(String kakaoAppKey, double x, double y, String name) {
     // 앱 키를 포함하는 HTML 문자열 생성
     return '''
     <!DOCTYPE html>
@@ -69,7 +70,6 @@ class _KakaoMapState extends State<KakaoMap>
           
           var x = $x;
           var y = $y;
-
           var container = document.getElementById('map');
           var options = {
             center: new kakao.maps.LatLng(y, x),
@@ -86,7 +86,7 @@ class _KakaoMapState extends State<KakaoMap>
           });
 
           var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리 회사</div>'
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">$name</div>'
           });
           infowindow.open(map, marker);
 

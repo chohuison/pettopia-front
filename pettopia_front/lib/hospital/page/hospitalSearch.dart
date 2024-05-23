@@ -33,17 +33,13 @@ class _HospitalSearchState extends State<HospitalSearch>
     _hospitalAppBar = _appBarList.getHospitalAppBar();
   }
 
-  List<Map<String, dynamic>>? _hospitalList;
+  List<Map<String, dynamic>> _hospitalList = [];
   //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯
-  void _fetchHospitalList(String selectedRegion) {
-    _apiServer.getHospitalService();
+  void _fetchHospitalList(String selectedRegion) async {
+    print(selectedRegion);
+    List<Map<String, dynamic>> list =  await _apiServer.getHospitalService(selectedRegion);
     setState(() {
-      _hospitalList = [
-        {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
-        {'name': '병원2', 'address': '주소2', 'phone': '전화번호2'},
-        {'name': '병원3', 'address': '주소3', 'phone': '전화번호3'},
-        {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
-      ];
+     _hospitalList = list;
     });
   }
 
@@ -104,7 +100,7 @@ class _HospitalSearchState extends State<HospitalSearch>
                             // color: Colors.red,
                             height: 300.h,
                             child: RegionSelectBox(
-                                onRegionSelected: _fetchHospitalList),
+                                    onRegionSelected: _fetchHospitalList)
                           ))
                     ],
                   )),
