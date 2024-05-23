@@ -20,8 +20,7 @@ class PetAddInformation extends StatefulWidget {
 }
 
 class _PetAddInformationState extends State<PetAddInformation> {
-  int _totalContainerHeight = 750;
-  int _medicenContainerWidget = 190;
+
   late int _enviorment = 0;
   late int? _exercise = 0;
   late int? _eatCount = 0;
@@ -55,8 +54,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
   
     setState(() {
        _medicenWidgetValue.add({'pk':pk,'name': medicenName, 'cnt':medicenCount});
-   _totalContainerHeight=_totalContainerHeight+190;
-   _medicenContainerWidget=_medicenContainerWidget+190;
+
    containerList.add(_mecicenContainer(pk,medicenName,medicenCount));
     });
    
@@ -73,8 +71,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
     });
     setState(() {
         _medicenWidgetValue.removeWhere((item) => item['pk'] == pk);
-        _medicenContainerWidget=_medicenContainerWidget-190;
-        _totalContainerHeight=_totalContainerHeight-190;
+
 
     });
 
@@ -142,20 +139,8 @@ class _PetAddInformationState extends State<PetAddInformation> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: ListView(children: [
-            Container(
-                width: 400.w,
-                height: _totalContainerHeight.h,
-                margin: EdgeInsets.only(
-                  left: 15.w,
-                  right: 15.w,
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xFFE3D5CA),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
+            ListView(children: [],),
+           SizedBox(
                       height: 20.h,
                     ),
                     Center(
@@ -251,8 +236,6 @@ class _PetAddInformationState extends State<PetAddInformation> {
                         ),
                       ),
                     ),
-                  ],
-                )),
           ]),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 4),
         ),
