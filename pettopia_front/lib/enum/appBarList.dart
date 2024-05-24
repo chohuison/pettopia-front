@@ -5,6 +5,7 @@ import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/life/page/petDiary.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
+import 'package:pettopia_front/life/page/petSpeacker.dart';
 import 'package:pettopia_front/life/page/petTip.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 
@@ -84,6 +85,14 @@ class AppBarList {
           MaterialPageRoute(
               builder: (context) => PetDiary(
                     petList: _petList,
+                  )));
+    }
+    else if (index ==3){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PetSpeacker(
+         
                   )));
     }
   }
