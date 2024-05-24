@@ -142,9 +142,19 @@ class _SettingMainhState extends State<SettingMain> {
     
           } else if (index == 2) {
             await _getList();
-            await _getPetInfo();
+            if(_petList.length<1){
+                showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content:CreatePetCheckPopup(),
+                  surfaceTintColor: Colors.white,
+                );
+              },
+            );
+            }else{
+   await _getPetInfo();
             await _getPetAddInfo();
-
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -155,6 +165,9 @@ class _SettingMainhState extends State<SettingMain> {
                           medicen: _medicenList,
                           height: _height,
                         )));
+            }
+         
+
           } else if (index == 3) {
             await _secureStorage.deleteAll();
           }
