@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-class LifeStyleHabits extends StatefulWidget {
+class ModifyLifeStyleHabits extends StatefulWidget {
   final Function(int, int) onHandleLifeStyleHabits;
-  const LifeStyleHabits({
+  final Map<String,dynamic> petAddInfo;
+
+  const ModifyLifeStyleHabits({
     Key? key,
     required this.onHandleLifeStyleHabits,
+    required this.petAddInfo,
   }) : super(
           key: key,
         );
 
   @override
-  _LifeStyleHabitsState createState() => _LifeStyleHabitsState();
+  _ModifyLifeStyleHabitsState createState() => _ModifyLifeStyleHabitsState();
 }
 
-class _LifeStyleHabitsState extends State<LifeStyleHabits>
+class _ModifyLifeStyleHabitsState extends State<ModifyLifeStyleHabits>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  late int? _enviorment = 0; // true는 실내, false는 야외
-  late int? _exercise = 1;
+  late int _enviorment = widget.petAddInfo['environment']; // true는 실내, false는 야외
+  late int _exercise = widget.petAddInfo['exercise'];
 
   void _enviormentHandler(int value) {
     setState(() {
@@ -67,11 +69,11 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
              
                   child: Column(
                     children: <Widget>[
-                      _enviormentRadio("생활환경*", "실내", "야외", _enviorment!,
+                      _enviormentRadio("생활환경*", "실내", "야외", _enviorment,
                           _enviormentHandler, 5),
                           SizedBox(height:2.h),
                       _exerciseRadio("운동강도*", "저(일주일에 1시간 이하)", "중(매일 30분 이하)",
-                          "고(매일 1시간 이상)", _exercise!, _exerciseHandler)
+                          "고(매일 1시간 이상)", _exercise, _exerciseHandler)
                     ],
                   ),
                 ),

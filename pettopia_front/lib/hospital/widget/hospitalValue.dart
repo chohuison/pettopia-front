@@ -61,7 +61,7 @@ class _HospitalValueState extends State<HospitalValue> {
                             ),
                           ),
                           Text(
-                            widget.value['phone'],
+                            widget.value['phoneNumber'],
                             style: TextStyle(
                               fontSize: 14.0,
                             ),
@@ -70,7 +70,7 @@ class _HospitalValueState extends State<HospitalValue> {
                       )),
                   GestureDetector(
                     onTap: () async {
-                      xyValue = await _kakaoServer.getXY();
+                      xyValue = await _kakaoServer.getXY( widget.value['address']);
 
                       // Navigator.push(
                       //   context,
@@ -105,7 +105,7 @@ class _HospitalValueState extends State<HospitalValue> {
                     width: 300.w,
                     color: Colors.transparent, // 배경색을 투명하게 설정
                     child: _isTapped
-                        ? KakaoMap(x: xyValue['x'], y: xyValue['y'])
+                        ? KakaoMap(x: xyValue['x'], y: xyValue['y'], name:widget.value['name'])
                         : Container(), // _isTapped가 false일 경우 빈 컨테이너를 표시
                   ),
                 ),

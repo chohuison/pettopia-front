@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
-class CreatePetParentValue extends StatefulWidget {
+class ModifyPetParentValue extends StatefulWidget {
   final Function(String,String) petParentValueHandle;
-  const CreatePetParentValue({
+  final Map<String,dynamic> petInfo;
+  const ModifyPetParentValue({
     Key? key,
     required this.petParentValueHandle,
+    required this.petInfo,
             
   }) : super(
           key: key,
@@ -14,14 +16,14 @@ class CreatePetParentValue extends StatefulWidget {
         );
 
   @override
-  _CreatePetParentValueState createState() => _CreatePetParentValueState();
+  _ModifyPetParentValueState createState() => _ModifyPetParentValueState();
 }
 
-class _CreatePetParentValueState extends State<CreatePetParentValue>  with AutomaticKeepAliveClientMixin {
+class _ModifyPetParentValueState extends State<ModifyPetParentValue>  with AutomaticKeepAliveClientMixin {
     @override
   bool get wantKeepAlive => true;
- late String _parentName="";
- late String _parentPhoneNum="";
+ late String _parentName=widget.petInfo['protectorName'];
+ late String _parentPhoneNum=widget.petInfo['protectorPhoneNum'];
  void parentNameChange(String value){
   _parentName=value;
   widget.petParentValueHandle(_parentName, _parentPhoneNum);
@@ -43,9 +45,9 @@ class _CreatePetParentValueState extends State<CreatePetParentValue>  with Autom
       child: Text("보호자 정보",
        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp ),)
      ),
-     _textFieldContainer("이름*", "보호자 이름을 입력해주세요",15,10,parentNameChange),
-
-     _textFieldContainer("연락처*","010-****-****",50,10,parentPhoneNumChange)
+     _textFieldContainer("이름*", _parentName,15,10,parentNameChange),
+     SizedBox(height: 2.h),
+     _textFieldContainer("연락처*",_parentPhoneNum,50,10,parentPhoneNumChange)
     ]);
   }
 }
@@ -68,25 +70,24 @@ Widget _typeContainer(String name) {
 
 Widget _textFieldContainer(String containerName, String labelText, int horizontal, int vertical,Function contorller){
   return   Container(
-                  margin: EdgeInsets.only(bottom: 10.h, left: 15.w),
-                  width: 380.w,
+                  margin: EdgeInsets.only(bottom: 5.h),
+                  width: 300.w,
                   height: 30.h,
                   child: Row(
                     children: <Widget>[
                       _typeContainer(containerName),
                        Container(
-                          width: 220.w,
+                          width: 170.w,
                           child: TextField(
                               onChanged: (text) {
                                 contorller(text);
-                                print(text);
                                 
                               },
                               decoration: InputDecoration(
                                 hintText: labelText,
                                  contentPadding: EdgeInsets.symmetric(horizontal: horizontal.w,vertical: vertical.h), 
                                
-                                hintStyle: TextStyle(fontSize: 11.0.sp, color: Color(0xFFAFA59B),),
+                                hintStyle: TextStyle(fontSize: 11.0.sp, color: Colors.black,),
                                    border: UnderlineInputBorder(
       borderSide: BorderSide(color: Color(0xFFD5BDAF)),
     ),

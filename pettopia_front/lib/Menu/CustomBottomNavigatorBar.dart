@@ -64,10 +64,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => HospitalSearch()),
             );
           } else if (pageIndex == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PetColor()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => PetColor()),
+            // );
           } else if (pageIndex == 2) {
             Navigator.push(
               context,

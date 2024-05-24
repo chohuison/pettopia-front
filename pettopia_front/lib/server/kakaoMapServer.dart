@@ -15,7 +15,7 @@ class kakaoMapServer  {
 
 
 
-Future<Map<String,dynamic>> getXY() async {
+Future<Map<String,dynamic>> getXY(String name) async {
  // REST_API_KEY는 실제 Kakao API 키여야 합니다.
  String restApi;
    try {
@@ -29,7 +29,7 @@ Future<Map<String,dynamic>> getXY() async {
 
   // Kakao API 엔드포인트 및 쿼리 설정
   String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json";
-  String query = "경상북도 구미시 대학로 49-2";
+  String query = name;
 
   // HTTP GET 요청을 보내기 위한 URL 및 헤더 설정
   Uri uri = Uri.parse(apiUrl);

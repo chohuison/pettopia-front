@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/life/widget/cntBox.dart';
 
 class Medicine extends StatefulWidget {

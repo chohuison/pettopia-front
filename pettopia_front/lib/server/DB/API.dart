@@ -1,20 +1,35 @@
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class APIServer {
-  final String serverUrl = 'http://10.0.2.2:8080/api/v1/map/hospital/';
+
 
   APIServer();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+ String _serverDbUrl="";
+    Future<void> _getServerUrl() async {
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print("Error loading .env file: $e"); // 오류 메시지 출력
+  }
+  _serverDbUrl = dotenv.env['DB_SERVER_URI'] ?? 'YOUR_KAKAO_APP_KEY';
+  print(_serverDbUrl);
+}
 
-  Future<List<Map<String, dynamic>>> getHospitalService() async {
+
+  Future<List<Map<String, dynamic>>> getHospitalService(String address) async {
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
+    print(address);
+    await _getServerUrl();
+    final serverUrl = _serverDbUrl+ "api/v1/map/hospital/$address";
+    print(serverUrl);
     final uri = Uri.parse(serverUrl); // 서버 URL 파싱
     Map<String, String> headers = {
       'Content-Type': 'application/json; charset=UTF-8',

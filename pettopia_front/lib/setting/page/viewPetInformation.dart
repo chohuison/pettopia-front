@@ -29,8 +29,8 @@ class ViewPetInformation extends StatefulWidget {
 class _ViewPetInformationState extends State<ViewPetInformation> {
   // int _totalContainerHeight = 1000;
   // int _medicenContainerWidget = 190;
-  late String _petName = widget.petList.first['dog_nm'];
-  late int _petPk = widget.petList.first['pk'];
+  late String _petName = widget.petList.first['dogNm'];
+  late int _petPk = widget.petList.first['petPk'];
   Map<String, dynamic> _petInfo = {};
   Map<String, dynamic> _petAddInfo = {};
   List<dynamic> _medicen = [];
@@ -131,6 +131,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                       ),
                                       child: ViewPetInfo(
                                         petinfo: _petInfo,
+                                        petPk: _petPk,
                                       ),
                                     ))),
                                 Container(
@@ -138,18 +139,21 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                     child: Container(
                                         child: // 추가 정보
                                             Container(
-                                                width: 343.w,
-                                                // height: 410.h,
-                                                margin: EdgeInsets.fromLTRB(
-                                                    3.w, 10.h, 3.w, 10.h),
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFFF5EBE0),
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
-                                                ),
-                                                child: ViewPetAddInfo(
-                                                    petAddInfo: _petAddInfo,
-                                                    medicen: _medicen))))
+                                      width: 343.w,
+                                      // height: 410.h,
+                                      margin: EdgeInsets.fromLTRB(
+                                          3.w, 10.h, 3.w, 10.h),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFF5EBE0),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: _petAddInfo['environment'] != null
+                                          ? ViewPetAddInfo(
+                                              petAddInfo: _petAddInfo,
+                                              medicen: _medicen,
+                                              petPk: _petPk)
+                                          : Container(),
+                                    )))
                               ],
                             )),
                             Positioned(

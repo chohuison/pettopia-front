@@ -81,10 +81,7 @@ class Pet {
     print("accessToken");
     print(assessToken);
 
-
     String finalUrl = _serverDbUrl + "api/v1/pet/list";
-
-
 
     final url = Uri.parse(finalUrl);
     print(url);
@@ -105,7 +102,6 @@ class Pet {
 
       final List<Map<String, dynamic>> data =
           jsonData['list'].cast<Map<String, dynamic>>(); // 타입 캐스팅
-      print("data: ");
       print(data);
       return data; // 결과 반환
     } else {
@@ -138,6 +134,35 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record created successfully!");
+    } else {
+      print("Failed to create shot record. Status code :${response.body}");
+    }
+  }
+
+  //pet기본 정보 수정
+  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk) async {
+    await _getServerUrl();
+
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+    String finalUrl = _serverDbUrl + "api/v1/pet/info/$petPk";
+    print(finalUrl);
+    final url = Uri.parse(finalUrl);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $assessToken',
+    };
+    final body = jsonEncode(petInfo);
+
+    final response = await http.patch(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      print("Shot record modify successfully!");
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
@@ -238,6 +263,35 @@ class Pet {
     } else {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
+    }
+  }
+
+//pet추가 정보 수정
+  Future<void> modifyAddPetInfo(Map<String, dynamic> petInfo, int petPk) async {
+    await _getServerUrl();
+
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+    String finalUrl = _serverDbUrl + "api/v1/pet/extrainfo/$petPk";
+    print(finalUrl);
+    final url = Uri.parse(finalUrl);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $assessToken',
+    };
+    final body = jsonEncode(petInfo);
+
+    final response = await http.patch(
+      url,
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 201) {
+      print("Shot record modify successfully!");
+    } else {
+      print("Failed to create shot record. Status code :${response.body}");
     }
   }
 }

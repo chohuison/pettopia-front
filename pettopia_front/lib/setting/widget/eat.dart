@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/LiveType.dart';
+
 
 class Eat extends StatefulWidget {
   final Function(String, int, String) onHandleEat;
@@ -23,15 +23,25 @@ class _EatState extends State<Eat>
   String _snackCount="";
   int _eatKine = 0;
   void _handleEatCount (String eatCount){
-    _eatCount=eatCount;
+    setState(() {
+          _eatCount=eatCount;
+    
+    });
+
+       widget.onHandleEat(_eatCount,_eatKine,_snackCount);
   }
   void _handleEatKind(int liveType){
     setState(() {
       _eatKine=liveType;
     });
+      widget.onHandleEat(_eatCount,_eatKine,_snackCount);
   }
   void _handlesnackCount(String value){
-    _snackCount=value;
+    setState(() {
+         _snackCount=value;
+    });
+      widget.onHandleEat(_eatCount,_eatKine,_snackCount);
+ 
   }
 
   
@@ -52,7 +62,7 @@ class _EatState extends State<Eat>
           ),
         Container(
           margin: EdgeInsets.only(left: 25.h,bottom: 8.h),
-          child:_textField("식사*", _handleEatCount, "식사 횟수를 입력해주세요"),
+          child:_textIntField("식사*", _handleEatCount, "식사 횟수를 입력해주세요"),
         ),
         SizedBox(height:5.h),
       
