@@ -100,21 +100,18 @@ class _PetAddInformationState extends State<PetAddInformation> {
     if(_mecidenName != "" && _medicenCount!="" ){
        _requestMedicineList.add({'name':_mecidenName, 'cnt': int.parse(_medicenCount)});
     }
-    Map<String,dynamic> data = {
-      'petExtraInfo':{
-  'environment':_enviorment,
-      'exercise':_exercise,
-      'foodCnt':_eatCount,
-      'foodKind':_eatKind,
-      'snackCnt':_snackCount,
+   Map<String, dynamic> data = {
+      'petExtraInfo': {
+        'environment': _enviorment,
+        'exercise': _exercise,
+        'foodCnt': _eatCount,
+        'foodKind': _eatKind,
+        'snackCnt': _snackCount,
       },
-
+         'requestMedicineList':{
+        'list': _requestMedicineList.length > 0 ? _requestMedicineList : [],
+      }
     };
-    
-    if(_requestMedicineList.length>0){
-      data['requestMedicineList']={'list': _requestMedicineList};
-        print(_requestMedicineList);
-    }
   print(data);
     _petServer.createAddPet(data, _petPk);
         Navigator.push(
@@ -138,105 +135,113 @@ class _PetAddInformationState extends State<PetAddInformation> {
         home: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
-          body: ListView(children: [
-            ListView(children: [],),
-           SizedBox(
-                      height: 20.h,
-                    ),
-                    Center(
-                      child: Text(
-                        "반려동물 추가 정보 작성",
-                        style: TextStyle(
-                            fontSize: 20.sp, fontWeight: FontWeight.bold),
+          body: Container(
+             decoration: BoxDecoration(
+                color: Color(0xFFE3D5CA),
+                borderRadius: BorderRadius.circular(25),
+              ),
+             width: 400.w,
+              margin: EdgeInsets.all(15.w),
+            child: ListView(children: [
+             SizedBox(
+                        height: 20.h,
                       ),
-                    ),
-                    Container(
-                      height: 210.h,
-                      width: 350.w,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 45.h,
-                            child: //생활 습관 컨테이너
-                                Container(
-                                    width: 343.w,
-                                    height: 155.h,
-                                    margin: EdgeInsets.only(
-                                      // top: 5.h,
-                                      left: 3.w,
-                                      right: 15.w,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFF5EBE0),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: LifeStyleHabits(
-                                        onHandleLifeStyleHabits:
-                                            onHandleLifeStyleHablits)),
-                          ),
-                          Positioned(
-                            child: Container(
-                                height: 100.h,
-                                width: 150.w,
-                                // color: Colors.black,
-                                child: PetSelectBox(
-                                    onRegionSelected: _petNameHandler,
-                                    petName: widget.petList)),
-                          )
-                        ],
+                      Center(
+                        child: Text(
+                          "반려동물 추가 정보 작성",
+                          style: TextStyle(
+                              fontSize: 20.sp, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-
-                    //식사량 컨테이너
-                    Container(
-                        width: 350.w,
+                      Container(
                         height: 210.h,
-                        margin: EdgeInsets.only(
-                            left: 15.w, top: 0.h, right: 15.w, bottom: 10.h),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF5EBE0),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Eat(
-                          onHandleEat: onHandleEat,
-                        )),
-                    ...containerList,
-                    //약 컨테이너
-                    Container(
                         width: 350.w,
-                        height: 210.h,
-                        margin: EdgeInsets.only(
-                            left: 15.w, top: 0.h, right: 15.w, bottom: 10.h),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF5EBE0),
-                          borderRadius: BorderRadius.circular(25),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 45.h,
+                              child: //생활 습관 컨테이너
+                                  Container(
+                                      width: 370.w,
+                                      height: 155.h,
+                                      margin: EdgeInsets.only(
+                                        // top: 5.h,
+                                        left: 15.w,
+                                      
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFF5EBE0),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: LifeStyleHabits(
+                                          onHandleLifeStyleHabits:
+                                              onHandleLifeStyleHablits)),
+                            ),
+                            Positioned(
+                              child: Container(
+                                  height: 100.h,
+                                  width: 150.w,
+                                  // color: Colors.black,
+                                  child: PetSelectBox(
+                                      onRegionSelected: _petNameHandler,
+                                      petName: widget.petList)),
+                            )
+                          ],
                         ),
-                        child: Medicen(onHandleMedicen: _medecinHandler, addMedicen:_addMedicen,)),
-
-                    Container(
-                      margin: EdgeInsets.only(top: 5.h),
-                      width: 100.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 180, 178, 176),
-                        borderRadius: BorderRadius.circular(30.0),
                       ),
-                      child: ElevatedButton(
-                        onPressed: () {_saveButton();},
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xFFAFA59B)),
+            
+                      //식사량 컨테이너
+                      Container(
+                          width: 350.w,
+                          height: 210.h,
+                          margin: EdgeInsets.only(
+                              left: 15.w, top: 0.h, right: 15.w, bottom: 10.h),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF5EBE0),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Eat(
+                            onHandleEat: onHandleEat,
+                          )),
+                      ...containerList,
+                      //약 컨테이너
+                      Container(
+                          width: 350.w,
+                          height: 210.h,
+                          margin: EdgeInsets.only(
+                              left: 15.w, top: 0.h, right: 15.w, bottom: 10.h),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF5EBE0),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Medicen(onHandleMedicen: _medecinHandler, addMedicen:_addMedicen,)),
+            
+                      Container(
+                        margin: EdgeInsets.only(top: 5.h, bottom: 20.h, left:120.w, right:120.w),
+                        width: 100.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 180, 178, 176),
+                          borderRadius: BorderRadius.circular(30.0),
                         ),
-                        child: Center(
-                          child: Text(
-                            '등록',
-                            style:
-                                TextStyle(fontSize: 15.sp, color: Colors.black),
+                        child: ElevatedButton(
+                          onPressed: () {_saveButton();},
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xFFAFA59B)),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '등록',
+                              style:
+                                  TextStyle(fontSize: 15.sp, color: Colors.black),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-          ]),
+                    
+            ]),
+          ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 4),
         ),
       ),
