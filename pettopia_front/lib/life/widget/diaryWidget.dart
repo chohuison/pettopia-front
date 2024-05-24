@@ -6,6 +6,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/calendar.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
+import 'package:pettopia_front/life/page/viewDiary.dart';
 import 'package:pettopia_front/life/page/writeDiary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/diaryCalendar.dart';
@@ -31,7 +32,6 @@ class _DiaryWidgetState extends State<DiaryWidget>
   late int _petPk = widget.petList.first['petPk'];
   Pet _petServer = new Pet();
 
-
   @override
   void initState() {
     super.initState();
@@ -49,16 +49,22 @@ class _DiaryWidgetState extends State<DiaryWidget>
   }
 
   Future<void> _writeDiary() async {
+    print("name: " + _name + ", petName: " + _petName);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => WriteDiary()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => WriteDiary(
+                  date: _date,
+                  name: _petName,
+                  pk: _petPk,
+                )));
   }
 
   Future<void> _viewDiary() async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => WriteDiary()));
+        context, MaterialPageRoute(builder: (context) => ViewDiary()));
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Container(

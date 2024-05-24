@@ -11,11 +11,15 @@ class ViewPetInformation extends StatefulWidget {
   final List<Map<String, dynamic>> petList;
   final Map<String, dynamic> petInfo;
   final Map<String, dynamic> petAddInfo;
+  final List<dynamic> medicen;
+  final int height;
   const ViewPetInformation(
       {Key? key,
       required this.petList,
       required this.petInfo,
-      required this.petAddInfo})
+      required this.petAddInfo,
+      required this.medicen,
+      required this.height})
       : super(key: key);
 
   @override
@@ -29,12 +33,16 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
   late int _petPk = widget.petList.first['pk'];
   Map<String, dynamic> _petInfo = {};
   Map<String, dynamic> _petAddInfo = {};
+  List<dynamic> _medicen = [];
+  int _height = 800;
   Pet _petServer = new Pet();
   @override
   void initState() {
     super.initState();
     _petInfo = widget.petInfo;
     _petAddInfo = widget.petAddInfo;
+    _medicen = widget.medicen;
+    _height = widget.height;
   }
 
   void _petNameHandler(String value, int valuePk) {
@@ -43,6 +51,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
       _petPk = valuePk;
     });
     _getPetInfo();
+    _getPetAddInfo();
   }
 
   void _getPetInfo() async {
@@ -53,9 +62,14 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
   }
 
   void _getPetAddInfo() async {
-    Map<String, dynamic> newPetAddInfo = await _petServer.getAddPetInfo(_petPk);
+    Map<String, dynamic> newPetAddExtraInfo =
+        await _petServer.getAddPetInfo(_petPk);
+    Map<String, dynamic> newPetAddInfo = newPetAddExtraInfo['petExtraInfo'];
+    List<dynamic> medicen = newPetAddExtraInfo['responseMedicineList']['list'];
     setState(() {
       _petAddInfo = newPetAddInfo;
+      _medicen = medicen;
+      _height = medicen.length * 160 + 800;
     });
   }
 
@@ -96,7 +110,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                         ),
                       ),
                       Container(
-                        height: 800.h,
+                        height: _height.h,
                         child: Stack(
                           children: [
                             Positioned(
@@ -124,17 +138,18 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                     child: Container(
                                         child: // 추가 정보
                                             Container(
-                                      width: 343.w,
-                                      // height: 410.h,
-                                      margin: EdgeInsets.fromLTRB(
-                                          3.w, 10.h, 3.w, 10.h),
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFF5EBE0),
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: ViewPetAddInfo(
-                                          petAddInfo: _petAddInfo),
-                                    )))
+                                                width: 343.w,
+                                                // height: 410.h,
+                                                margin: EdgeInsets.fromLTRB(
+                                                    3.w, 10.h, 3.w, 10.h),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFFF5EBE0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                ),
+                                                child: ViewPetAddInfo(
+                                                    petAddInfo: _petAddInfo,
+                                                    medicen: _medicen))))
                               ],
                             )),
                             Positioned(

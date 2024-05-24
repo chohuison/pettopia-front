@@ -5,6 +5,7 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 
 import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
+import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/lifeStyleHablits.dart';
 import 'package:pettopia_front/setting/widget/Eat.dart';
@@ -34,10 +35,15 @@ class _PetAddInformationState extends State<PetAddInformation> {
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
   List<Widget>containerList=[];
+  List<Map<String,dynamic>> _requestMedicineList = [];
   Pet _petServer = Pet();
   void _medecinHandler(String name, String count) {
-    _mecidenName = name;
+    setState(() {
+         _mecidenName = name;
     _medicenCount = count;
+ 
+    });
+ 
   }
 
   void _petNameHandler(String value, int valuePk) {
@@ -52,6 +58,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
       _totalContainerHeight = _totalContainerHeight + 190;
       _medicenContainerWidget = _medicenContainerWidget + 190;
       containerList.add(_mecicenContainer(pk, medicenName, medicenCount));
+
     });
   }
 
@@ -83,16 +90,38 @@ class _PetAddInformationState extends State<PetAddInformation> {
   }
 
   void _saveButton(){
+    if(_medicenWidgetValue.length >0){
+
+    }for(Map<String,dynamic> value in _medicenWidgetValue ){
+   _requestMedicineList.add({'name':value['name'], 'cnt': int.parse(value['cnt'])});
+   
+    }
+    print(_mecidenName);
+    print(_medicenCount);
+    if(_mecidenName != "" && _medicenCount!="" ){
+       _requestMedicineList.add({'name':_mecidenName, 'cnt': int.parse(_medicenCount)});
+    }
     Map<String,dynamic> data = {
-      'environment':_enviorment,
+      'petExtraInfo':{
+  'environment':_enviorment,
       'exercise':_exercise,
       'foodCnt':_eatCount,
-      'foodKind':_eatCount,
-      'snackCnt':_snackCount
+      'foodKind':_eatKind,
+      'snackCnt':_snackCount,
+      },
 
     };
-    print(data);
+    
+    if(_requestMedicineList.length>0){
+      data['requestMedicineList']={'list': _requestMedicineList};
+        print(_requestMedicineList);
+    }
+  print(data);
     _petServer.createAddPet(data, _petPk);
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
   }
 
   @override
@@ -250,7 +279,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
   }
 
   Widget _mecicenContainer(int pk, String medicenName, String count) {
-    return Container(
+    return Container( 
         key: ValueKey(pk),
         width: 350.w,
         height: 170.h,

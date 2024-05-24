@@ -25,7 +25,7 @@ class _PetDiaryState extends State<PetDiary>
   AppBarList _appBarList = AppBarList();
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
 
     _lifeAppBar = _appBarList.getLifeAppBar();

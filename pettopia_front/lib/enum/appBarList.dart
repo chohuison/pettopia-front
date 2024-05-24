@@ -8,6 +8,8 @@ import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/life/page/petTip.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 
+import 'package:pettopia_front/life/page/writeDiary.dart';
+
 class AppBarList {
   List<Map<String, dynamic>> _hospitalAppBar = [
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '병원찾기'},

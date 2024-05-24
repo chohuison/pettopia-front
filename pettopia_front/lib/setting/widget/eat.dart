@@ -60,7 +60,7 @@ class _EatState extends State<Eat>
                           "사람음식 위주",_eatKine , _handleEatKind),
                            Container(
           margin: EdgeInsets.only(left: 25.h),
-          child: _textField("간식*", _handlesnackCount, "간식 횟수를 입력해주세요"),               
+          child: _textIntField("간식*", _handlesnackCount, "간식 횟수를 입력해주세요"),               
         ),
            
       ],
@@ -183,6 +183,33 @@ class _EatState extends State<Eat>
                                 controller(text);
                                 
                               },
+                              decoration: InputDecoration(
+                                hintText: labelText,
+                                //  contentPadding: EdgeInsets.symmetric(horizontal: horizontal.w,vertical: vertical.h), 
+                               
+                                hintStyle: TextStyle(fontSize: 11.0.sp, color: Color(0xFFAFA59B),),
+                                   border: UnderlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFD5BDAF)),
+    ),
+                              ))),
+
+      ],
+    );
+  }
+
+  Widget _textIntField(String containerName,Function controller,String labelText  ){
+    return Row(
+      children: <Widget>[
+        _typeContainer(containerName,13),
+        SizedBox(width:10.w),
+          Container(
+                          width: 170.w,
+                          child: TextField(
+                              onChanged: (text) {
+                                controller(text);
+                                
+                              },
+                                       keyboardType:  TextInputType.number, 
                               decoration: InputDecoration(
                                 hintText: labelText,
                                 //  contentPadding: EdgeInsets.symmetric(horizontal: horizontal.w,vertical: vertical.h), 
