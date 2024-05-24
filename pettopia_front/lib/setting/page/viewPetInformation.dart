@@ -9,11 +9,18 @@ import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 
 class ViewPetInformation extends StatefulWidget {
   final List<Map<String, dynamic>> petList;
-  final Map<String,dynamic>petInfo;
-  final Map<String,dynamic>petAddInfo;
+  final Map<String, dynamic> petInfo;
+  final Map<String, dynamic> petAddInfo;
   final List<dynamic> medicen;
   final int height;
-  const ViewPetInformation({Key? key, required this.petList,required this.petInfo, required this.petAddInfo,required this.medicen , required this.height}) : super(key: key);
+  const ViewPetInformation(
+      {Key? key,
+      required this.petList,
+      required this.petInfo,
+      required this.petAddInfo,
+      required this.medicen,
+      required this.height})
+      : super(key: key);
 
   @override
   _ViewPetInformationState createState() => _ViewPetInformationState();
@@ -24,44 +31,45 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
   // int _medicenContainerWidget = 190;
   late String _petName = widget.petList.first['dogNm'];
   late int _petPk = widget.petList.first['petPk'];
-  Map<String,dynamic> _petInfo ={};
-  Map<String,dynamic> _petAddInfo={};
-  List<dynamic>_medicen = [];
+  Map<String, dynamic> _petInfo = {};
+  Map<String, dynamic> _petAddInfo = {};
+  List<dynamic> _medicen = [];
   int _height = 800;
   Pet _petServer = new Pet();
-@override
+  @override
   void initState() {
     super.initState();
     _petInfo = widget.petInfo;
-    _petAddInfo=widget.petAddInfo;
+    _petAddInfo = widget.petAddInfo;
     _medicen = widget.medicen;
     _height = widget.height;
-
   }
+
   void _petNameHandler(String value, int valuePk) {
     setState(() {
-         _petName = value;
-    _petPk = valuePk;
+      _petName = value;
+      _petPk = valuePk;
     });
- _getPetInfo();
- _getPetAddInfo();
+    _getPetInfo();
+    _getPetAddInfo();
   }
 
-  void _getPetInfo () async {
-    Map<String ,dynamic> newPetInfo =  await _petServer.getPetInfo(_petPk);
+  void _getPetInfo() async {
+    Map<String, dynamic> newPetInfo = await _petServer.getPetInfo(_petPk);
     setState(() {
       _petInfo = newPetInfo;
     });
   }
-  void _getPetAddInfo() async{
-        Map<String ,dynamic> newPetAddExtraInfo =  await _petServer.getAddPetInfo(_petPk);
-        Map<String,dynamic> newPetAddInfo =newPetAddExtraInfo['petExtraInfo'];
-        List<dynamic>medicen = newPetAddExtraInfo['responseMedicineList']['list'];
+
+  void _getPetAddInfo() async {
+    Map<String, dynamic> newPetAddExtraInfo =
+        await _petServer.getAddPetInfo(_petPk);
+    Map<String, dynamic> newPetAddInfo = newPetAddExtraInfo['petExtraInfo'];
+    List<dynamic> medicen = newPetAddExtraInfo['responseMedicineList']['list'];
     setState(() {
       _petAddInfo = newPetAddInfo;
-      _medicen=medicen;
-    _height = medicen.length * 160 + 800;
-
+      _medicen = medicen;
+      _height = medicen.length * 160 + 800;
     });
   }
 
@@ -121,7 +129,10 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                         color: Color(0xFFF5EBE0),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      child: ViewPetInfo(petinfo: _petInfo,petPk:_petPk ,),
+                                      child: ViewPetInfo(
+                                        petinfo: _petInfo,
+                                        petPk: _petPk,
+                                      ),
                                     ))),
                                 Container(
                                     width: 350.w,
@@ -136,9 +147,12 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                         color: Color(0xFFF5EBE0),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      child: _petAddInfo['environment'] != null ? ViewPetAddInfo(petAddInfo:_petAddInfo, medicen : _medicen, petPk: _petPk )
-                                      :Container(),
-                                   
+                                      child: _petAddInfo['environment'] != null
+                                          ? ViewPetAddInfo(
+                                              petAddInfo: _petAddInfo,
+                                              medicen: _medicen,
+                                              petPk: _petPk)
+                                          : Container(),
                                     )))
                               ],
                             )),
@@ -161,6 +175,4 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
           ),
         ));
   }
-
-
 }

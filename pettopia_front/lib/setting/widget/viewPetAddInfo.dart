@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/setting/widget/modifyPetAddInformation.dart';
 
 class ViewPetAddInfo extends StatefulWidget {
-  final Map<String,dynamic> petAddInfo;
+  final Map<String, dynamic> petAddInfo;
   final List<dynamic> medicen;
   final int petPk;
   const ViewPetAddInfo({Key? key, required this.petPk, required this.petAddInfo,required this.medicen}) : super(key: key);
@@ -16,37 +16,30 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  String _getEnviorment(int value){
-    if(value ==0 ){
+  String _getEnviorment(int value) {
+    if (value == 0) {
       return "실내";
-    
-    }
-    else{
+    } else {
       return "실외";
     }
   }
 
-  String _getExercise(int value){
-    if(value ==0 ){
+  String _getExercise(int value) {
+    if (value == 0) {
       return "저(일주일에 1시간 이하)";
-    }
-    else if(value ==1){
+    } else if (value == 1) {
       return "중(매일 30분 이하)";
-    }
-    else{
+    } else {
       return "고(매일 1시간 이상)";
     }
   }
 
-  String _getFoodKind(int value){
-    if(value ==0){
+  String _getFoodKind(int value) {
+    if (value == 0) {
       return "사료만";
-      
-    }
-    else if(value ==1){
+    } else if (value == 1) {
       return "사료+사람음식";
-    }
-    else{
+    } else {
       return "사람 음식 위주";
     }
   }
@@ -142,7 +135,7 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
     );
   }
 
-     Widget _typeMedicenContainer(String name) {
+  Widget _typeMedicenContainer(String name) {
     return Container(
         width: 80.w,
         height: 30.h,
@@ -161,7 +154,6 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
 
   Widget _mecicenContainer(String medicenName, String count) {
     return Container(
-  
         width: 400.w,
         height: 150.h,
         margin:
@@ -170,9 +162,9 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
           color: Color(0xFFF5EBE0),
           borderRadius: BorderRadius.circular(40),
           border: Border.all(
-      color: Color(0xFFD5BDAF), // 테두리 색
-      width: 2.0, // 테두리 두께
-    ),
+            color: Color(0xFFD5BDAF), // 테두리 색
+            width: 2.0, // 테두리 두께
+          ),
         ),
         child: Container(
           margin: EdgeInsets.only(top: 20.h, left: 37.w),
@@ -183,13 +175,19 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
               ),
               Row(
-                children: <Widget>[_typeMedicenContainer("이름"), Center(child:Text(medicenName))],
+                children: <Widget>[
+                  _typeMedicenContainer("이름"),
+                  Center(child: Text(medicenName))
+                ],
               ),
               SizedBox(
                 height: 20.h,
               ),
               Row(
-                children: <Widget>[_typeMedicenContainer("투약 횟수"), Center(child:Text(count))],
+                children: <Widget>[
+                  _typeMedicenContainer("투약 횟수"),
+                  Center(child: Text(count))
+                ],
               ),
             ],
           ),
