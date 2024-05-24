@@ -4,9 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
+import 'package:pettopia_front/hospital/widget/calendar.dart';
+import 'package:pettopia_front/life/widget/diaryWidget.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 
 class PetDiary extends StatefulWidget {
-  const PetDiary({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> petList;
+  const PetDiary({Key? key, required this.petList}) : super(key: key);
 
   @override
   _PetDiaryState createState() => _PetDiaryState();
@@ -19,6 +23,7 @@ class _PetDiaryState extends State<PetDiary>
 
   late List<Map<String, dynamic>> _lifeAppBar;
   AppBarList _appBarList = AppBarList();
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +60,9 @@ class _PetDiaryState extends State<PetDiary>
                     decoration: BoxDecoration(
                       color: Color(0xFFE3D5CA),
                       borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: DiaryWidget(
+                      petList: widget.petList,
                     ),
                   ),
                 ],

@@ -6,6 +6,9 @@ import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/life/page/petDiary.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/life/page/petTip.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
+
+import 'package:pettopia_front/life/page/writeDiary.dart';
 
 class AppBarList {
   List<Map<String, dynamic>> _hospitalAppBar = [
@@ -14,6 +17,9 @@ class AppBarList {
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '피부병'},
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '질병찾기'},
   ];
+
+  late List<Map<String, dynamic>> _petList = [];
+  Pet _petServer = Pet();
 
   List<Map<String, dynamic>> _lifeAppBar = [
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫필터'},
@@ -28,6 +34,9 @@ class AppBarList {
   ];
 
   AppBarList();
+  Future<void> _getList() async {
+    _petList = await _petServer.getPetList();
+  }
 
   List<Map<String, dynamic>> getHospitalAppBar() {
     return _hospitalAppBar;
@@ -57,7 +66,7 @@ class AppBarList {
     } else {}
   }
 
-  void lifeAppBarHandler(int index, BuildContext context) {
+  Future<void> lifeAppBarHandler(int index, BuildContext context) async {
     if (index == 0) {
       Navigator.push(
         context,
@@ -67,8 +76,15 @@ class AppBarList {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PetTip()));
     } else if (index == 2) {
+      await _getList();
+      print("가져온 petList");
+      print(_petList);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => PetDiary()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => PetDiary(
+                    petList: _petList,
+                  )));
     }
   }
 

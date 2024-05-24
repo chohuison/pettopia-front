@@ -51,18 +51,16 @@ class _PetAddInformationState extends State<PetAddInformation> {
     _petPk = valuePk;
   }
 
-  void _addMedicen(int pk,String medicenName, String medicenCount ){
-  
+  void _addMedicen(int pk, String medicenName, String medicenCount) {
     setState(() {
        _medicenWidgetValue.add({'pk':pk,'name': medicenName, 'cnt':medicenCount});
 
    containerList.add(_mecicenContainer(pk,medicenName,medicenCount));
     });
-   
   }
 
   void _deleteMedicen(int pk) {
-         setState(() {
+    setState(() {
       containerList.removeWhere((widget) {
         if (widget.key is ValueKey) {
           return (widget.key as ValueKey).value == pk;
@@ -75,8 +73,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
 
 
     });
-
-}
+  }
 
   void onHandleLifeStyleHablits(int enviorment, int exercise) {
     _enviorment = enviorment;
@@ -271,8 +268,8 @@ Center(
   }
 
   Widget _mecicenContainer(int pk, String medicenName, String count) {
-    return Container(
-      key: ValueKey(pk), 
+    return Container( 
+        key: ValueKey(pk),
         width: 350.w,
         height: 170.h,
         margin:
