@@ -136,7 +136,9 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
                                         color: Color(0xFFF5EBE0),
                                         borderRadius: BorderRadius.circular(25),
                                       ),
-                                      child: ViewPetAddInfo(petAddInfo:_petAddInfo, medicen : _medicen ),
+                                      child: _petAddInfo['environment'] != null ? ViewPetAddInfo(petAddInfo:_petAddInfo, medicen : _medicen, petPk: _petPk )
+                                      :Container(),
+                                   
                                     )))
                               ],
                             )),

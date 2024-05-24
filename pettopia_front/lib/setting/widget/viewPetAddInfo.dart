@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/setting/widget/modifyPetAddInformation.dart';
 
 class ViewPetAddInfo extends StatefulWidget {
   final Map<String,dynamic> petAddInfo;
   final List<dynamic> medicen;
-  const ViewPetAddInfo({Key? key, required this.petAddInfo,required this.medicen}) : super(key: key);
+  final int petPk;
+  const ViewPetAddInfo({Key? key, required this.petPk, required this.petAddInfo,required this.medicen}) : super(key: key);
 
   @override
   _ViewPetAddInfoState createState() => _ViewPetAddInfoState();
@@ -71,9 +73,9 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
                 children: <Widget>[
                   _typeContainer("생활환경", _getEnviorment(widget.petAddInfo['environment'])),
                   _typeContainer("운동강도", _getExercise(widget.petAddInfo['exercise'])),
+                  _typeContainer("식사 횟수", _getFoodKind(widget.petAddInfo['foodCnt'])),
                   _typeContainer("식사", _getFoodKind(widget.petAddInfo['foodKind'])),
-                  _typeContainer("간식", widget.petAddInfo['snackCnt'].toString()),
-                  _typeContainer("약", "O"),
+                  _typeContainer("간식 횟수", widget.petAddInfo['snackCnt'].toString()),
                   SizedBox(height: 10.h,),
                   if(widget.medicen.length>0)
                   ...widget.medicen.map((medicine) {
@@ -120,7 +122,13 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
       width: 100.w,
       margin: EdgeInsets.fromLTRB(0, 10.h, 10.w, 15.h),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+                Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ModifyPetAddInformation(petAddInfo: widget.petAddInfo, petPk: widget.petPk, medicen: widget.medicen ,)),
+      );
+          
+        },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
         ),

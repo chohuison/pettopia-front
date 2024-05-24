@@ -267,5 +267,33 @@ if (response.statusCode == 200) {
   }
   }
 
+//pet추가 정보 수정
+  Future<void> modifyAddPetInfo(Map<String,dynamic> petInfo, int petPk)async{
+     await _getServerUrl();
+    
+        String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+    String finalUrl = _serverDbUrl+"api/v1/pet/extrainfo/$petPk";
+    print(finalUrl);
+    final url = Uri.parse(finalUrl);
+    final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', 
+   };
+    final body =jsonEncode(petInfo);
+
+    final response = await http.patch(
+    url,
+    headers: headers,
+    body: body,
+    
+  );
+
+  if(response.statusCode == 201){
+    print("Shot record modify successfully!");
+  }else{
+    print("Failed to create shot record. Status code :${response.body}");
+  }
+  }
 
 }
