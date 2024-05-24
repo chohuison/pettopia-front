@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/LiveType.dart';
+
 
 class Medicen extends StatefulWidget {
   final Function(String, String) onHandleMedicen;

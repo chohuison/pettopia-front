@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 
-import 'package:pettopia_front/enum/LiveType.dart';
+
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
@@ -31,6 +31,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
   //medicenName과 medicenCount가 null이 아니면 이것도 db에 넣어줄거임 
   late String _mecidenName = "";
   late String _medicenCount = "";
+  String errorMessage = "";
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
   List<Widget>containerList=[];
@@ -89,6 +90,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
   }
 
   void _saveButton(){
+
     if(_medicenWidgetValue.length >0){
 
     }for(Map<String,dynamic> value in _medicenWidgetValue ){
@@ -239,6 +241,9 @@ class _PetAddInformationState extends State<PetAddInformation> {
                           ),
                         ),
                       ),
+Center(
+  child: Text(errorMessage, style: TextStyle(color: Colors.red),),
+)
                     
             ]),
           ),

@@ -7,6 +7,7 @@ import 'package:pettopia_front/setting/page/createPet.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pettopia_front/setting/widget/creatPetCheckPopup.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({Key? key}) : super(key: key);
@@ -118,13 +119,26 @@ class _SettingMainhState extends State<SettingMain> {
            await _getList();
             print("가져온 petList");
             print(_petList);
-            Navigator.push(
+            if(_petList.length<1){
+                showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content:CreatePetCheckPopup(),
+                  surfaceTintColor: Colors.white,
+                );
+              },
+            );
+            }else{
+      Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PetAddInformation(
                         petList: _petList,
                       )),
             );
+            }
+      
     
           } else if (index == 2) {
             await _getList();

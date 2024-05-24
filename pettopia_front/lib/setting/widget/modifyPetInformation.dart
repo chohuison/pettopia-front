@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pettopia_front/enum/LiveType.dart';
 import 'package:pettopia_front/enum/PetBreedList.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 

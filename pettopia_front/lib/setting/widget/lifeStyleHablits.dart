@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/LiveType.dart';
+
 
 class LifeStyleHabits extends StatefulWidget {
   final Function(int, int) onHandleLifeStyleHabits;
