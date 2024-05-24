@@ -1,1 +1,0 @@
-enum LiveType{TRUE,MIDIUM,FALSE}

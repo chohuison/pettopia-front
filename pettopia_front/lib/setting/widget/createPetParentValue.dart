@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/LiveType.dart';
+
 
 class CreatePetParentValue extends StatefulWidget {
   final Function(String,String) petParentValueHandle;
@@ -44,7 +44,7 @@ class _CreatePetParentValueState extends State<CreatePetParentValue>  with Autom
        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp ),)
      ),
      _textFieldContainer("이름*", "보호자 이름을 입력해주세요",15,10,parentNameChange),
-     SizedBox(height: 2.h),
+
      _textFieldContainer("연락처*","010-****-****",50,10,parentPhoneNumChange)
     ]);
   }
@@ -68,17 +68,18 @@ Widget _typeContainer(String name) {
 
 Widget _textFieldContainer(String containerName, String labelText, int horizontal, int vertical,Function contorller){
   return   Container(
-                  margin: EdgeInsets.only(bottom: 5.h),
-                  width: 300.w,
+                  margin: EdgeInsets.only(bottom: 10.h, left: 15.w),
+                  width: 380.w,
                   height: 30.h,
                   child: Row(
                     children: <Widget>[
                       _typeContainer(containerName),
                        Container(
-                          width: 170.w,
+                          width: 220.w,
                           child: TextField(
                               onChanged: (text) {
                                 contorller(text);
+                                print(text);
                                 
                               },
                               decoration: InputDecoration(
