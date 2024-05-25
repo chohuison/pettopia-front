@@ -148,16 +148,16 @@ class _WriteDiaryState extends State<WriteDiary>
     //   );
     // }
 
-    print("DateTime: " + _date.toString());
-    print("Name: " + _name);
-    print("PetPk: " + _petPk.toString());
-    print("MealCnt: " + _mealCnt.toString());
-    print("SnackCnt: " + _snackCnt.toString());
-    print("WalkCnt: " + _walkCnt.toString());
-    print("DefecationCondition: " + _defecationCondition.toString());
-    print("DefecationDescription: " + _defecationCondition.toString());
-    print("Etc: " + _etc.toString());
-    print("medicine Value: " + _medicenWidgetValue.toString());
+    // print("DateTime: " + _date.toString());
+    // print("Name: " + _name);
+    // print("PetPk: " + _petPk.toString());
+    // print("MealCnt: " + _mealCnt.toString());
+    // print("SnackCnt: " + _snackCnt.toString());
+    // print("WalkCnt: " + _walkCnt.toString());
+    // print("DefecationCondition: " + _defecationCondition.toString());
+    // print("DefecationDescription: " + _defecationCondition.toString());
+    // print("Etc: " + _etc.toString());
+    // print("medicine Value: " + _medicenWidgetValue.toString());
 
     Navigator.push(
       context,
