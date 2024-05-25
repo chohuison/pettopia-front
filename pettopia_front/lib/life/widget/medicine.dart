@@ -1,33 +1,30 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/life/widget/cntBox.dart';
 
 class Medicine extends StatefulWidget {
   final Function(String, int) onHandleMedicine;
   final Function(int, String, int) addMedicine;
+
   const Medicine({
     Key? key,
     required this.onHandleMedicine,
     required this.addMedicine,
-  }) : super(
-          key: key,
-        );
+  }) : super(key: key);
 
   @override
-  __MedicineStatetate createState() => __MedicineStatetate();
+  __MedicineState createState() => __MedicineState();
 }
 
-class __MedicineStatetate extends State<Medicine>
-    with AutomaticKeepAliveClientMixin {
+class __MedicineState extends State<Medicine> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
   int _count = 0;
   String _name = "";
   int _widgetPk = 0;
   String _errorMessage = "";
-  late int _medicineCnt = 0;
+  int _medicineCnt = 0;
 
   final TextEditingController _textController = TextEditingController();
 
@@ -36,22 +33,26 @@ class __MedicineStatetate extends State<Medicine>
       _name = value;
     });
 
-    widget.onHandleMedicine(
-      _name,
-      _count,
-    );
+    widget.onHandleMedicine(_name, _count);
   }
 
   void _handleMedicenCount(int value) {
     setState(() {
       _count = value;
+      _medicineCnt=value;
     });
-    print(_count);
 
-    widget.onHandleMedicine(
-      _name,
-      _count,
-    );
+    widget.onHandleMedicine(_name, _count);
+  }
+
+  void _resetMedicine() {
+    setState(() {
+      _name = "";
+      _count = 0;
+      _medicineCnt = 0;
+      _textController.clear();
+      _errorMessage = "";
+    });
   }
 
   @override
@@ -71,23 +72,24 @@ class __MedicineStatetate extends State<Medicine>
                 controller: _textController,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
-                    hintText: "약 종류",
-                    hintStyle: TextStyle(
-                      fontSize: 13.sp,
-                      color: Color(0xFFAFA59B),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFFD5BDAF)),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFFD5BDAF)),
-                    )),
+                  hintText: "약 종류",
+                  hintStyle: TextStyle(
+                    fontSize: 13.sp,
+                    color: Color(0xFFAFA59B),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFD5BDAF)),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFD5BDAF)),
+                  ),
+                ),
               ),
             ),
             CntBox(
               cnt: _medicineCnt,
               handleCount: _handleMedicenCount,
-            )
+            ),
           ],
         ),
         Text(
@@ -98,16 +100,10 @@ class __MedicineStatetate extends State<Medicine>
           margin: EdgeInsets.only(top: 10.h),
           child: GestureDetector(
             onTap: () {
-              print(_name);
-              print(_count);
-              if (_name != "" && _count != 0) {
+              if (_name.isNotEmpty && _count != 0) {
                 widget.addMedicine(_widgetPk, _name, _count);
-                setState(() {
-                  _errorMessage = "";
-                  _textController.clear();
-                  _medicineCnt = 0;
-                });
-                _widgetPk = _widgetPk + 1;
+                _widgetPk++;
+                _resetMedicine();
               } else {
                 setState(() {
                   _errorMessage = "약 정보를 모두 입력해주세요";
@@ -115,37 +111,41 @@ class __MedicineStatetate extends State<Medicine>
               }
             },
             child: Container(
-              child: Stack(children: [
-                Positioned(
-                  right: 25.w,
-                  child: Container(
-                    child: Icon(
-                      Icons.add, // 플러스 아이콘
-                      color: Color(0xFFD5BDAF), // 아이콘 색상
-                      size: 30.sp, // 아이콘 크기
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: 25.w,
+                    child: Container(
+                      child: Icon(
+                        Icons.add, // 플러스 아이콘
+                        color: Color(0xFFD5BDAF), // 아이콘 색상
+                        size: 30.sp, // 아이콘 크기
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
+                  Positioned(
                     child: Container(
-                        margin: EdgeInsets.only(right: 30.w, top: 5.h),
-                        child: Container(
-                          width: 20.w,
-                          height: 20.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              // 테두리 설정
-                              color: Color(0xFFD5BDAF), // 테두리 색상
-                              width: 2, // 테두리 두께
-                              style: BorderStyle.solid, // 테두리 스타일
-                            ),
+                      margin: EdgeInsets.only(right: 30.w, top: 5.h),
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            // 테두리 설정
+                            color: Color(0xFFD5BDAF), // 테두리 색상
+                            width: 2, // 테두리 두께
+                            style: BorderStyle.solid, // 테두리 스타일
                           ),
-                        )))
-              ]),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
