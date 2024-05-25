@@ -22,6 +22,12 @@ class CntBoxState extends State<CntBox> {
     cnt = widget.cnt;
   }
 
+  void _updateCount(int newCount) {
+    setState(() {
+      cnt = newCount;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,9 +49,8 @@ class CntBoxState extends State<CntBox> {
             onTap: () {
               setState(() {
                 if (cnt > 0) {
-                 
                   cnt--;
-                   widget.handleCount(cnt);
+                  widget.handleCount(cnt);
                 }
               });
             },
@@ -69,9 +74,8 @@ class CntBoxState extends State<CntBox> {
             ),
             onTap: () {
               setState(() {
-                    
                 cnt++;
-                 widget.handleCount(cnt);
+                widget.handleCount(cnt);
               });
             },
           ),
