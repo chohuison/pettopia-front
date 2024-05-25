@@ -66,7 +66,13 @@ class _DiaryWidgetState extends State<DiaryWidget>
 
   Future<void> _viewDiary() async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ViewDiary()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => ViewDiary(
+                  date: _date,
+                  name: _petName,
+                  pk: _petPk,
+                )));
   }
 
   @override
