@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 
 class ViewDiary extends StatefulWidget {
-  const ViewDiary({Key? key}) : super(key: key);
+  final DateTime date;
+  final String name;
+  final int pk;
+  const ViewDiary(
+      {Key? key, required this.date, required this.name, required this.pk})
+      : super(key: key);
 
   @override
   _ViewDiaryState createState() => _ViewDiaryState();
@@ -15,9 +21,16 @@ class _ViewDiaryState extends State<ViewDiary>
   @override
   bool get wantKeepAlive => true;
 
+  late DateTime _date;
+  late String _name;
+  late int _petPk;
+
   @override
   void initState() {
     super.initState();
+    _date = widget.date;
+    _name = widget.name;
+    _petPk = widget.pk;
   }
 
   @override
@@ -36,7 +49,35 @@ class _ViewDiaryState extends State<ViewDiary>
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: ListView(
-            children: [],
+            children: [
+              Container(
+                width: 400.w,
+                margin: EdgeInsets.all(15.w),
+                decoration: BoxDecoration(
+                  color: Color(0xFFE3D5CA),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20.h),
+                    Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            DateFormat("yyyy년 MM월 dd일").format(_date),
+                            style: TextStyle(fontSize: 22.sp),
+                          ),
+                          Text(
+                            _name + "의 일기",
+                            style: TextStyle(fontSize: 17.sp),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 3),
         ),
