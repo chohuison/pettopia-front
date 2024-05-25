@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/life/page/modifyDiary.dart';
 
 class ViewDiary extends StatefulWidget {
   final DateTime date;
@@ -32,6 +33,14 @@ class _ViewDiaryState extends State<ViewDiary>
     _name = widget.name;
     _petPk = widget.pk;
   }
+
+  // ToDo: _modify, _delete
+  Future<void> _modify() async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ModifyDiary()));
+  }
+
+  Future<void> _delete() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +216,10 @@ class _ViewDiaryState extends State<ViewDiary>
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[_button("수정"), _button("삭제")],
+                        children: <Widget>[
+                          _button("수정", _modify),
+                          _button("삭제", _delete)
+                        ],
                       ),
                     )
                   ],
@@ -237,7 +249,7 @@ Widget _typeContainer(String name) {
       )));
 }
 
-Widget _button(String name) {
+Widget _button(String name, Function buttonFunc) {
   return Container(
     margin: EdgeInsets.only(bottom: 15.h),
     width: 100.w,
@@ -247,7 +259,9 @@ Widget _button(String name) {
       borderRadius: BorderRadius.circular(30.0),
     ),
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        buttonFunc;
+      },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
       ),
