@@ -27,6 +27,9 @@ class __MedicineStatetate extends State<Medicine>
   String _name = "";
   int _widgetPk = 0;
   String _errorMessage = "";
+  late int _medicineCnt = 0;
+
+  final TextEditingController _textController = TextEditingController();
 
   void _handleName(String value) {
     setState(() {
@@ -51,8 +54,6 @@ class __MedicineStatetate extends State<Medicine>
     );
   }
 
-  late int _medicineCnt = 0;
-
   @override
   Widget build(BuildContext context) {
     super.build(context); // AutomaticKeepAliveClientMixin 사용 시 추가
@@ -67,6 +68,7 @@ class __MedicineStatetate extends State<Medicine>
                 onChanged: (text) {
                   _handleName(text);
                 },
+                controller: _textController,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                     hintText: "약 종류",
@@ -99,10 +101,11 @@ class __MedicineStatetate extends State<Medicine>
               print(_name);
               print(_count);
               if (_name != "" && _count != 0) {
-                print("ok");
                 widget.addMedicine(_widgetPk, _name, _count);
                 setState(() {
                   _errorMessage = "";
+                  _textController.clear();
+                  _medicineCnt = 0;
                 });
                 _widgetPk = _widgetPk + 1;
               } else {

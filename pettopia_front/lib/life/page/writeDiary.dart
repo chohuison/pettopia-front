@@ -154,9 +154,9 @@ class _WriteDiaryState extends State<WriteDiary>
     print("MealCnt: " + _mealCnt.toString());
     print("SnackCnt: " + _snackCnt.toString());
     print("WalkCnt: " + _walkCnt.toString());
-    print("DefecationCondition" + _defecationCondition.toString());
-    print("DefecationDescription" + _defecationCondition.toString());
-    print("Etc" + _etc.toString());
+    print("DefecationCondition: " + _defecationCondition.toString());
+    print("DefecationDescription: " + _defecationCondition.toString());
+    print("Etc: " + _etc.toString());
     print("medicine Value: " + _medicenWidgetValue.toString());
 
     Navigator.push(
@@ -485,6 +485,9 @@ class _WriteDiaryState extends State<WriteDiary>
       margin: EdgeInsets.only(left: 90.w, right: 10.w),
       width: 170.w,
       child: TextField(
+        onChanged: (text) {
+          updateDes(text);
+        },
         textAlign: TextAlign.center,
         decoration: InputDecoration(
             hintText: "배변 상태를 입력해주세요.",
@@ -507,6 +510,9 @@ class _WriteDiaryState extends State<WriteDiary>
       margin: EdgeInsets.only(top: 10.h, right: 20.w, bottom: 10.h),
       width: 300.w,
       child: TextField(
+        onChanged: (text) {
+          updateEtc(text);
+        },
         maxLines: null,
         decoration: InputDecoration(
             border: OutlineInputBorder(
