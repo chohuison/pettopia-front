@@ -24,8 +24,6 @@ class CntBoxState extends State<CntBox> {
   @override
   void didUpdateWidget(CntBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    print(oldWidget.cnt);
-    print(cnt);
     if (oldWidget.cnt != widget.cnt) {
       setState(() {
         cnt = widget.cnt;
