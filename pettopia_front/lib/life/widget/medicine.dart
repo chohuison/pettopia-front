@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/life/widget/cntBox.dart';
+import 'package:pettopia_front/life/widget/medicenSelectBox.dart';
 
 class Medicine extends StatefulWidget {
   final Function(String, int) onHandleMedicine;
   final Function(int, String, int) addMedicine;
+  final List<Map<String,dynamic>> medicenList;
 
   const Medicine({
     Key? key,
     required this.onHandleMedicine,
     required this.addMedicine,
+    required this.medicenList,
   }) : super(key: key);
 
   @override
@@ -21,12 +24,10 @@ class __MedicineState extends State<Medicine> with AutomaticKeepAliveClientMixin
   bool get wantKeepAlive => true;
 
   int _count = 0;
-  String _name = "";
+  late String _name = widget.medicenList.first['name'];
   int _widgetPk = 0;
   String _errorMessage = "";
   int _medicineCnt = 0;
-
-  final TextEditingController _textController = TextEditingController();
 
   void _handleName(String value) {
     setState(() {
@@ -41,16 +42,14 @@ class __MedicineState extends State<Medicine> with AutomaticKeepAliveClientMixin
       _count = value;
       _medicineCnt=value;
     });
-
+    print("name:" + _name);
     widget.onHandleMedicine(_name, _count);
   }
 
   void _resetMedicine() {
     setState(() {
-      _name = "";
       _count = 0;
       _medicineCnt = 0;
-      _textController.clear();
       _errorMessage = "";
     });
   }
@@ -61,46 +60,26 @@ class __MedicineState extends State<Medicine> with AutomaticKeepAliveClientMixin
     return Column(
       children: [
         Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 100.w, right: 10.w),
-              width: 100.w,
-              child: TextField(
-                onChanged: (text) {
-                  _handleName(text);
-                },
-                controller: _textController,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: "약 종류",
-                  hintStyle: TextStyle(
-                    fontSize: 13.sp,
-                    color: Color(0xFFAFA59B),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFD5BDAF)),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFD5BDAF)),
-                  ),
-                ),
-              ),
+          children: <Widget>[    Container(
+              margin: EdgeInsets.only(right: 10.w, top:25.h),
+              width: 150.w,
+              child: MedicenSelectBox(onChangedMedicen: _handleName,medicenList:widget.medicenList, medicenName: widget.medicenList.first['name'],)
             ),
             CntBox(
               cnt: _medicineCnt,
               handleCount: _handleMedicenCount,
-            ),
-          ],
-        ),
+            ),],
+        )
+     ,
         Text(
           _errorMessage,
           style: TextStyle(color: Colors.red),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10.h),
           child: GestureDetector(
             onTap: () {
-              if (_name.isNotEmpty && _count != 0) {
+              print(_name);
+              if ( _count != 0) {
                 widget.addMedicine(_widgetPk, _name, _count);
                 _widgetPk++;
                 _resetMedicine();

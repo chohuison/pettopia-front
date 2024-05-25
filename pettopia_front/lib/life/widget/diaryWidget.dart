@@ -8,6 +8,7 @@ import 'package:pettopia_front/hospital/widget/calendar.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/life/page/viewDiary.dart';
 import 'package:pettopia_front/life/page/writeDiary.dart';
+import 'package:pettopia_front/server/DB/Diary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/diaryCalendar.dart';
 
@@ -31,6 +32,7 @@ class _DiaryWidgetState extends State<DiaryWidget>
   late String _petName = widget.petList.first['dogNm'];
   late int _petPk = widget.petList.first['petPk'];
   Pet _petServer = new Pet();
+  Diary _diaryServer = Diary();
 
   @override
   void initState() {
@@ -50,6 +52,7 @@ class _DiaryWidgetState extends State<DiaryWidget>
 
   Future<void> _writeDiary() async {
     print("name: " + _name + ", petName: " + _petName);
+    List<Map<String,dynamic>> medicenList = await _diaryServer.getMedicenList(_petPk);
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -57,6 +60,7 @@ class _DiaryWidgetState extends State<DiaryWidget>
                   date: _date,
                   name: _petName,
                   pk: _petPk,
+                  medicenList: medicenList,
                 )));
   }
 

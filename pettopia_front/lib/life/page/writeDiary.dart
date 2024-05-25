@@ -7,14 +7,20 @@ import 'package:pettopia_front/life/widget/cntBox.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/life/widget/medicine.dart';
 import 'package:pettopia_front/main.dart';
+import 'package:pettopia_front/server/DB/Diary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 
 class WriteDiary extends StatefulWidget {
   final DateTime date;
   final String name;
   final int pk;
+  final List<Map<String, dynamic>> medicenList;
   const WriteDiary(
-      {Key? key, required this.date, required this.name, required this.pk})
+      {Key? key,
+      required this.date,
+      required this.name,
+      required this.pk,
+      required this.medicenList})
       : super(key: key);
 
   @override
@@ -42,6 +48,7 @@ class _WriteDiaryState extends State<WriteDiary>
   XFile? _file;
   String _profile = "";
   Pet _pet = Pet();
+  Diary _diaryServer = Diary();
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
   List<Widget> containerList = [];
@@ -67,10 +74,12 @@ class _WriteDiaryState extends State<WriteDiary>
   }
 
   void _medecinHandler(String name, int count) {
+   
     setState(() {
       _mecidenName = name;
       _medicenCount = count;
     });
+     print(_mecidenName);
   }
 
   void _medecinCountHandle(int count) {
@@ -80,10 +89,10 @@ class _WriteDiaryState extends State<WriteDiary>
   }
 
   void _addMedicine(int pk, String medicenName, int medicenCount) {
-    print(medicenName);
+    print("medicenName: "+medicenName);
     setState(() {
-      _medicenWidgetValue.add(
-          {'pk': pk, 'medicenName': medicenName, 'medicenCount': medicenCount});
+      _medicenWidgetValue
+          .add({'pk': pk, 'medicenName': medicenName, 'cnt': medicenCount});
       containerList.add(_medicineContainer(pk, medicenName, medicenCount));
     });
   }
@@ -121,48 +130,50 @@ class _WriteDiaryState extends State<WriteDiary>
       _isMedicine = newValue;
     });
   }
+  String _getConditionOfDefecation(int value){
+    if(value ==0){
+      return "NORMAL";
+    }
+    else if(value ==1){
+      return "PROBLEM";
+    }
+    else {
+      return "NO";
+    }
+  }
 
   Future<void> _saveButtonHandle() async {
-    // if (_mealCnt == null ||
-    //     _snackCnt == null ||
-    //     _isWalk == null ||
-    //     _defecationCondition == null) {
-    //   setState(() {
-    //     errMesg = "필수 입력값을 모두 입력해주세요!";
-    //   });
-    // } else {
-    //   Map<String, dynamic> petInfo = {
-    //     // 작성해야 함
-    //   };
-    //   if (_file != null) {
-    //     _profile = await _pet.seUploat(_file!);
-    //     petInfo['profile'] = _profile;
-    //   }
+    List<Map<String, dynamic>> medicenList = [];
+    for (Map<String, dynamic> value in _medicenWidgetValue) {
+      medicenList.add({'name': value['medicenName'], 'cnt': value['cnt']});
+    }
+    Map<String, dynamic> diaryInfo = {
+      'mealCnt': _mealCnt,
+      'snackCnt': _snackCnt,
+      'medicineList': medicenList.length > 0 ? medicenList : [],
+      'walkCnt': _walkCnt,
+      'conditionOfDefecation': _getConditionOfDefecation(_defecationCondition),
+      'defecationText': _defecationDescription,
+      'etc': _etc,
+      'calendarDate': _date.toIso8601String().split('T').first,
+    };
+    print(diaryInfo);
+    _diaryServer.createDiary(_petPk, diaryInfo);
+    // print("DateTime: " + _date.toString());
+    // print("Name: " + _name);
+    // print("PetPk: " + _petPk.toString());
+    // print("MealCnt: " + _mealCnt.toString());
+    // print("SnackCnt: " + _snackCnt.toString());
+    // print("WalkCnt: " + _walkCnt.toString());
+    // print("DefecationCondition: " + _defecationCondition.toString());
+    // print("DefecationDescription: " + _defecationDescription.toString());
+    // print("Etc: " + _etc.toString());
+    // print("medicine Value: " + _medicenWidgetValue.toString());
 
-    //   print(petInfo);
-    //   _pet.createPet(petInfo);
-
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => MyApp()),
-    //   );
-    // }
-
-    print("DateTime: " + _date.toString());
-    print("Name: " + _name);
-    print("PetPk: " + _petPk.toString());
-    print("MealCnt: " + _mealCnt.toString());
-    print("SnackCnt: " + _snackCnt.toString());
-    print("WalkCnt: " + _walkCnt.toString());
-    print("DefecationCondition: " + _defecationCondition.toString());
-    print("DefecationDescription: " + _defecationCondition.toString());
-    print("Etc: " + _etc.toString());
-    print("medicine Value: " + _medicenWidgetValue.toString());
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyApp()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => MyApp()),
+    // );
   }
 
   void _deleteMedicine(int pk) {
@@ -276,7 +287,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                 )),
                             //약
                             Container(
-                              margin: EdgeInsets.only(top: 10.h, left: 10.w),
+                              margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 25.w),
                               child: Column(
                                 children: [
                                   Row(
@@ -287,9 +298,24 @@ class _WriteDiaryState extends State<WriteDiary>
                                   ),
                                   ...containerList,
                                   if (_isMedicine == true)
-                                    Medicine(
+                                    Container(
+
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        border: Border.all(
+                                          color: Color(0xFFD5BDAF), // 테두리 색상
+                                          width: 2.0, // 테두리 두께
+                                        ),
+                                      ),
+                                      height: 150.h,
+                                     
+                                      child: Medicine(
                                         onHandleMedicine: _medecinHandler,
-                                        addMedicine: _addMedicine),
+                                        addMedicine: _addMedicine,
+                                        medicenList: widget.medicenList,
+                                      ),
+                                    )
                                 ],
                               ),
                             ),
