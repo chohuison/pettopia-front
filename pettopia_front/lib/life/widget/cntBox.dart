@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CntBox extends StatefulWidget {
@@ -22,10 +21,16 @@ class CntBoxState extends State<CntBox> {
     cnt = widget.cnt;
   }
 
-  void _updateCount(int newCount) {
-    setState(() {
-      cnt = newCount;
-    });
+  @override
+  void didUpdateWidget(CntBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print(oldWidget.cnt);
+    print(cnt);
+    if (oldWidget.cnt != widget.cnt) {
+      setState(() {
+        cnt = widget.cnt;
+      });
+    }
   }
 
   @override
@@ -47,12 +52,12 @@ class CntBoxState extends State<CntBox> {
               ),
             ),
             onTap: () {
-              setState(() {
-                if (cnt > 0) {
+              if (cnt > 0) {
+                setState(() {
                   cnt--;
                   widget.handleCount(cnt);
-                }
-              });
+                });
+              }
             },
           ),
           Container(
