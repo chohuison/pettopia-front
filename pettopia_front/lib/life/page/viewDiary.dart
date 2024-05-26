@@ -3,14 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/life/widget/ModifyDiary.dart';
+import 'package:pettopia_front/server/DB/Diary.dart';
 
 class ViewDiary extends StatefulWidget {
   final DateTime date;
   final String name;
   final int pk;
   final Map<String,dynamic> diaryValue ;
+
+  final int diaryPk;
   const ViewDiary(
-      {Key? key, required this.date, required this.name, required this.pk, required this.diaryValue})
+      {Key? key, required this.date, required this.name, required this.pk, required this.diaryValue,  required this.diaryPk})
       : super(key: key);
 
   @override
@@ -32,6 +36,7 @@ class _ViewDiaryState extends State<ViewDiary>
   late String _defecationText = widget.diaryValue['defecationText'];
   late String _etc = widget.diaryValue['etc'];
   late List<dynamic>_medicenList = widget.diaryValue['medicineList']['list'];
+  Diary _diaryServer = Diary();
 
 
   
@@ -215,8 +220,7 @@ class _ViewDiaryState extends State<ViewDiary>
       ),
     );
   }
-}
- Widget _typeMedicenContainer(String name) {
+   Widget _typeMedicenContainer(String name) {
     return Container(
         width: 80.w,
         height: 30.h,
@@ -300,7 +304,16 @@ Widget _button(String name) {
       borderRadius: BorderRadius.circular(30.0),
     ),
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        if(name == "수정"){
+             List<Map<String,dynamic>> medicenList = await _diaryServer.getMedicenList(_petPk);
+             print("medicenList: $medicenList");
+            Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ModifyDiary(name : _name, pk:_petPk, diaryValue: widget.diaryValue,medicenList: medicenList,diaryPk: widget.diaryPk,)),
+    );
+        }
+      },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
       ),
@@ -312,4 +325,6 @@ Widget _button(String name) {
       ),
     ),
   );
+}
+
 }
