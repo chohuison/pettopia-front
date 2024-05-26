@@ -207,4 +207,25 @@ class Diary {
       print("Failed to create shot record. Status code :${response.body}");
     }
   }
+//다이어리 삭제
+   Future<void> deleteDiary(int diaryPk) async{
+         String? assessToken= await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+     final headers ={'Content-Type': 'application/json',
+     'Authorization': 'Bearer $assessToken', };
+            await _getServerUrl();
+    String serverUrl  = _serverDbUrl+"api/v1/life/diary/$diaryPk";
+    final uri = Uri.parse(serverUrl); 
+    
+    final response = await http.delete(uri,
+     headers: headers,);
+  if(response.statusCode == 204){
+    print("Shot record delete successfully!");
+  }else{
+    print("Failed to create shot record. Status code :${response.statusCode}");
+  }
+
+
+  }
 }
