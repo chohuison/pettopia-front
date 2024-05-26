@@ -18,13 +18,9 @@ class _DiaryCalendarState extends State<DiaryCalendar>
   @override
   bool get wantKeepAlive => true;
 
-  DateTime? _selectedDate;
-  List<Map<String, dynamic>> _petList = [];
-  Pet _petServer = Pet();
+  DateTime _selectedDate = DateTime.now();
 
-  Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +30,19 @@ class _DiaryCalendarState extends State<DiaryCalendar>
       color: Color(0xFFE3D5CA),
       margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 10.h),
       child: TableCalendar(
-        focusedDay: DateTime.now(),
+        focusedDay:_selectedDate,
         firstDay: DateTime(2020),
         lastDay: DateTime(2030),
+          selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
         onDaySelected: (
           DateTime selectedDay,
           DateTime focusedDay,
         ) {
+          print(selectedDay);
           setState(() {
             _selectedDate = selectedDay;
           });
+            widget.onHandleDate(selectedDay);
         },
       ),
     );
