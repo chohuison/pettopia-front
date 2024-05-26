@@ -157,74 +157,12 @@ class _PetsnalColorState extends State<PetsnalColor>
                                   color: Color.fromARGB(255, 165, 142, 128),
                                 )),
                           ),
+                          // AI 사용 이전
                           if (file == null)
-                            Column(
-                              children: [
-                                _button("촬영하기", _getCamera),
-                                _button("사진 찾기", _getGallery),
-                                _button("펫스널컬러란?", _getPetsnalColor),
-                                Container(
-                                  height: 10.h,
-                                ),
-                                Text("- 반려동물을 가까이에서 찍어주세요."),
-                                Text("- 밝은 장소에서 촬영해주세요.")
-                              ],
-                            )
+                            _beforeAI()
+                          // AI 사용 이후
                           else
-                            Column(
-                              children: [
-                                Container(
-                                  height: 20.h,
-                                ),
-                                Text(
-                                  "내 반려동물에게는",
-                                  style: TextStyle(fontSize: 15.sp),
-                                ),
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(top: 10.h, bottom: 10.h),
-                                  // Container의 color에 ai 결과값으로 받은 색상값 넣기
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 60.w,
-                                        height: 60.h,
-                                        decoration:
-                                            BoxDecoration(color: Colors.red),
-                                      ),
-                                      Container(
-                                        width: 60.w,
-                                        height: 60.h,
-                                        decoration:
-                                            BoxDecoration(color: Colors.green),
-                                      ),
-                                      Container(
-                                        width: 60.w,
-                                        height: 60.h,
-                                        decoration:
-                                            BoxDecoration(color: Colors.blue),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text(
-                                  "이런 색이 어울려요.",
-                                  style: TextStyle(fontSize: 15.sp),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10.h),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      _button("다시 촬영", _getCamera),
-                                      _button("갤러리", _getGallery)
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
+                            _afgerAI()
                         ],
                       ),
                     ],
@@ -261,6 +199,73 @@ class _PetsnalColorState extends State<PetsnalColor>
           ),
         ),
       ),
+    );
+  }
+
+  Widget _beforeAI() {
+    return Column(
+      children: [
+        _button("촬영하기", _getCamera),
+        _button("사진 찾기", _getGallery),
+        _button("펫스널컬러란?", _getPetsnalColor),
+        Container(
+          height: 10.h,
+        ),
+        Text("- 반려동물을 가까이에서 찍어주세요."),
+        Text("- 밝은 장소에서 촬영해주세요.")
+      ],
+    );
+  }
+
+  Widget _afgerAI() {
+    return Column(
+      children: [
+        Container(
+          height: 20.h,
+        ),
+        Text(
+          "내 반려동물에게는",
+          style: TextStyle(fontSize: 15.sp),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+          // Container의 color에 ai 결과값으로 받은 색상값 넣기
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 60.w,
+                height: 60.h,
+                decoration: BoxDecoration(color: Colors.red),
+              ),
+              Container(
+                width: 60.w,
+                height: 60.h,
+                decoration: BoxDecoration(color: Colors.green),
+              ),
+              Container(
+                width: 60.w,
+                height: 60.h,
+                decoration: BoxDecoration(color: Colors.blue),
+              ),
+            ],
+          ),
+        ),
+        Text(
+          "이런 색이 어울려요.",
+          style: TextStyle(fontSize: 15.sp),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _button("다시 촬영", _getCamera),
+              _button("갤러리", _getGallery)
+            ],
+          ),
+        )
+      ],
     );
   }
 }
