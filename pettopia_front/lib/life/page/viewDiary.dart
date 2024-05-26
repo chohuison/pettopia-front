@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/life/widget/ModifyDiary.dart';
+import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/server/DB/Diary.dart';
 
 class ViewDiary extends StatefulWidget {
@@ -313,7 +314,16 @@ Widget _button(String name) {
       MaterialPageRoute(builder: (context) => ModifyDiary(name : _name, pk:_petPk, diaryValue: widget.diaryValue,medicenList: medicenList,diaryPk: widget.diaryPk,)),
     );
         }
+        else if(name =="삭제"){
+          await _diaryServer.deleteDiary(widget.diaryPk);
+              Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp()),
+    );
+          
+        }
       },
+
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
       ),
