@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,6 +55,29 @@ class _PetsnalColorState extends State<PetsnalColor>
     // });
   }
 
+  Future<void> _getPetsnalColor() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+              backgroundColor: Color(0xFFE3D5CA),
+              child: Container(
+                width: 120.w,
+                height: 120.h,
+                child: Column(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          "펫스널컬러란?",
+                          style: TextStyle(fontSize: 15.sp),
+                        ))
+                  ],
+                ),
+              ));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -83,11 +108,67 @@ class _PetsnalColorState extends State<PetsnalColor>
                     color: Color(0xFFE3D5CA),
                     borderRadius: BorderRadius.circular(25),
                   ),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
+                        width: 250.w,
+                        height: 250.h,
+                        child: (file != null)
+                            ? Image.file(
+                                File(file!.path),
+                                fit: BoxFit.cover,
+                              )
+                            : const Icon(
+                                Icons.camera_alt_outlined,
+                                size: 50,
+                                color: Colors.black,
+                              ),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFF5EBE0),
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              width: 1,
+                              color: Color.fromARGB(255, 165, 142, 128),
+                            )),
+                      ),
+                      _button("촬영하기", _getCamera),
+                      _button("사진 찾기", _getGallery),
+                      _button("펫스널컬러란?", _getPetsnalColor)
+                    ],
+                  ),
                 )
               ],
             ),
             bottomNavigationBar: CustomBottomNavigatorBar(page: 0),
           )),
+    );
+  }
+
+  Widget _button(String buttonName, Function controller) {
+    return SizedBox(
+      width: 150.w,
+      height: 60.h,
+      child: Container(
+        margin: EdgeInsets.only(top: 20.h),
+        child: ElevatedButton(
+          onPressed: () {
+            controller();
+          },
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
+          ),
+          child: Text(
+            buttonName,
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
