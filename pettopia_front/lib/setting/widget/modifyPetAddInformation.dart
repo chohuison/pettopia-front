@@ -62,6 +62,7 @@ class _ModifyPetAddInformationState extends State<ModifyPetAddInformation> {
         'name': medicen['name'],
         'cnt': medicen['cnt'].toString()
       });
+      widgetPk++;
     }
   }
 

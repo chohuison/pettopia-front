@@ -22,7 +22,7 @@ class _BreedValueState extends State<BreedValue> {
         margin: EdgeInsets.only(
             top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
         width: 350.w,
-        height: 90.h,
+        height: 120.h,
         decoration: BoxDecoration(
           color: Color(0xFFF5EBE0),
           borderRadius: BorderRadius.circular(20.0),
@@ -33,11 +33,15 @@ class _BreedValueState extends State<BreedValue> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  widget.value['tip'],
+                Container(
+                  width: 300.w,
+                  child:  Text(
+                  widget.value['content'],
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15.0),
                 ),
+                )
+              
               ],
             )
           ],

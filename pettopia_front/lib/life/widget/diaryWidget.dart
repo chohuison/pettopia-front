@@ -8,6 +8,7 @@ import 'package:pettopia_front/hospital/widget/calendar.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/life/page/viewDiary.dart';
 import 'package:pettopia_front/life/page/writeDiary.dart';
+import 'package:pettopia_front/life/widget/checkCreateDiaryPopup.dart';
 import 'package:pettopia_front/server/DB/Diary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/diaryCalendar.dart';
@@ -65,14 +66,31 @@ class _DiaryWidgetState extends State<DiaryWidget>
   }
 
   Future<void> _viewDiary() async {
+    Map<String,dynamic> diaryValue = await _diaryServer.getDiary(_petPk,_date);
+    if(diaryValue.length> 0 ){
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ViewDiary(
+              diaryPk: diaryValue['diaryPk'],
+              diaryValue:diaryValue,
                   date: _date,
                   name: _petName,
                   pk: _petPk,
                 )));
+    }
+    else{
+showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content:CreateDiaryCheckPopup(),
+                  surfaceTintColor: Colors.white,
+                );
+              },
+            );
+    }
+
   }
 
   @override

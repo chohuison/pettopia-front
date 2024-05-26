@@ -10,56 +10,89 @@ import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/server/DB/Diary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 
-class WriteDiary extends StatefulWidget {
-  final DateTime date;
+class ModifyDiary extends StatefulWidget {
   final String name;
   final int pk;
-  final List<Map<String, dynamic>> medicenList;
-  const WriteDiary(
+  final Map<String,dynamic> diaryValue;
+  final List<Map<String,dynamic>> medicenList;
+  final int diaryPk;
+  const ModifyDiary(
       {Key? key,
-      required this.date,
       required this.name,
       required this.pk,
-      required this.medicenList})
+      required this.medicenList,
+      required this.diaryValue,
+      required this.diaryPk})
       : super(key: key);
 
   @override
-  _WriteDiaryState createState() => _WriteDiaryState();
+  _ModifyDiaryState createState() => _ModifyDiaryState();
 }
 
-class _WriteDiaryState extends State<WriteDiary>
+class _ModifyDiaryState extends State<ModifyDiary>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  late DateTime _date;
+  late DateTime _date =_convertStringToDateTime(widget.diaryValue['calendarDate']);
   late String _name;
   late int _petPk;
-  late int _mealCnt = 0;
-  late int _snackCnt = 0;
-  late int _walkCnt = 0;
+  late int _mealCnt = widget.diaryValue['mealCont'];
+  late int _snackCnt = widget.diaryValue['snackCnt'];
+  late int _walkCnt = widget.diaryValue['walkCnt'];
+  late List<dynamic> _medicenList = widget.diaryValue['medicineList']['list'];
   late String _mecidenName = "";
   late int _medicenCount = 0;
-  late bool _isWalk = false;
-  late bool _isMedicine = false;
-  late int _defecationCondition = 0;
-  late String _defecationDescription = "";
-  late String _etc = "";
+  late bool _isWalk = _walkCnt>0 ? true : false;
+  late bool _isMedicine = _medicenList.length>0 ? true : false;
+  late int _defecationCondition = _getDefecationCondition(widget.diaryValue['conditionOfDefecation']);
+  late String _defecationDescription = widget.diaryValue['defecationText'];
+  late String _etc = widget.diaryValue['etc'];
   late String errMesg = "";
   XFile? _file;
   String _profile = "";
   Pet _pet = Pet();
   Diary _diaryServer = Diary();
+  int _widgetPk =0;
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
   List<Widget> containerList = [];
-  int _widgetPk=0;
+  int _getDefecationCondition(String value){
+    if(value =="NORMAL"){
+      return 0;
+    }
+    else if(value =="PROBLEM"){
+      return 1;
+    }
+    else{
+      return 2;
+    }
+  }
+  DateTime _convertStringToDateTime(String dateString) {
+
+  final datePart = dateString.split(' ')[0] + " " + dateString.split(' ')[1] + " " + dateString.split(' ')[2];
+
+ 
+  final DateFormat dateFormat = DateFormat('yyyy년 M월 d일');
+
+  return dateFormat.parse(datePart);
+  }
 
   @override
   void initState() {
     super.initState();
-    _date = widget.date;
     _name = widget.name;
     _petPk = widget.pk;
+    print(widget.diaryValue['calendarDate']);
+      for (dynamic medicen in _medicenList) {
+      containerList.add(_medicineContainer(
+          _widgetPk, medicen['name'], medicen['cnt']));
+      _medicenWidgetValue.add({
+        'pk': _widgetPk,
+        'name': medicen['name'],
+        'cnt': medicen['cnt']
+      });
+      _widgetPk++;
+    }
   }
 
   void _mealCountHandle(int count) {
@@ -89,7 +122,7 @@ class _WriteDiaryState extends State<WriteDiary>
     });
   }
 
-  void _addMedicine( String medicenName, int medicenCount) {
+  void _addMedicine(String medicenName, int medicenCount) {
     print("medicenName: "+medicenName);
     setState(() {
       _medicenWidgetValue
@@ -160,7 +193,7 @@ class _WriteDiaryState extends State<WriteDiary>
       'calendarDate': _date.toIso8601String().split('T').first,
     };
     print(diaryInfo);
-    _diaryServer.createDiary(_petPk, diaryInfo);
+    _diaryServer.modifyDiary(widget.diaryPk, diaryInfo);
 
     Navigator.push(
       context,
@@ -285,7 +318,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                   Row(
                                     children: <Widget>[
                                       _typeContainer("약 *"),
-                                      _radio(_isMedicine, _updateIsMedicine)
+                                      _radio(_isMedicine, _updateIsMedicine,false)
                                     ],
                                   ),
                                   ...containerList,
@@ -317,7 +350,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                 child: Row(
                                   children: <Widget>[
                                     _typeContainer("산책 *"),
-                                    _radio(_isWalk, _updateIsWalk)
+                                    _radio(_isWalk, _updateIsWalk,true)
                                   ],
                                 )),
                             if (_isWalk)
@@ -401,7 +434,7 @@ class _WriteDiaryState extends State<WriteDiary>
         )));
   }
 
-  Widget _radio(bool isSelectO, Function(bool) updateFunction) {
+  Widget _radio(bool isSelectO, Function(bool) updateFunction, bool isWalk) {
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
         return Row(
@@ -427,6 +460,18 @@ class _WriteDiaryState extends State<WriteDiary>
                   groupValue: isSelectO,
                   onChanged: (bool? value) {
                     updateFunction(value!);
+                    if(isWalk == true){
+                       setState(() {
+                        _walkCnt = 0;
+    });
+                    }
+                    else{
+                        setState(() {
+                        _medicenList = [];
+                        _medicenWidgetValue=[];
+                        containerList=[];
+    });
+                    }
                   },
                 ),
                 Text('X'),
@@ -508,10 +553,10 @@ class _WriteDiaryState extends State<WriteDiary>
         },
         textAlign: TextAlign.center,
         decoration: InputDecoration(
-            hintText: "배변 상태를 입력해주세요.",
+            hintText: _defecationDescription,
             hintStyle: TextStyle(
               fontSize: 13.sp,
-              color: Color(0xFFAFA59B),
+              color: Colors.black,
             ),
             border: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFD5BDAF)),
@@ -533,6 +578,11 @@ class _WriteDiaryState extends State<WriteDiary>
         },
         maxLines: null,
         decoration: InputDecoration(
+          hintText: _etc,
+            hintStyle: TextStyle(
+              fontSize: 13.sp,
+              color: Colors.black,
+            ),
             border: OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFD5BDAF)),
                 borderRadius: BorderRadius.all(Radius.circular(15))),
