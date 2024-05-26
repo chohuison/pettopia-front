@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/beauty/page/petColor.dart';
+import 'package:pettopia_front/beauty/page/petsnalColor.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/main.dart';
@@ -64,10 +65,10 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => HospitalSearch()),
             );
           } else if (pageIndex == 0) {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => PetColor()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PetsnalColor()),
+            );
           } else if (pageIndex == 2) {
             Navigator.push(
               context,

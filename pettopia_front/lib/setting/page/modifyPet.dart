@@ -11,9 +11,10 @@ import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/enum/PetBreedList.dart';
 
 class ModifyPet extends StatefulWidget {
-  final Map<String,dynamic> petInfo;
+  final Map<String, dynamic> petInfo;
   final int petPk;
-  const ModifyPet({Key? key,required this.petInfo, required this.petPk}) : super(key: key);
+  const ModifyPet({Key? key, required this.petInfo, required this.petPk})
+      : super(key: key);
 
   @override
   _ModifyPetState createState() => _ModifyPetState();
@@ -31,7 +32,7 @@ class _ModifyPetState extends State<ModifyPet> {
   late String _parentPhoneNum = "";
   late String _wight = "";
   late String errMesg = "";
-  XFile? _file=null;
+  XFile? _file = null;
   String _profile = "";
 
   Pet _pet = Pet();
@@ -40,24 +41,30 @@ class _ModifyPetState extends State<ModifyPet> {
   @override
   void initState() {
     super.initState();
-   _breedPk=_breedList.findSpeciesPk(widget.petInfo['speciesName']);
-   _petNumber = widget.petInfo['dogRegNo'];
-   _petName = widget.petInfo['dogNm'];
-   _birth = widget.petInfo['birth'].toString();
-   _fur = widget.petInfo['hair'];
-   _neutering = widget.petInfo['neuterYn'] == true ? 0 : 1;
-   _sex = widget.petInfo['sexNm'] == true ? 0 : 1;
-   _parentName = widget.petInfo['protectorName'];
-   _parentPhoneNum = widget.petInfo['protectorPhoneNum'];
-   _wight = widget.petInfo['weight'].toString();
-   _profile = widget.petInfo['profile'];
-  
-  
+    _breedPk = _breedList.findSpeciesPk(widget.petInfo['speciesName']);
+    _petNumber = widget.petInfo['dogRegNo'];
+    _petName = widget.petInfo['dogNm'];
+    _birth = widget.petInfo['birth'].toString();
+    _fur = widget.petInfo['hair'];
+    _neutering = widget.petInfo['neuterYn'] == true ? 0 : 1;
+    _sex = widget.petInfo['sexNm'] == true ? 0 : 1;
+    _parentName = widget.petInfo['protectorName'];
+    _parentPhoneNum = widget.petInfo['protectorPhoneNum'];
+    _wight = widget.petInfo['weight'].toString();
+    _profile = widget.petInfo['profile'];
   }
 
-   void onHandlePetInformation(
-      String profile,String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
-    _profile=profile;
+  void onHandlePetInformation(
+      String profile,
+      String petNum,
+      String petName,
+      String wight,
+      int breedPk,
+      int fur,
+      int sex,
+      int neutering,
+      String birth) {
+    _profile = profile;
     _petNumber = petNum;
     _petName = petName;
     _breedPk = breedPk;
@@ -67,7 +74,7 @@ class _ModifyPetState extends State<ModifyPet> {
     _neutering = neutering;
     _birth = birth;
   }
-  
+
   void petParentValueHandle(String parentName, String parentPhoneNum) {
     _parentName = parentName;
     _parentPhoneNum = parentPhoneNum;
@@ -78,7 +85,6 @@ class _ModifyPetState extends State<ModifyPet> {
   }
 
   Future<void> _saveButtonHandle() async {
-    
     if (_petNumber == "" ||
         _petName == "" ||
         _birth == "" ||
@@ -89,7 +95,7 @@ class _ModifyPetState extends State<ModifyPet> {
       });
     } else {
       Map<String, dynamic> petInfo = {
-        'dogRegNo':_petNumber,
+        'dogRegNo': _petNumber,
         'dogNm': _petName,
         'speciesPk': _breedPk,
         'hair': _fur,
@@ -100,21 +106,18 @@ class _ModifyPetState extends State<ModifyPet> {
         'protectorName': _parentName,
         'protectorPhoneNum': _parentPhoneNum
       };
-          if(_profile != ""){
-
+      if (_profile != "") {
         petInfo['profile'] = _profile;
       }
       print(petInfo);
-   
+
       _pet.modifyPet(petInfo, widget.petPk);
-  
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyApp()),
       );
     }
-
-    
   }
 
   @override
@@ -167,7 +170,7 @@ class _ModifyPetState extends State<ModifyPet> {
                     height: 450.h,
                     child: ModifyPetInformation(
                       onHandlePetInformation: onHandlePetInformation,
-                      petInfo:widget.petInfo,
+                      petInfo: widget.petInfo,
                     ),
                   ),
                   // 보호자 정보 콘테이너
@@ -213,7 +216,8 @@ class _ModifyPetState extends State<ModifyPet> {
                       child: Center(
                         child: Text(
                           '등록',
-                          style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.black),
                         ),
                       ),
                     ),

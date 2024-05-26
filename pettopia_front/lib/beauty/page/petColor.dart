@@ -29,7 +29,6 @@
 //   @override
 //   void initState() {
 //     super.initState();
-    
 
 //     _beautyAppBar = _appBarList.getBeautyAppBar();
 //     print(_beautyAppBar);
@@ -37,16 +36,15 @@
 
 //   List<Map<String, dynamic>>? _hospitalList;
 //   //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯
-//   void _fetchHospitalList(String selectedRegion){
-  
+//   void _fetchHospitalList(String selectedRegion) {
 //     _apiServer.getHospitalService();
 //     setState(() {
-//       _hospitalList= [
-//       {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
-//       {'name': '병원2', 'address': '주소2', 'phone': '전화번호2'},
-//       {'name': '병원3', 'address': '주소3', 'phone': '전화번호3'},
-//       {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
-//     ];
+//       _hospitalList = [
+//         {'name': '병원1', 'address': '주소1', 'phone': '전화번호1'},
+//         {'name': '병원2', 'address': '주소2', 'phone': '전화번호2'},
+//         {'name': '병원3', 'address': '주소3', 'phone': '전화번호3'},
+//         {'name': '병원4', 'address': '주소4', 'phone': '전화번호4'},
+//       ];
 //     });
 //   }
 
@@ -72,47 +70,41 @@
 //                   barList: _beautyAppBar,
 //                   buttonHandler: _appBarList.beautyAppBarHandler),
 //               Container(
-//                 width: 500.w,
-//                 height: 485.h,
-//                 margin:
-//                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
-//                 decoration: BoxDecoration(
-//                   color: Color(0xFFD5BDAF),
-//                   borderRadius: BorderRadius.circular(25),
-//                 ),
-//                 child: Stack(
-//                   children: [
-//                     Positioned(
-//                         top:35.h,
-//                         child: Container(
-//                       //  color: Colors.blue,
-//                        height: 440.h,
-//                        width: 370.w,
-//                        child:Column(
-//                         children:<Widget> [
-//                        if (_hospitalList != null)
-//                       HospitalList(
-//                         hospitalList: _hospitalList!,
-//                       ),
-
-//                         ],
-
-//                        )
-                      
-//                     )),
-//                     //selectBox부분 
-//                     Positioned(
-                    
-//                       width: 200.w,
-//                       child: Container(
-//                       // color: Colors.red,
-//                       height: 300.h,
-//                        child: RegionSelectBox(onRegionSelected: _fetchHospitalList),
-                     
-//                     ))
-//                   ],
-//                 )
-//               ),
+//                   width: 500.w,
+//                   height: 485.h,
+//                   margin:
+//                       EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
+//                   decoration: BoxDecoration(
+//                     color: Color(0xFFD5BDAF),
+//                     borderRadius: BorderRadius.circular(25),
+//                   ),
+//                   child: Stack(
+//                     children: [
+//                       Positioned(
+//                           top: 35.h,
+//                           child: Container(
+//                               //  color: Colors.blue,
+//                               height: 440.h,
+//                               width: 370.w,
+//                               child: Column(
+//                                 children: <Widget>[
+//                                   if (_hospitalList != null)
+//                                     HospitalList(
+//                                       hospitalList: _hospitalList!,
+//                                     ),
+//                                 ],
+//                               ))),
+//                       //selectBox부분
+//                       Positioned(
+//                           width: 200.w,
+//                           child: Container(
+//                             // color: Colors.red,
+//                             height: 300.h,
+//                             child: RegionSelectBox(
+//                                 onRegionSelected: _fetchHospitalList),
+//                           ))
+//                     ],
+//                   )),
 //             ],
 //           ),
 //           bottomNavigationBar: CustomBottomNavigatorBar(page: 0),
