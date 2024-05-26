@@ -72,6 +72,7 @@ class _DiaryWidgetState extends State<DiaryWidget>
         context,
         MaterialPageRoute(
             builder: (context) => ViewDiary(
+              diaryPk: diaryValue['diaryPk'],
               diaryValue:diaryValue,
                   date: _date,
                   name: _petName,
