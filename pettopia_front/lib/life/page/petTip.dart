@@ -9,6 +9,7 @@ import 'package:pettopia_front/life/widget/breedBar.dart';
 
 import 'package:pettopia_front/life/widget/tipList.dart';
 import 'package:pettopia_front/life/widget/breedSelectBox.dart';
+import 'package:pettopia_front/server/DB/Tip.dart';
 
 class PetTip extends StatefulWidget {
   const PetTip({Key? key}) : super(key: key);
@@ -33,23 +34,51 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
   // ToDo
   // DB에서 tip List 가져오도록 수정해야 함
   var _tipList;
+  String _selectedBreed="";
+  String _tipCategory="";
+  int breedPk =0;
+  Tip _tipServer = Tip();
   void _fetchBreedList(String selectedBreed) {
+    print(selectedBreed);
     setState(() {
-      _tipList = [
-        {'tip': 'tip1'},
-        {'tip': 'tip2'},
-        {'tip': 'tip3'},
-        {'tip': 'tip4'},
-      ];
+    _selectedBreed =selectedBreed;
+    if(selectedBreed == "강아지"){
+      breedPk=1;
+   
+    
+    }else{
+      breedPk=2;
+    }
+       _tipList=[];
     });
   }
+
+  String getTipCategory(int index){
+    if(index ==1 ){
+      return "DANGEROUSFOOD";
+    }
+    else if (index == 2){
+      return "DYSTROPY";
+    }
+    else if (index ==3){
+      return "VACCINATION";
+    }
+    else{
+      return "TRAINING";
+    }
+  }
+
 
   bool _isSelected = false;
   int _index = 0;
 
-  int _getIndex(int index) {
+  Future<void> _getIndex(int index)async {
     _index = index;
-    return index;
+    String tipCategory = getTipCategory(index);
+    List<Map<String,dynamic>> list = await _tipServer.getTip(breedPk, tipCategory);
+    setState(() {
+      _tipList=list;
+    });
   }
 
   @override
@@ -102,7 +131,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
                                               setState(
                                                 () {
                                                   _isSelected = true;
-                                                  _index = _getIndex(index);
+                                                  _getIndex(index);
                                                 },
                                               );
                                             },
