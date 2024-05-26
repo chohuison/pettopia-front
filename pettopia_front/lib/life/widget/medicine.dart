@@ -5,7 +5,7 @@ import 'package:pettopia_front/life/widget/medicenSelectBox.dart';
 
 class Medicine extends StatefulWidget {
   final Function(String, int) onHandleMedicine;
-  final Function(int, String, int) addMedicine;
+  final Function(String, int) addMedicine;
   final List<Map<String,dynamic>> medicenList;
 
   const Medicine({
@@ -80,7 +80,7 @@ class __MedicineState extends State<Medicine> with AutomaticKeepAliveClientMixin
             onTap: () {
               print(_name);
               if ( _count != 0) {
-                widget.addMedicine(_widgetPk, _name, _count);
+                widget.addMedicine( _name, _count);
                 _widgetPk++;
                 _resetMedicine();
               } else {
