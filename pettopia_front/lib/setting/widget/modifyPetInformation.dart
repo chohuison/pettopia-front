@@ -148,10 +148,10 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
       _file = pickedImage;
 
     });
-              String imagUrl =  await _petServer.seUploat(_file!);
+              //String imagUrl =  await _petServer.seUploat(_file!);
     setState(() {
         
-      _profile =imagUrl;
+     // _profile =imagUrl;
     });
  
    
