@@ -56,7 +56,11 @@ class _PetAddInformationState extends State<PetAddInformation> {
        _medicenWidgetValue.add({'pk':pk,'name': medicenName, 'cnt':medicenCount});
 
    containerList.add(_mecicenContainer(pk,medicenName,medicenCount));
+   _mecidenName="";
+   _medicenCount="";
+
     });
+    
   }
 
   void _deleteMedicen(int pk) {
@@ -99,6 +103,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
     if(_mecidenName != "" && _medicenCount!="" ){
        _requestMedicineList.add({'name':_mecidenName, 'cnt': int.parse(_medicenCount)});
     }
+
    Map<String, dynamic> data = {
       'petExtraInfo': {
         'environment': _enviorment,
@@ -122,7 +127,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
            debugShowCheckedModeBanner: false ,
         title: "petAddInformation",
@@ -162,11 +167,12 @@ class _PetAddInformationState extends State<PetAddInformation> {
                               top: 45.h,
                               child: //생활 습관 컨테이너
                                   Container(
-                                      width: 370.w,
+                                      width: 350.w,
                                       height: 155.h,
                                       margin: EdgeInsets.only(
                                         // top: 5.h,
                                         left: 15.w,
+                                        // right: 20.w
                                       
                                       ),
                                       decoration: BoxDecoration(

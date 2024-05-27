@@ -26,7 +26,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       child: Container(
         height: 70.h,
         decoration: BoxDecoration(

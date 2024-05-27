@@ -84,7 +84,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(411.4, 683.4),
+        designSize: const Size(411.42857142857144, 683.4285714285714),
         child: MaterialApp(
              debugShowCheckedModeBanner: false ,
             title: "petTip",
@@ -157,7 +157,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
                               child: Container(
                                   //color: Colors.blue,
                                   margin: EdgeInsets.fromLTRB(0, 25.h, 0, 0),
-                                  height: 400.h,
+                                  height: 380.h,
                                   width: 370.w,
                                   child: SingleChildScrollView(
                                     child: Column(

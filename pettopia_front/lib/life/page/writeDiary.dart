@@ -185,7 +185,7 @@ class _WriteDiaryState extends State<WriteDiary>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
            debugShowCheckedModeBanner: false ,
         title: "writeDiary",
@@ -227,7 +227,7 @@ class _WriteDiaryState extends State<WriteDiary>
                         color: Color(0xFFF5EBE0),
                         border: Border.all(
                           color: Color(0xFFD5BDAF),
-                          width: 1.0,
+                          width: 1.0.w,
                         ),
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -257,6 +257,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                   ],
                                 )),
                             Container(
+                               width: 350.w,
                                 margin: EdgeInsets.only(top: 10.h, left: 10.w),
                                 child: Row(
                                   children: <Widget>[
@@ -268,6 +269,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                   ],
                                 )),
                             Container(
+                           
                                 margin: EdgeInsets.only(top: 10.h, left: 10.w),
                                 child: Row(
                                   children: <Widget>[
@@ -280,6 +282,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                 )),
                             //약
                             Container(
+                                width: 350.w,
                               margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 25.w),
                               child: Column(
                                 children: [
@@ -293,12 +296,13 @@ class _WriteDiaryState extends State<WriteDiary>
                                   if (_isMedicine == true)
                                     Container(
 
+  width: 350.w,
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(20.0),
                                         border: Border.all(
                                           color: Color(0xFFD5BDAF), // 테두리 색상
-                                          width: 2.0, // 테두리 두께
+                                          width: 2.0.w, // 테두리 두께
                                         ),
                                       ),
                                       height: 150.h,
@@ -314,6 +318,7 @@ class _WriteDiaryState extends State<WriteDiary>
                             ),
 
                             Container(
+                                width: 350.w,
                                 margin: EdgeInsets.only(top: 10.h, left: 10.w),
                                 child: Row(
                                   children: <Widget>[
@@ -327,6 +332,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                 handleCount: _walkCountHandle,
                               ),
                             Container(
+                                width: 350.w,
                                 margin: EdgeInsets.only(top: 10.h, left: 10.w),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,6 +345,7 @@ class _WriteDiaryState extends State<WriteDiary>
                             _defecationDes(
                                 _defecationDescription, _updateDefecationDes),
                             Container(
+                                width: 350.w,
                               margin: EdgeInsets.only(top: 10.h, left: 10.w),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

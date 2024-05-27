@@ -38,11 +38,12 @@ class _SettingMainhState extends State<SettingMain> {
     _medicenList=petAddExtraInfo['responseMedicineList']['list'];
     _height = _medicenList.length * 160 + 800;
   }
+  
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size( 411.42857142857144, 683.4285714285714),
       child: MaterialApp(
            debugShowCheckedModeBanner: false ,
         title: "settingMain",
@@ -117,6 +118,12 @@ class _SettingMainhState extends State<SettingMain> {
               MaterialPageRoute(builder: (context) => CreatePet()),
             );
           } else if (index == 1) {
+              final Size screenSize = MediaQuery.of(context).size;
+    final double screenWidth = screenSize.width;
+    final double screenHeight = screenSize.height;
+    print(screenWidth);
+    print(screenHeight);
+   
            await _getList();
             print("가져온 petList");
             print(_petList);

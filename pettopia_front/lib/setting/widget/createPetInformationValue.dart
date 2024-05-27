@@ -229,19 +229,19 @@ class _CreatePetInformationState extends State<CreatePetInformation>
           margin: EdgeInsets.only(top: 5.h, bottom: 5.h, left: 16.w),
           child: Column(
             children: <Widget>[
-              _textFieldContainer("번호*", "반려동물 등록 번호를 입력해주세요", 0, 10,
+              _textFieldContainer("번호*", "반려동물 등록 번호를 입력해주세요",
                   _petNumberController, false),
               _textFieldContainer(
-                  "이름*", "이름을 입력해주세요", 30, 10, _petNameController, false),
+                  "이름*", "이름을 입력해주세요", _petNameController, false),
               _textFieldContainer(
-                  "몸무게*", "몸무게 입력해주세요", 30, 10, _onWightUpdate, true),
+                  "몸무게*", "몸무게 입력해주세요",  _onWightUpdate, true),
                Container(
-                height: 150,
-                margin: EdgeInsets.only(left: 18),
+                height: 150.h,
+                margin: EdgeInsets.only(left: 18.w),
                 child: Stack(
                   children: [
                     Positioned(
-                        top: 40,
+                        top: 40.h,
                         child: Container(
                             child: Column(
                           children: <Widget>[
@@ -254,14 +254,14 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                     Positioned(
                         child: Container(
                       // width: 400,
-                      height: 95,
+                      height: 95.h,
                       // color: Colors.blue,
                       child: Row(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(bottom: 60),
-                            width: 90,
-                            height: 30,
+                            margin: EdgeInsets.only(bottom: 60.h),
+                            width: 90.w,
+                            height: 30.h,
                             child: _typeContainer("품종*"),
                           ),
                           SpeciesSelectBox(
@@ -277,7 +277,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                 ),
               ),
               _textFieldContainer(
-                  "생년월일*", "YYYYMMDD", 40, 10, _birthController, true),
+                  "생년월일*", "YYYYMMDD", _birthController, true),
             ],
           ))
     ]);
@@ -300,7 +300,7 @@ Widget _typeContainer(String name) {
 }
 
 Widget _textFieldContainer(String containerName, String labelText,
-    int horizontal, int vertical, Function contorller, bool isDigit) {
+    Function contorller, bool isDigit) {
   return Container(
       margin: EdgeInsets.only(bottom: 5.h),
       width: 300.w,
@@ -317,8 +317,7 @@ Widget _textFieldContainer(String containerName, String labelText,
                   keyboardType: isDigit ? TextInputType.number : null,
                   decoration: InputDecoration(
                     hintText: labelText,
-                    contentPadding: EdgeInsets.symmetric(
-                        horizontal: horizontal.w, vertical: vertical.h),
+                  
                     hintStyle: TextStyle(
                       fontSize: 11.0.sp,
                       color: Color(0xFFAFA59B),
