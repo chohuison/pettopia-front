@@ -171,6 +171,7 @@ class _ModifyPetState extends State<ModifyPet> {
                     child: ModifyPetInformation(
                       onHandlePetInformation: onHandlePetInformation,
                       petInfo: widget.petInfo,
+                      petPk:widget.petPk
                     ),
                   ),
                   // 보호자 정보 콘테이너
