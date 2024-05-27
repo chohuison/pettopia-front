@@ -68,6 +68,7 @@ class _ViewDiaryState extends State<ViewDiary>
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
+           debugShowCheckedModeBanner: false ,
         title: "writeDiary",
         builder: (context, child) {
           return MediaQuery(

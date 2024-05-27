@@ -64,6 +64,7 @@ class _PetSpeackerState extends State<PetSpeacker>
     return ScreenUtilInit(
         designSize: const Size(411.4, 683.4),
         child: MaterialApp(
+             debugShowCheckedModeBanner: false ,
             title: "shortRecords",
             builder: (context, child) {
               return MediaQuery(
