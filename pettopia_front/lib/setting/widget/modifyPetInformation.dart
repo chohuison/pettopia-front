@@ -13,10 +13,12 @@ class ModifyPetInformation extends StatefulWidget {
    final Function(String,String, String, String, int, int, int, int, String)
       onHandlePetInformation;
   final Map<String,dynamic> petInfo;
+  final int petPk;
   const ModifyPetInformation({
     Key? key,
     required this.onHandlePetInformation,
     required this.petInfo,
+    required this.petPk,
   }) : super(
           key: key,
         );
@@ -148,10 +150,10 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
       _file = pickedImage;
 
     });
-              String imagUrl =  await _petServer.seUploat(_file!);
+              String imagUrl =  await _petServer.s3Upload(_file!, widget.petPk);
     setState(() {
-        
-      _profile =imagUrl;
+     _profile="";   
+     _profile =imagUrl;
     });
  
    

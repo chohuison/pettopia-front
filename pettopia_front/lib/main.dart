@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
       designSize: const Size(411.4, 683.4), // 디자인 기준 크기를 설정합니다.
       child: MaterialApp(
         title: "main_page",
+        debugShowCheckedModeBanner: false ,
         builder: (context, child) {
           // MediaQuery를 사용하여 텍스트 크기 조정을 비활성화합니다.
           return MediaQuery(

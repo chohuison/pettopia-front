@@ -22,7 +22,18 @@ class ShotRecords{
   print(_serverDbUrl);
 }
   
-  Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, int age){
+  Map<String,dynamic> AddShotRecordCreateRequestToJson(int petPk, String type, int num, int age, DateTime createAt){
+    return{
+      'petPk':petPk,
+      'type':type,
+      'num':num,
+      'age':age,
+      'createAt' : createAt.toIso8601String().split('T').first,
+      
+    };
+  }
+
+Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, int age){
     return{
       'petPk':petPk,
       'type':type,
@@ -34,7 +45,7 @@ class ShotRecords{
 
 
 
-  Future<void> makeShotRecords(int petPk, String type, int num, int age) async{
+  Future<void> makeShotRecords(int petPk, String type, int num, int age, DateTime createAt) async{
     
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
@@ -45,7 +56,7 @@ class ShotRecords{
     final headers ={'Content-Type': 'application/json',
      'Authorization': 'Bearer $assessToken', 
    };
-    final body =jsonEncode(AddShotRecordRequestToJson(petPk, type, num, age));
+    final body =jsonEncode(AddShotRecordCreateRequestToJson(petPk, type, num, age,createAt));
 
     final response = await http.post(
     url,
