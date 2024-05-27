@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/mainPage/page/DraggableSheet';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,11 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
+              body: DraggableSheet(
+                child: SizedBox(
+                  height: 100,
+                ),
+              ),
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
               resizeToAvoidBottomInset: false,
 
