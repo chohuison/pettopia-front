@@ -23,8 +23,9 @@ class Pet {
   }
 
 //s3url
-  Future<String> getPresignedUrl() async {
+  Future<String> getPresignedUrl(int petPk) async {
     await _getServerUrl();
+    print("petPk : $petPk");
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     String finalUrl = _serverDbUrl + 'api/v1/s3/presigned';
     print(finalUrl);
@@ -34,7 +35,11 @@ class Pet {
 
       'Authorization': 'Bearer $assessToken', // JWT 토큰,
     };
-    final response = await http.post(uri, headers: headers);
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode(petPk),
+    );
 
     if (response.statusCode == 200) {
       // UTF-8로 응답을 디코딩하고 JSON 파싱
@@ -49,13 +54,13 @@ class Pet {
       return data["presigned_url"]; // 결과 반환
     } else {
       throw Exception(
-          "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
+          "Failed to fetch presignedUrl. Status code: ${response.body}"); // 예외 발생
     }
   }
 
   //s3사진 업로드//
-  Future<String> seUploat(XFile xFile) async {
-    String presignedUrl = await getPresignedUrl();
+  Future<String> s3Upload(XFile xFile, int petPk) async {
+    String presignedUrl = await getPresignedUrl(petPk);
     final url = Uri.parse(presignedUrl);
     final File imageFile = File(xFile.path);
 
@@ -161,7 +166,7 @@ class Pet {
       body: body,
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       print("Shot record modify successfully!");
     } else {
       print("Failed to create shot record. Status code :${response.body}");

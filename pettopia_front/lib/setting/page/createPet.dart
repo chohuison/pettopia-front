@@ -28,6 +28,7 @@ class _CreatePetState extends State<CreatePet> {
   Pet _pet = Pet();
   late String errMesg = "";
   String _profile = "";
+  XFile? _file = null;
 
   void onHandlePetInformation(
       String profile,String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
@@ -40,6 +41,10 @@ class _CreatePetState extends State<CreatePet> {
     _wight = wight;
     _neutering = neutering;
     _birth = birth;
+  }
+
+  void onHandleXfile(XFile xfile){
+    _file=xfile;
   }
 
   void petParentValueHandle(String parentName, String parentPhoneNum) {
@@ -74,13 +79,36 @@ class _CreatePetState extends State<CreatePet> {
         'protectorName': _parentName,
         'protectorPhoneNum': _parentPhoneNum
       };
-          if(_profile != ""){
-        petInfo['profile'] = _profile;
+        print(petInfo);
+      await _pet.createPet(petInfo);
+      List<Map<String,dynamic>> petList = await _pet.getPetList();
+      int petPk =0;
+      for(Map<String,dynamic> pet in petList){
+        if(pet['dogNm']== petInfo['dogNm']){
+          petPk=pet['petPk'];
+          print("여기서 petPk: $petPk");
+        }
       }
-    
-      print(petInfo);
-      _pet.createPet(petInfo);
+      if(_file != null){
+        String presignedUrl = await _pet.s3Upload(_file!, petPk);
+        print(presignedUrl);
+        setState(() {
+          _profile= presignedUrl;
+        });
+        print("profile: $_profile");
+        petInfo['profile'] = _profile;
+        print(petInfo);
+     
+        await _pet.modifyPet(petInfo, petPk);
+      }
+
+
   
+      //     if(_profile != ""){
+      //   petInfo['profile'] = _profile;
+      // }
+    
+    
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyApp()),
@@ -139,6 +167,7 @@ class _CreatePetState extends State<CreatePet> {
                     height: 450.h,
                     child: CreatePetInformation(
                       onHandlePetInformation: onHandlePetInformation,
+                      xfileHandle:onHandleXfile,
                     ),
                   ),
                   // 보호자 정보 콘테이너

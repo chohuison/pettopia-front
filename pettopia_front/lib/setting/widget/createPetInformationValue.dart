@@ -13,9 +13,11 @@ import 'package:pettopia_front/setting/widget/speciesSelectBox.dart';
 class CreatePetInformation extends StatefulWidget {
   final Function(String,String, String, String, int, int, int, int, String)
       onHandlePetInformation;
+  final Function(XFile) xfileHandle;
   const CreatePetInformation({
     Key? key,
     required this.onHandlePetInformation,
+    required this.xfileHandle,
   }) : super(
           key: key,
         );
@@ -134,9 +136,10 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     setState(() {
       _file = pickedImage;
     });
-     _profile = await _petServer.seUploat(_file!);
-    widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
-        _fur, _sex, _neutering, _birth);
+    widget.xfileHandle(_file!);
+    //  _profile = await _petServer.seUploat(_file!);
+    // widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
+    //     _fur, _sex, _neutering, _birth);
    
 
   }
@@ -232,17 +235,17 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                   "이름*", "이름을 입력해주세요", 30, 10, _petNameController, false),
               _textFieldContainer(
                   "몸무게*", "몸무게 입력해주세요", 30, 10, _onWightUpdate, true),
-              Container(
-                height: 150.h,
-                margin: EdgeInsets.only(left: 18.w),
+               Container(
+                height: 150,
+                margin: EdgeInsets.only(left: 18),
                 child: Stack(
                   children: [
                     Positioned(
-                        top: 40.h,
+                        top: 40,
                         child: Container(
                             child: Column(
                           children: <Widget>[
-                            _radio("단장모*", "단모", "장모", _fur!, _onFurUpdate, 10),
+                          _radio("단장모*", "단모", "장모", _fur!, _onFurUpdate, 10),
                             _radio("성별*", "남", "여", _sex!, _onSexUpdate, 22),
                             _radio("중성화*", "O", "X", _neutering!,
                                 _onnNuteringUpdate, 24),
@@ -250,23 +253,23 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                         ))),
                     Positioned(
                         child: Container(
-                      // width:400.w,
-                      height: 95.h,
+                      // width: 400,
+                      height: 95,
                       // color: Colors.blue,
                       child: Row(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(bottom: 60.h),
-                            width: 90.w,
-                            height: 30.h,
+                            margin: EdgeInsets.only(bottom: 60),
+                            width: 90,
+                            height: 30,
                             child: _typeContainer("품종*"),
                           ),
                           SpeciesSelectBox(
-                              onSpeciesSelected: onSeleted,
-                              petName: _speciesList,
-                              petNameValue: _species,
-                              petPk:_speciesPk ,
-                            )
+                            onSpeciesSelected: onSeleted,
+                            petName: _speciesList,
+                            petNameValue: _species,
+                            petPk: _speciesPk,
+                          )
                         ],
                       ),
                     )),
