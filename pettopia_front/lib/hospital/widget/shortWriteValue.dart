@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
@@ -68,7 +68,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
         _errorText = "필수 입력 사항을 모두 입력해주세요";
       });
     } else {
-      shotRecordsServer.makeShotRecords(_pk, _type, _count, _age);
+      shotRecordsServer.makeShotRecords(_pk, _type, _count, _age,widget.selectedDay);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ShortRecords()),
@@ -113,7 +113,8 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                       Row(children: <Widget>[
                         _typeContainer("날짜", 5),
                         Text(
-                          "2024년 5월 1일",
+                         DateFormat("yyyy년 MM월 dd일")
+                                            .format(widget.selectedDay),
                           style: TextStyle(fontSize: 17.sp),
                         ),
                       ]),

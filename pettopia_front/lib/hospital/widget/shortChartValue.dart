@@ -36,7 +36,7 @@ class ShortChartValueState extends State<ShortChartValue> {
       child: Container(
         margin: EdgeInsets.only(top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
         width: 350.w,
-        height: 90.h,
+        height: 100.h,
         decoration: BoxDecoration(
           color: Color(0xFFF5EBE0),
           borderRadius: BorderRadius.circular(10.0), 
@@ -49,6 +49,12 @@ class ShortChartValueState extends State<ShortChartValue> {
               margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w,),
               child:Column(
                 children: <Widget>[
+                  Container(
+                                 margin: EdgeInsets.only(right: 140.0.w,),
+                    child: Text(widget.value['createAt'].toString())
+                    
+                  )
+                 ,
                   Row(
                     children: <Widget>[
                       Text(widget.value['petName'],
@@ -59,7 +65,7 @@ class ShortChartValueState extends State<ShortChartValue> {
                       SizedBox(
                         width: 5.0.w,
                       ),
-                      Text(_intToString(widget.value['age']),
+                      Text(_intToString(widget.value['age'])+"주차",
                          style: TextStyle(
                         fontSize: 13.sp,
                       
@@ -76,7 +82,7 @@ class ShortChartValueState extends State<ShortChartValue> {
                        SizedBox(
                         width: 5.0.w,
                       ),
-                      Text(_intToString(widget.value['num']),
+                      Text(_intToString(widget.value['num'])+"차시",
                         style: TextStyle(
                         fontSize: 13.sp,
                       
@@ -91,7 +97,7 @@ class ShortChartValueState extends State<ShortChartValue> {
   width: 100.w,
   child: Column(
     children: <Widget>[
-      SizedBox(height: 10.h,),
+      SizedBox(height: 20.h,),
       SizedBox(
         width: 90.w,
         height: 30.h,
