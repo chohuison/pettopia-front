@@ -103,6 +103,7 @@ class _KakaoMapState extends State<KakaoMap>
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
+           debugShowCheckedModeBanner: false ,
         title: "hospitalSearch",
         builder: (context, child) {
           return MediaQuery(

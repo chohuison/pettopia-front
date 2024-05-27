@@ -135,6 +135,7 @@ void _kakaoWebViewSetting() async {
       designSize: const Size(411.4, 683.4),
       builder: (_, __) {
         return MaterialApp(
+             debugShowCheckedModeBanner: false ,
           title: "Login",
           home: Scaffold(
             resizeToAvoidBottomInset: false,

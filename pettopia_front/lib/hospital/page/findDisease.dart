@@ -49,6 +49,7 @@ class _FindDiseaseState extends State<FindDisease>
       designSize: const Size(411.4, 683.4),
       builder: (context, child) {
         return MaterialApp(
+             debugShowCheckedModeBanner: false ,
           title: "Find Disease",
           builder: (context, child) {
             return MediaQuery(

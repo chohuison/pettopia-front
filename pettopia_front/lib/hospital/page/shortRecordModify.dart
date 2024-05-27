@@ -92,6 +92,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
+           debugShowCheckedModeBanner: false ,
         title: "shortRecords",
         builder: (context, child) {
           return MediaQuery(
