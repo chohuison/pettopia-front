@@ -43,9 +43,9 @@ class _CreatePetParentValueState extends State<CreatePetParentValue>  with Autom
       child: Text("보호자 정보",
        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp ),)
      ),
-     _textFieldContainer("이름*", "보호자 이름을 입력해주세요",15,10,parentNameChange),
+     _textFieldContainer("이름*", "보호자 이름을 입력해주세요",parentNameChange),
 
-     _textFieldContainer("연락처*","010-****-****",50,10,parentPhoneNumChange)
+     _textFieldContainer("연락처*","010-****-****",parentPhoneNumChange)
     ]);
   }
 }
@@ -66,7 +66,7 @@ Widget _typeContainer(String name) {
 }
 
 
-Widget _textFieldContainer(String containerName, String labelText, int horizontal, int vertical,Function contorller){
+Widget _textFieldContainer(String containerName, String labelText,Function contorller){
   return   Container(
                   margin: EdgeInsets.only(bottom: 10.h, left: 15.w),
                   width: 380.w,
@@ -84,7 +84,7 @@ Widget _textFieldContainer(String containerName, String labelText, int horizonta
                               },
                               decoration: InputDecoration(
                                 hintText: labelText,
-                                 contentPadding: EdgeInsets.symmetric(horizontal: horizontal.w,vertical: vertical.h), 
+
                                
                                 hintStyle: TextStyle(fontSize: 11.0.sp, color: Color(0xFFAFA59B),),
                                    border: UnderlineInputBorder(

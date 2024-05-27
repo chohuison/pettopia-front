@@ -66,7 +66,7 @@ class _ViewPetAddInfoState extends State<ViewPetAddInfo>
                 children: <Widget>[
                   _typeContainer("생활환경", _getEnviorment(widget.petAddInfo['environment'])),
                   _typeContainer("운동강도", _getExercise(widget.petAddInfo['exercise'])),
-                  _typeContainer("식사 횟수", _getFoodKind(widget.petAddInfo['foodCnt'])),
+                  _typeContainer("식사 횟수", widget.petAddInfo['foodCnt'].toString()),
                   _typeContainer("식사", _getFoodKind(widget.petAddInfo['foodKind'])),
                   _typeContainer("간식 횟수", widget.petAddInfo['snackCnt'].toString()),
                   SizedBox(height: 10.h,),
