@@ -145,7 +145,7 @@ class _ModifyPetAddInformationState extends State<ModifyPetAddInformation> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
         title: "petAddInformation",
         builder: (context, child) {
@@ -170,7 +170,7 @@ class _ModifyPetAddInformationState extends State<ModifyPetAddInformation> {
               ),
               Center(
                 child: Text(
-                  "반려동물 추가 정보 작성",
+                  "반려동물 추가 정보 수정",
                   style:
                       TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                 ),

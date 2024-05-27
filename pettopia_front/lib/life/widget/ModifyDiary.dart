@@ -218,7 +218,7 @@ class _ModifyDiaryState extends State<ModifyDiary>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
         title: "writeDiary",
         builder: (context, child) {

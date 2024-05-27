@@ -123,7 +123,7 @@ class _ModifyPetState extends State<ModifyPet> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -148,7 +148,7 @@ class _ModifyPetState extends State<ModifyPet> {
                   SizedBox(height: 20.h),
                   Center(
                     child: Text(
-                      "반려동물 추가 / 등록하기",
+                      "반려동물 기본정보 수정",
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,

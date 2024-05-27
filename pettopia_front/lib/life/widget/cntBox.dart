@@ -34,7 +34,7 @@ class CntBoxState extends State<CntBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 102.w,
+      width: 103.w,
       height: 35.h,
       decoration: BoxDecoration(border: Border.all(color: Color(0xFFD5BDAF))),
       child: Row(
@@ -54,6 +54,7 @@ class CntBoxState extends State<CntBox> {
                 setState(() {
                   cnt--;
                   widget.handleCount(cnt);
+                  print(102.w);
                 });
               }
             },
