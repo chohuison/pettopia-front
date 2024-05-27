@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/hospital/page/deleteCheckPopup.dart';
+import 'package:pettopia_front/hospital/widget/deleteCheckPopup.dart';
 import 'package:pettopia_front/hospital/page/shortRecordModify.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 

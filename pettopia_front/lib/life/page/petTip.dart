@@ -86,6 +86,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
     return ScreenUtilInit(
         designSize: const Size(411.4, 683.4),
         child: MaterialApp(
+             debugShowCheckedModeBanner: false ,
             title: "petTip",
             builder: (context, child) {
               return MediaQuery(

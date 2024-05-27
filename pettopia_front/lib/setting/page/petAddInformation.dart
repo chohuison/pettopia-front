@@ -124,6 +124,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
+           debugShowCheckedModeBanner: false ,
         title: "petAddInformation",
         builder: (context, child) {
           return MediaQuery(

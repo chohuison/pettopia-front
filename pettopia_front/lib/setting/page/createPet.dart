@@ -94,6 +94,7 @@ class _CreatePetState extends State<CreatePet> {
       designSize: const Size(411.4, 683.4),
       builder: (context, child) {
         return MediaQuery(
+          
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: child!,
         );

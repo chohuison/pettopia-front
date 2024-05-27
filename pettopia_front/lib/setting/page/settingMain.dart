@@ -44,6 +44,7 @@ class _SettingMainhState extends State<SettingMain> {
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
+           debugShowCheckedModeBanner: false ,
         title: "settingMain",
         builder: (context, child) {
           return MediaQuery(
