@@ -68,7 +68,8 @@ class _ShortWriteValueState extends State<ShortWriteValue>
         _errorText = "필수 입력 사항을 모두 입력해주세요";
       });
     } else {
-      shotRecordsServer.makeShotRecords(_pk, _type, _count, _age,widget.selectedDay);
+      shotRecordsServer.makeShotRecords(
+          _pk, _type, _count, _age, widget.selectedDay);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ShortRecords()),
@@ -102,7 +103,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
                 decoration: BoxDecoration(
-                  color: Color(0xFFD5BDAF),
+                  color: Color(0xFFE3D5CA),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Container(
@@ -113,8 +114,8 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                       Row(children: <Widget>[
                         _typeContainer("날짜", 5),
                         Text(
-                         DateFormat("yyyy년 MM월 dd일")
-                                            .format(widget.selectedDay),
+                          DateFormat("yyyy년 MM월 dd일")
+                              .format(widget.selectedDay),
                           style: TextStyle(fontSize: 17.sp),
                         ),
                       ]),
@@ -146,7 +147,7 @@ class _ShortWriteValueState extends State<ShortWriteValue>
                                         width: 80.w,
                                         height: 40.h,
                                         decoration: BoxDecoration(
-                                          color: Color(0xFF9F8678),
+                                          color: Color(0xFFD5BDAF),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
@@ -194,7 +195,7 @@ Widget _typeContainer(String containerName, int leftMargin) {
     width: 80.w,
     height: 40.h,
     decoration: BoxDecoration(
-      color: Color(0xFF9F8678),
+      color: Color(0xFFD5BDAF),
       borderRadius: BorderRadius.circular(20),
     ),
     child: Center(
