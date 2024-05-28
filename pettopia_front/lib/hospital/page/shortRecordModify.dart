@@ -15,8 +15,9 @@ import 'package:pettopia_front/server/DB/ShotRecords.dart';
 
 class ShortRecordModify extends StatefulWidget {
   final Map<String, dynamic> chartValue;
-  final List<Map<String,dynamic>> petList;
-  const ShortRecordModify({Key? key, required this.chartValue, required this.petList})
+  final List<Map<String, dynamic>> petList;
+  const ShortRecordModify(
+      {Key? key, required this.chartValue, required this.petList})
       : super(key: key);
 
   @override
@@ -29,23 +30,22 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
   bool get wantKeepAlive => true;
 
   late List<Map<String, dynamic>> _hospitalAppBar;
-    AppBarList _appBarList= AppBarList();
-    final shotRecordsServer = ShotRecords();
+  AppBarList _appBarList = AppBarList();
+  final shotRecordsServer = ShotRecords();
   @override
   void initState() {
     super.initState();
 
     _hospitalAppBar = _appBarList.getHospitalAppBar();
-    
   }
 
   late String _petName = widget.chartValue['petName'];
   late int _pk = widget.chartValue['pk'];
-  late int _Petpk= widget.chartValue['petPk'];
+  late int _Petpk = widget.chartValue['petPk'];
   late String _type = widget.chartValue['type'];
   late String _count = widget.chartValue['num'].toString();
   late String _age = widget.chartValue['age'].toString();
-  String _errorText ="";
+  String _errorText = "";
 
   void _typeHandler(String value) {
     setState(() {
@@ -53,7 +53,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
     });
   }
 
-    void _petNameHandler(String value, int valuePk) {
+  void _petNameHandler(String value, int valuePk) {
     _petName = value;
     _pk = valuePk;
   }
@@ -71,20 +71,18 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
   }
 
   void _savedButton() async {
-    if(_type == ""){
+    if (_type == "") {
       setState(() {
-        _errorText="필수 입력 사항을 모두 입력해주세요";
+        _errorText = "필수 입력 사항을 모두 입력해주세요";
       });
-    }
-    else{
-  shotRecordsServer.modifySHotCharts(widget.chartValue['pk'],_pk,_type,int.parse(_count),int.parse(_age));
- Navigator.push(
+    } else {
+      shotRecordsServer.modifySHotCharts(widget.chartValue['pk'], _pk, _type,
+          int.parse(_count), int.parse(_age));
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ShortRecords()),
       );
     }
-  
- 
   }
 
   @override
@@ -92,7 +90,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+        debugShowCheckedModeBanner: false,
         title: "shortRecords",
         builder: (context, child) {
           return MediaQuery(
@@ -114,7 +112,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
                 decoration: BoxDecoration(
-                  color: Color(0xFFD5BDAF),
+                  color: Color(0xFFD6CCC2),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Container(
@@ -137,8 +135,8 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
                             child: Container(
                               width: 300.w,
                               height: 70.h,
-                              child: _textFieldContainer("종류", _type,
-                                  20, 10, _typeHandler, false, 0),
+                              child: _textFieldContainer(
+                                  "종류", _type, 20, 10, _typeHandler, false, 0),
                             ),
                           ),
                           //petSelctBox
@@ -171,9 +169,10 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
                                         ),
                                       ),
                                       ModifyPetSelectBox(
-                                          onRegionSelected: _petNameHandler,
-                                          petPk: _Petpk,
-                                          petNameList: widget.petList,)
+                                        onRegionSelected: _petNameHandler,
+                                        petPk: _Petpk,
+                                        petNameList: widget.petList,
+                                      )
                                     ],
                                   ))),
                         ]),
@@ -240,7 +239,6 @@ Widget _textFieldContainer(
               keyboardType: isDigit ? TextInputType.number : null,
               decoration: InputDecoration(
                 hintText: labelText,
-                
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: horizontal.w, vertical: vertical.h),
                 hintStyle: TextStyle(
