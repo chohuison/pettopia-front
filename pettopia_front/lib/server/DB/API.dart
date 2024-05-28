@@ -58,12 +58,12 @@ class APIServer {
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
   }
-Future <Map<String, dynamic>> getWeather(String x, String y) async {
+Future <Map<String, dynamic>> getWeather(String lat, String lon) async {
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
     await _getServerUrl();
-    final serverUrl = _serverDbUrl+ "api/v1/map/weather?nx=$x&ny=$y";
+    final serverUrl = _serverDbUrl+ "api/v1/map/weather?lat=$lat&lon=$lon";
     print(serverUrl);
     final uri = Uri.parse(serverUrl); // 서버 URL 파싱
     Map<String, String> headers = {
