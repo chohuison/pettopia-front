@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:geocode/geocode.dart';
 import 'package:pettopia_front/mainPage/page/DraggableSheet';
+import 'package:geolocator/geolocator.dart';
+import 'package:pettopia_front/server/DB/API.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +25,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  APIServer _apiServer = APIServer();
+  late String _weatherUrl ="";
+  @override 
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void>_getCurrentLocation() async{
+    try{
+          Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      double lat = position.latitude;
+      double lon = position.longitude;
+      print('Latitude: $lat, Longitude: $lon');
+      Map<String,dynamic> weatherInfo = await _apiServer.getWeather(lat.toString(), lon.toString());
+      setState(() {
+        String imgUrl = weatherInfo['icon'];
+        _weatherUrl="https://openweathermap.org/img/wn/$imgUrl@2x.png";
+      });
+
+  }catch(e){
+    print("error : $e");
+  }}
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -39,7 +67,20 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
-              body: DraggableSheet(child: _petCard()),
+              body: Column(
+              children: [
+                Container(
+                  width: 100.h,
+                  height: 100.h,
+                  color: Colors.blue,
+                  
+                  child: _weatherUrl != "" ? Image.network(_weatherUrl):Container()
+                ),
+                Expanded(
+                  child: DraggableSheet(child: _petCard()),
+                ),
+              ],
+            ),
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
               resizeToAvoidBottomInset: false,
 
