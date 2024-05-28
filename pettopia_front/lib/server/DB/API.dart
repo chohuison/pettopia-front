@@ -58,4 +58,36 @@ class APIServer {
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
   }
+Future <Map<String, dynamic>> getWeather(String lat, String lon) async {
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+    await _getServerUrl();
+    final serverUrl = _serverDbUrl+ "api/v1/map/weather?lat=$lat&lon=$lon";
+    print(serverUrl);
+    final uri = Uri.parse(serverUrl); // 서버 URL 파싱
+    Map<String, String> headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+
+      'Authorization': 'Bearer $assessToken', // JWT 토큰,
+    };
+
+    final response = await http.get(uri, headers: headers); // GET 요청 보내기
+
+    if (response.statusCode == 200) {
+      // UTF-8로 응답을 디코딩하고 JSON 파싱
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      final Map<String,dynamic>jsonData =
+          jsonDecode(utf8.decode(response.bodyBytes));
+      print("jsonData: ");
+      print(jsonData);
+   ;
+  
+
+      return jsonData; // 결과 반환
+    } else {
+      throw Exception(
+          "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
+    }
+}
 }
