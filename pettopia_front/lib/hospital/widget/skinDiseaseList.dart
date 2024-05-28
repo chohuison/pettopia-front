@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/hospital/widget/SilimarDiseaseListValue.dart';
+import 'package:pettopia_front/life/widget/breedValue.dart';
 
 class SkinDiseaseList extends StatefulWidget {
   const SkinDiseaseList({
@@ -20,9 +20,11 @@ class _SkinDiseaseListState extends State<SkinDiseaseList> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
-        // return SilimarListValue(
-        //   value: record,
-        // );
+        return Container(
+          width: 100.w,
+          height: 50.h,
+          color: Colors.grey,
+        );
       },
     );
   }
