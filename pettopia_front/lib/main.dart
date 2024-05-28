@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:geocode/geocode.dart';
 import 'package:pettopia_front/mainPage/page/DraggableSheet';
+import 'package:geolocator/geolocator.dart';
+import 'package:pettopia_front/server/DB/API.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +24,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  APIServer _apiServer = APIServer();
+  @override 
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void>_getCurrentLocation() async{
+    try{
+          Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      double lat = position.latitude;
+      double lon = position.longitude;
+      print('Latitude: $lat, Longitude: $lon');
+  }catch(e){
+    print("error : $e");
+  }}
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
