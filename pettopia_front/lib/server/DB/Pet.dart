@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pettopia_front/main.dart';
 
 class Pet {
   String _serverDbUrl = "";
@@ -145,7 +147,7 @@ class Pet {
   }
 
   //pet기본 정보 수정
-  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk) async {
+  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk,BuildContext context) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
@@ -168,6 +170,10 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record modify successfully!");
+         Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MyApp()),
+        );
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
@@ -297,6 +303,44 @@ class Pet {
       print("Shot record modify successfully!");
     } else {
       print("Failed to create shot record. Status code :${response.body}");
+    }
+  }
+
+  
+  //반려동물 api 등록증 조회
+  Future<Map<String, dynamic>> getAPIPetInfo(String dogRegNo, String ownerName) async {
+    await _getServerUrl();
+
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+
+    String finalUrl = _serverDbUrl + "api/v1/map/pet?dogRegNo=$dogRegNo&ownernm=$ownerName";
+
+
+    final url = Uri.parse(finalUrl);
+    print(url);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $assessToken',
+    };
+
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      // print(jsonDecode(utf8.decode(response.bodyBytes)));
+      final Map<String, dynamic> jsonData =
+          jsonDecode(utf8.decode(response.bodyBytes));
+
+      print(jsonData);
+      return jsonData; 
+    } else {
+        print("Failed to get petInfo Status code :${response.body}");
+     return {};
+
     }
   }
 }
