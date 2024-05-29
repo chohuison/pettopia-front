@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/main.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/server/DB/Users.dart';
@@ -20,6 +21,7 @@ class _LoginState extends State<Login> {
   late WebViewController _webViewController= WebViewController();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   late String _serverUrl="";
+  Pet _petServer = Pet();
 
  @override
 void initState() {
@@ -43,7 +45,7 @@ void _kakaoWebViewSetting() async {
       onPageFinished: (String url) {
         _webViewController
             .runJavaScriptReturningResult("document.body.outerHTML")
-            .then((html) {
+            .then((html) async {
           print("Page finished loading. URL: $url");
           if (url.contains("code=")) {
             print("OAuth code found in URL:");
@@ -51,10 +53,11 @@ void _kakaoWebViewSetting() async {
 
             print(html.runtimeType);
             String strHtml = html as String;
-            split(strHtml);
+           split(strHtml);
             // return NavigationDecision.prevent;
 
             // MyApp 또는 원하는 페이지로 이동
+           
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
@@ -76,8 +79,27 @@ void _kakaoWebViewSetting() async {
   _serverUrl = dotenv.env['DB_SERVER_URI'] ?? 'YOUR_KAKAO_APP_KEY';
   print(_serverUrl);
 }
+
+  Future<void> _getUserPet() async{
+    List<Map<String,dynamic>> petList = await _petServer.getPetList();
+    List<Map<String,dynamic>> petValueList = [];
+    for(Map<String,dynamic> value in petList){
+      Map<String,dynamic>petInfo = await _petServer.getPetRegistration(value['petPk']);
+      Map<String,dynamic>petAddInfo = await _petServer.getAddPetInfo(value['petPk']);
+      petInfo['pk'] = value['petPk'];
+      if(petAddInfo['petExtraInfo']['environment']!= null){
+        petInfo['isAddInfo'] = true;
+      }
+      else{
+        petInfo['isAddInfo'] = false;
+      }
+      petValueList.add(petInfo);
+    }
+    await _secureStorage.write(key: 'pet', value: jsonEncode(petValueList));
+
+  }
   
-  void split(String html){
+  void split(String html)async {
     print("넘어온 html");
     print(html);
    RegExp jsonPattern = RegExp(r'\{.*\}', dotAll: true); // 중괄호 포함 부분 추출
@@ -101,11 +123,13 @@ void _kakaoWebViewSetting() async {
         refreshToken = parts[i + 2];
       }
     }
-    saveToken(accessToken, refreshToken);
+    await saveToken(accessToken, refreshToken);
 
 
     print("Access Token: $accessToken");
     print("Refresh Token: $refreshToken");
+
+     await _getUserPet();
 
   } else {
     print("No JSON object found.");
