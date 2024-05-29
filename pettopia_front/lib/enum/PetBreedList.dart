@@ -45,6 +45,25 @@ List<Map<String, dynamic>> _speciesList = [
   {'pk': 36, 'species': '기타', 'speciesName': 'ETC'}
 ];
 
+Map<String ,dynamic> getSpeciesByPetInfo(String species){
+  Map<String,dynamic> map = {};
+  String speciesName = "";
+  int pk =0;
+  for(Map<String,dynamic> value in _speciesList){
+    if(value['species']== species){
+      speciesName = value['speciesName'];
+      pk=value['pk'];
+      break;
+    }
+  }
+  if(speciesName == ""){
+    speciesName = "ETC";
+    pk=36;
+  }
+  map={'speciesName':speciesName, 'pk':pk};
+  return map;
+}
+
 
 List<Map<String ,dynamic >> getSpecies(){
   return _speciesList;

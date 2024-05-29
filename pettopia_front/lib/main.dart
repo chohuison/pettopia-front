@@ -85,6 +85,7 @@ class _MyAppState extends State<MyApp> {
       DateTime weatherTime = DateTime.parse(weatherData['time']);
       print(weatherTime);
       DateTime currentTime = DateTime.now();
+      print(currentTime);
       Duration difference = currentTime.difference(weatherTime);
       if (difference.inMinutes > 30) {
         return true;

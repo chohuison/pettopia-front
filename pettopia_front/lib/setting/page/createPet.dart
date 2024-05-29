@@ -8,7 +8,11 @@ import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/main.dart';
 
 class CreatePet extends StatefulWidget {
-  const CreatePet({Key? key}) : super(key: key);
+  final Map<String,dynamic> petInfo;
+  final String parentName;
+  final String speciesName ;
+  final int speciesPk;
+  const CreatePet({Key? key,required this.petInfo, required this.parentName, required this.speciesName, required this.speciesPk}) : super(key: key);
 
   @override
   _CreatePetState createState() => _CreatePetState();
@@ -16,19 +20,30 @@ class CreatePet extends StatefulWidget {
 
 class _CreatePetState extends State<CreatePet> {
   late int _breedPk = 1;
-  late String _petNumber = "";
-  late String _petName = "";
+  late String _petNumber = widget.petInfo['dogRegNo']!=null ? widget.petInfo['dogRegNo']: "";
+  late String _petName =widget.petInfo['dogRegNo']!=null ? widget.petInfo['dogNm']: "";
   late String _birth = "";
   late int _fur = 0;
-  late int _sex = 0;
-  late int _neutering = 0;
-  late String _parentName = "";
+  late int _sex = widget.petInfo['dogRegNo']!=null ?_getRadioValue(widget.petInfo['sexNm']): 0;
+  late int _neutering =widget.petInfo['dogRegNo']!=null ? _getRadioValue(widget.petInfo['neuterYn']): 0;
+  late String _parentName = widget.parentName;
   late String _parentPhoneNum = "";
   late String _wight = "";
   Pet _pet = Pet();
   late String errMesg = "";
   String _profile = "";
   XFile? _file = null;
+
+
+  int _getRadioValue(bool value){
+    if(value ==true){
+      return 0;
+    }
+    else{
+      return 1;
+    }
+  }
+
 
   void onHandlePetInformation(
       String profile,String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
@@ -168,6 +183,13 @@ class _CreatePetState extends State<CreatePet> {
                     child: CreatePetInformation(
                       onHandlePetInformation: onHandlePetInformation,
                       xfileHandle:onHandleXfile,
+                      dogNumber: _petNumber,
+                      petName: _petName,
+                      sex: _sex,
+                      neuterYn: _neutering,
+                      speciesName: widget.speciesName,
+                      speciesPk: widget.speciesPk,
+
                     ),
                   ),
                   // 보호자 정보 콘테이너
@@ -183,6 +205,7 @@ class _CreatePetState extends State<CreatePet> {
                     ),
                     child: CreatePetParentValue(
                       petParentValueHandle: petParentValueHandle,
+                      parentName: _parentName,
                     ),
                     width: 350.w,
                     height: 110.h,

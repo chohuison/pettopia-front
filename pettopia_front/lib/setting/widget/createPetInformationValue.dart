@@ -14,10 +14,23 @@ class CreatePetInformation extends StatefulWidget {
   final Function(String,String, String, String, int, int, int, int, String)
       onHandlePetInformation;
   final Function(XFile) xfileHandle;
+  final String dogNumber;
+  final String petName;
+  final int sex;
+  final int neuterYn;
+  final String speciesName;
+  final int speciesPk;
   const CreatePetInformation({
     Key? key,
     required this.onHandlePetInformation,
     required this.xfileHandle,
+    required this.dogNumber,
+    required this.petName,
+    required this.sex,
+    required this.neuterYn,
+    required this.speciesName,
+    required this.speciesPk,
+
   }) : super(
           key: key,
         );
@@ -31,29 +44,24 @@ class _CreatePetInformationState extends State<CreatePetInformation>
  @override
   bool get wantKeepAlive => true;
   late List<Map<String, dynamic>> _speciesList = [];
-  late String _species = "";
-  String _petNumber = "";
-  String _petName = "";
+  late String _species = widget.speciesName;
+  late String _petNumber = widget.dogNumber;
+  late String _petName = widget.petName;
   String _birth = "";
   late int _fur = 0;
-  late int _sex = 0;
-  late int _neutering = 0;
+  late int _sex = widget.sex;
+  late int _neutering = widget.neuterYn;
   PetBreedList _petBreedList = PetBreedList();
-  late int _speciesPk = 1;
+  late int _speciesPk = widget.speciesPk;
   late String _widght = "";
   XFile? _file = null;
   String _profile = "";
   Pet _petServer = Pet();
+  late String _petNumberLabelText = widget.dogNumber!= ""? widget.dogNumber : "반려동믈 등록 번호를 입력해주세요";
+  late String _petNameLabelText = widget.petName!=""? widget.petName:"이름을 입력해주세요";
+  late bool _isPet = widget.petName != ""? true:false;
 
-  @override
-  void initState() {
-    super.initState();
-    _speciesList = _petBreedList.getSpecies();
 
-    _species = _speciesList.first['speciesName'];
-    print(_species);
-    
-  }
 
   void _onFurUpdate(int value) {
     setState(() {
@@ -229,12 +237,12 @@ class _CreatePetInformationState extends State<CreatePetInformation>
           margin: EdgeInsets.only(top: 5.h, bottom: 5.h, left: 16.w),
           child: Column(
             children: <Widget>[
-              _textFieldContainer("번호*", "반려동물 등록 번호를 입력해주세요",
-                  _petNumberController, false),
+              _textFieldContainer("번호*", _petNumberLabelText,
+                  _petNumberController, false,_isPet),
               _textFieldContainer(
-                  "이름*", "이름을 입력해주세요", _petNameController, false),
+                  "이름*", _petNameLabelText, _petNameController, false,_isPet),
               _textFieldContainer(
-                  "몸무게*", "몸무게 입력해주세요",  _onWightUpdate, true),
+                  "몸무게*", "몸무게 입력해주세요",  _onWightUpdate, true,false),
                Container(
                 height: 150.h,
                 margin: EdgeInsets.only(left: 18.w),
@@ -277,7 +285,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                 ),
               ),
               _textFieldContainer(
-                  "생년월일*", "YYYYMMDD", _birthController, true),
+                  "생년월일*", "YYYYMMDD", _birthController, true,false),
             ],
           ))
     ]);
@@ -300,7 +308,7 @@ Widget _typeContainer(String name) {
 }
 
 Widget _textFieldContainer(String containerName, String labelText,
-    Function contorller, bool isDigit) {
+    Function contorller, bool isDigit, bool isPet) {
   return Container(
       margin: EdgeInsets.only(bottom: 5.h),
       width: 300.w,
@@ -320,7 +328,7 @@ Widget _textFieldContainer(String containerName, String labelText,
                   
                     hintStyle: TextStyle(
                       fontSize: 11.0.sp,
-                      color: Color(0xFFAFA59B),
+                      color:isPet==true?Colors.black: Color(0xFFAFA59B),
                     ),
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFD5BDAF)),
