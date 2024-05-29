@@ -299,4 +299,42 @@ class Pet {
       print("Failed to create shot record. Status code :${response.body}");
     }
   }
+
+  
+  //반려동물 api 등록증 조회
+  Future<Map<String, dynamic>> getAPIPetInfo(String dogRegNo, String ownerName) async {
+    await _getServerUrl();
+
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+
+    String finalUrl = _serverDbUrl + "api/v1/map/pet?dogRegNo=$dogRegNo&ownernm=$ownerName";
+
+
+    final url = Uri.parse(finalUrl);
+    print(url);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $assessToken',
+    };
+
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      // print(jsonDecode(utf8.decode(response.bodyBytes)));
+      final Map<String, dynamic> jsonData =
+          jsonDecode(utf8.decode(response.bodyBytes));
+
+      print(jsonData);
+      return jsonData; 
+    } else {
+        print("Failed to get petInfo Status code :${response.body}");
+     return {};
+
+    }
+  }
 }

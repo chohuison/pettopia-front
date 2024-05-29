@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreatePetParentValue extends StatefulWidget {
   final Function(String,String) petParentValueHandle;
+  final String parentName;
   const CreatePetParentValue({
     Key? key,
     required this.petParentValueHandle,
+    required this.parentName,
             
   }) : super(
           key: key,
@@ -20,8 +22,10 @@ class CreatePetParentValue extends StatefulWidget {
 class _CreatePetParentValueState extends State<CreatePetParentValue>  with AutomaticKeepAliveClientMixin {
     @override
   bool get wantKeepAlive => true;
- late String _parentName="";
+ late String _parentName=widget.parentName;
  late String _parentPhoneNum="";
+ late String _parentNameLabelText = widget.parentName != null? widget.parentName:"보호자의 이름을 입력해주세요";
+ late bool _isPet = widget.parentName != ""? true : false;
  void parentNameChange(String value){
   _parentName=value;
   widget.petParentValueHandle(_parentName, _parentPhoneNum);
@@ -43,14 +47,12 @@ class _CreatePetParentValueState extends State<CreatePetParentValue>  with Autom
       child: Text("보호자 정보",
        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp ),)
      ),
-     _textFieldContainer("이름*", "보호자 이름을 입력해주세요",parentNameChange),
+     _textFieldContainer("이름*", _parentNameLabelText,parentNameChange,_isPet),
 
-     _textFieldContainer("연락처*","010-****-****",parentPhoneNumChange)
+     _textFieldContainer("연락처*","010-****-****",parentPhoneNumChange,false)
     ]);
   }
-}
-
-Widget _typeContainer(String name) {
+  Widget _typeContainer(String name) {
   return Container(
       width: 80.w,
       height: 30.h,
@@ -66,7 +68,7 @@ Widget _typeContainer(String name) {
 }
 
 
-Widget _textFieldContainer(String containerName, String labelText,Function contorller){
+Widget _textFieldContainer(String containerName, String labelText,Function contorller, bool isPet){
   return   Container(
                   margin: EdgeInsets.only(bottom: 10.h, left: 15.w),
                   width: 380.w,
@@ -86,7 +88,7 @@ Widget _textFieldContainer(String containerName, String labelText,Function conto
                                 hintText: labelText,
 
                                
-                                hintStyle: TextStyle(fontSize: 11.0.sp, color: Color(0xFFAFA59B),),
+                                hintStyle: TextStyle(fontSize: 11.0.sp, color: isPet == true ? Colors.black: Color(0xFFAFA59B),),
                                    border: UnderlineInputBorder(
       borderSide: BorderSide(color: Color(0xFFD5BDAF)),
     ),
@@ -95,3 +97,5 @@ Widget _textFieldContainer(String containerName, String labelText,Function conto
                   ));
 
 }
+}
+
