@@ -28,80 +28,73 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   APIServer _apiServer = APIServer();
-  late String _weatherUrl ="";
+  late String _weatherUrl = "";
   final _storage = FlutterSecureStorage();
-  @override 
+  @override
   void initState() {
     super.initState();
     _getCurrentLocation();
   }
 
-  Future<void>_getCurrentLocation() async{
-    if( await isCheckedWeather()){
+  Future<void> _getCurrentLocation() async {
+    if (await isCheckedWeather()) {
       print("다시 날씨 정보 가져옴");
-   try{
-          Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      double lat = position.latitude;
-      double lon = position.longitude;
-      print('Latitude: $lat, Longitude: $lon');
-      Map<String,dynamic> weatherInfo = await _apiServer.getWeather(lat.toString(), lon.toString());
-      setState(() {
-        String imgUrl = weatherInfo['icon'];
-        _weatherUrl="https://openweathermap.org/img/wn/$imgUrl@2x.png";
-      });
-       Map<String, dynamic> value = {
-          'imgUrl' : _weatherUrl,
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        double lat = position.latitude;
+        double lon = position.longitude;
+        print('Latitude: $lat, Longitude: $lon');
+        Map<String, dynamic> weatherInfo =
+            await _apiServer.getWeather(lat.toString(), lon.toString());
+        setState(() {
+          String imgUrl = weatherInfo['icon'];
+          _weatherUrl = "https://openweathermap.org/img/wn/$imgUrl@2x.png";
+        });
+        Map<String, dynamic> value = {
+          'imgUrl': _weatherUrl,
           'time': DateTime.now().toString()
         };
-      String? jsonData = await _storage.read(key: 'weather');
-      if(jsonData == null){
-       
-        await _storage.write(key:'weather', value:jsonEncode(value));
-      }else{
-        await _storage.delete(key: 'weather');
-         await _storage.write(key:'weather', value:jsonEncode(value));
+        String? jsonData = await _storage.read(key: 'weather');
+        if (jsonData == null) {
+          await _storage.write(key: 'weather', value: jsonEncode(value));
+        } else {
+          await _storage.delete(key: 'weather');
+          await _storage.write(key: 'weather', value: jsonEncode(value));
+        }
+      } catch (e) {
+        print("error : $e");
       }
-
-  }catch(e){
-    print("error : $e");
-  }
-    }
-    else{
-          print("기존 날씨 정보 사용");
-       String? jsonData = await _storage.read(key: 'weather');
-           setState(() {
-     
-        _weatherUrl=jsonDecode(jsonData!)['imgUrl'];
+    } else {
+      print("기존 날씨 정보 사용");
+      String? jsonData = await _storage.read(key: 'weather');
+      setState(() {
+        _weatherUrl = jsonDecode(jsonData!)['imgUrl'];
         print(_weatherUrl);
       });
     }
- }
+  }
 
   Future<bool> isCheckedWeather() async {
-
     String? jsonData = await _storage.read(key: 'weather');
-    if(jsonData == null){
+    if (jsonData == null) {
       return true;
-    }
-    else{
-      Map<String,dynamic> weatherData = jsonDecode(jsonData);
+    } else {
+      Map<String, dynamic> weatherData = jsonDecode(jsonData);
       DateTime weatherTime = DateTime.parse(weatherData['time']);
       print(weatherTime);
       DateTime currentTime = DateTime.now();
       print(currentTime);
       Duration difference = currentTime.difference(weatherTime);
-      if(difference.inMinutes>30){
+      if (difference.inMinutes > 30) {
         return true;
-      }
-      else{
+      } else {
         return false;
       }
-      
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -120,19 +113,19 @@ class _MyAppState extends State<MyApp> {
           builder: (context) {
             return Scaffold(
               body: Column(
-              children: [
-                Container(
-                  width: 100.h,
-                  height: 100.h,
-                  color: Colors.blue,
-                  
-                  child: _weatherUrl != "" ? Image.network(_weatherUrl):Container()
-                ),
-                Expanded(
-                  child: DraggableSheet(child: _petCard()),
-                ),
-              ],
-            ),
+                children: [
+                  Container(
+                      width: 100.h,
+                      height: 100.h,
+                      color: Colors.blue,
+                      child: _weatherUrl != ""
+                          ? Image.network(_weatherUrl)
+                          : Container()),
+                  Expanded(
+                    child: DraggableSheet(child: _petCard()),
+                  ),
+                ],
+              ),
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
               resizeToAvoidBottomInset: false,
 

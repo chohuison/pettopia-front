@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pettopia_front/hospital/page/findDisease.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
+import 'package:pettopia_front/hospital/page/skinDisease.dart';
 import 'package:pettopia_front/life/page/petDiary.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/life/page/petSpeacker.dart';
@@ -54,6 +55,11 @@ class AppBarList {
         context,
         MaterialPageRoute(builder: (context) => ShortRecords()),
       );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SkinDisease()),
+      );
     } else if (index == 3) {
       Navigator.push(
         context,
@@ -86,14 +92,9 @@ class AppBarList {
               builder: (context) => PetDiary(
                     petList: _petList,
                   )));
-    }
-    else if (index ==3){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PetSpeacker(
-         
-                  )));
+    } else if (index == 3) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PetSpeacker()));
     }
   }
 
