@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,13 +8,20 @@ import 'package:pettopia_front/setting/widget/createPetInformationValue.dart';
 import 'package:pettopia_front/setting/widget/createPetParentValue.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/main.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CreatePet extends StatefulWidget {
-  final Map<String,dynamic> petInfo;
+  final Map<String, dynamic> petInfo;
   final String parentName;
-  final String speciesName ;
+  final String speciesName;
   final int speciesPk;
-  const CreatePet({Key? key,required this.petInfo, required this.parentName, required this.speciesName, required this.speciesPk}) : super(key: key);
+  const CreatePet(
+      {Key? key,
+      required this.petInfo,
+      required this.parentName,
+      required this.speciesName,
+      required this.speciesPk})
+      : super(key: key);
 
   @override
   _CreatePetState createState() => _CreatePetState();
@@ -20,12 +29,18 @@ class CreatePet extends StatefulWidget {
 
 class _CreatePetState extends State<CreatePet> {
   late int _breedPk = 1;
-  late String _petNumber = widget.petInfo['dogRegNo']!=null ? widget.petInfo['dogRegNo']: "";
-  late String _petName =widget.petInfo['dogRegNo']!=null ? widget.petInfo['dogNm']: "";
+  late String _petNumber =
+      widget.petInfo['dogRegNo'] != null ? widget.petInfo['dogRegNo'] : "";
+  late String _petName =
+      widget.petInfo['dogRegNo'] != null ? widget.petInfo['dogNm'] : "";
   late String _birth = "";
   late int _fur = 0;
-  late int _sex = widget.petInfo['dogRegNo']!=null ?_getRadioValue(widget.petInfo['sexNm']): 0;
-  late int _neutering =widget.petInfo['dogRegNo']!=null ? _getRadioValue(widget.petInfo['neuterYn']): 0;
+  late int _sex = widget.petInfo['dogRegNo'] != null
+      ? _getRadioValue(widget.petInfo['sexNm'])
+      : 0;
+  late int _neutering = widget.petInfo['dogRegNo'] != null
+      ? _getRadioValue(widget.petInfo['neuterYn'])
+      : 0;
   late String _parentName = widget.parentName;
   late String _parentPhoneNum = "";
   late String _wight = "";
@@ -33,21 +48,27 @@ class _CreatePetState extends State<CreatePet> {
   late String errMesg = "";
   String _profile = "";
   XFile? _file = null;
+    final _storage = FlutterSecureStorage();
 
-
-  int _getRadioValue(bool value){
-    if(value ==true){
+  int _getRadioValue(bool value) {
+    if (value == true) {
       return 0;
-    }
-    else{
+    } else {
       return 1;
     }
   }
 
-
   void onHandlePetInformation(
-      String profile,String petNum, String petName, String wight, int breedPk, int fur, int sex, int neutering, String birth) {
-    _profile=profile;
+      String profile,
+      String petNum,
+      String petName,
+      String wight,
+      int breedPk,
+      int fur,
+      int sex,
+      int neutering,
+      String birth) {
+    _profile = profile;
     _petNumber = petNum;
     _petName = petName;
     _breedPk = breedPk;
@@ -58,8 +79,8 @@ class _CreatePetState extends State<CreatePet> {
     _birth = birth;
   }
 
-  void onHandleXfile(XFile xfile){
-    _file=xfile;
+  void onHandleXfile(XFile xfile) {
+    _file = xfile;
   }
 
   void petParentValueHandle(String parentName, String parentPhoneNum) {
@@ -70,9 +91,37 @@ class _CreatePetState extends State<CreatePet> {
   bool _getBoolType(int value) {
     return value == 0;
   }
+  //반려동물 정보 폰에 저장
+  Future<void> _saveAppHandle(Map<String,dynamic>value) async{
+    String?jsonData = await _storage.read(key:'pet');
+    List<Map<String,dynamic>> petList =[];
+    Map<String,dynamic> newPetValue = {
+      'profile' : value['profile'],
+       'dogRegNo': value['dogRegNo'],
+          'dogNm': value['dogNm'],
+          'speciesPk': _breedPk,
+          'sexNm': value['sexNm'],
+          'neuterYn':value['neuterYn'],
+          'birth':value['birth'],
+          'protectorName': value['protectorName'],
+          'protectorPhoneNum': value['protectorPhoneNum'],
+          'isAddInfo':false
+
+    };
+    if(jsonData == null){
+      petList.add(newPetValue);
+    
+    }else{
+      petList = jsonDecode(jsonData);
+      petList.add(newPetValue);
+       await _storage.delete(key: 'pet');
+     
+       
+    }
+        await _storage.write(key: 'pet', value: jsonEncode(petList));
+  }
 
   Future<void> _saveButtonHandle() async {
-    
     if (_petNumber == "" ||
         _petName == "" ||
         _birth == "" ||
@@ -82,52 +131,57 @@ class _CreatePetState extends State<CreatePet> {
         errMesg = "필수 입력값을 모두 입력해주세요!";
       });
     } else {
-      Map<String, dynamic> petInfo = {
-        'dogRegNo':_petNumber,
-        'dogNm': _petName,
-        'speciesPk': _breedPk,
-        'hair': _fur,
-        'sexNm': _getBoolType(_sex),
-        'neuterYn': _getBoolType(_neutering),
-        'birth': int.parse(_birth),
-        'weight': double.parse(_wight),
-        'protectorName': _parentName,
-        'protectorPhoneNum': _parentPhoneNum
-      };
-        print(petInfo);
-      await _pet.createPet(petInfo);
-      List<Map<String,dynamic>> petList = await _pet.getPetList();
-      int petPk =0;
-      for(Map<String,dynamic> pet in petList){
-        if(pet['dogNm']== petInfo['dogNm']){
-          petPk=pet['petPk'];
-          print("여기서 petPk: $petPk");
+      bool isCreate = true;
+      List<Map<String, dynamic>> beforePetList = await _pet.getPetList();
+      for (Map<String, dynamic> value in beforePetList) {
+        if (value['dogNm'] == _petName) {
+          isCreate = false;
+          break;
         }
       }
-      if(_file != null){
-        String presignedUrl = await _pet.s3Upload(_file!, petPk);
-        print(presignedUrl);
+      if (isCreate == false) {
         setState(() {
-          _profile= presignedUrl;
+          errMesg = "해당 반려동물을 이미 등록하셨습니다.";
         });
-        print("profile: $_profile");
-        petInfo['profile'] = _profile;
+      } else {
+        Map<String, dynamic> petInfo = {
+          'dogRegNo': _petNumber,
+          'dogNm': _petName,
+          'speciesPk': _breedPk,
+          'hair': _fur,
+          'sexNm': _getBoolType(_sex),
+          'neuterYn': _getBoolType(_neutering),
+          'birth': int.parse(_birth),
+          'weight': double.parse(_wight),
+          'protectorName': _parentName,
+          'protectorPhoneNum': _parentPhoneNum
+        };
         print(petInfo);
+        await _pet.createPet(petInfo);
+        List<Map<String, dynamic>> petList = await _pet.getPetList();
+        int petPk = 0;
+        for (Map<String, dynamic> pet in petList) {
+          if (pet['dogNm'] == petInfo['dogNm']) {
+            petPk = pet['petPk'];
+            print("여기서 petPk: $petPk");
+          }
+        }
+        if (_file != null) {
+          String presignedUrl = await _pet.s3Upload(_file!, petPk);
+          print(presignedUrl);
+          setState(() {
+            _profile = presignedUrl;
+          });
+          print("profile: $_profile");
+          petInfo['profile'] = _profile;
+          print(petInfo);
+          _saveAppHandle(petInfo);
+
+          await _pet.modifyPet(petInfo, petPk,context);
+
+        }
      
-        await _pet.modifyPet(petInfo, petPk);
       }
-
-
-  
-      //     if(_profile != ""){
-      //   petInfo['profile'] = _profile;
-      // }
-    
-    
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyApp()),
-      );
     }
   }
 
@@ -137,7 +191,6 @@ class _CreatePetState extends State<CreatePet> {
       designSize: const Size(411.42857142857144, 683.4285714285714),
       builder: (context, child) {
         return MediaQuery(
-          
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: child!,
         );
@@ -182,14 +235,13 @@ class _CreatePetState extends State<CreatePet> {
                     height: 450.h,
                     child: CreatePetInformation(
                       onHandlePetInformation: onHandlePetInformation,
-                      xfileHandle:onHandleXfile,
+                      xfileHandle: onHandleXfile,
                       dogNumber: _petNumber,
                       petName: _petName,
                       sex: _sex,
                       neuterYn: _neutering,
                       speciesName: widget.speciesName,
                       speciesPk: widget.speciesPk,
-
                     ),
                   ),
                   // 보호자 정보 콘테이너
@@ -235,7 +287,8 @@ class _CreatePetState extends State<CreatePet> {
                       child: Center(
                         child: Text(
                           '등록',
-                          style: TextStyle(fontSize: 15.sp, color: Colors.black),
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.black),
                         ),
                       ),
                     ),
