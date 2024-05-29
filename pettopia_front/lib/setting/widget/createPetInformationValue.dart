@@ -43,7 +43,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     with AutomaticKeepAliveClientMixin {
  @override
   bool get wantKeepAlive => true;
-  late List<Map<String, dynamic>> _speciesList = [];
+  late List<Map<String, dynamic>> _speciesList = _petBreedList.getSpecies();
   late String _species = widget.speciesName;
   late String _petNumber = widget.dogNumber;
   late String _petName = widget.petName;

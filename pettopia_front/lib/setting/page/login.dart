@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/main.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/server/DB/Users.dart';
@@ -19,7 +20,12 @@ class _LoginState extends State<Login> {
   final userServer = Users();
   late WebViewController _webViewController = WebViewController();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-  late String _serverUrl = "";
+
+  late String _serverUrl="";
+  Pet _petServer = Pet();
+
+
+
 
   @override
   void initState() {
@@ -31,42 +37,46 @@ class _LoginState extends State<Login> {
     await _getServerUrl();
     String url = _serverUrl + "oauth2/authorization/kakao";
     // String url = 'http://10.0.2.2/' + "oauth2/authorization/kakao";
-    print(url);
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(url))
-      ..setNavigationDelegate(NavigationDelegate(
-        onNavigationRequest: (NavigationRequest request) {
-          print("Navigating to: ${request.url}");
-          return NavigationDecision.navigate;
-        },
-        onPageFinished: (String url) {
-          _webViewController
-              .runJavaScriptReturningResult("document.body.outerHTML")
-              .then((html) {
-            print("Page finished loading. URL: $url");
-            if (url.contains("code=")) {
-              print("OAuth code found in URL:");
-              print(html);
 
-              print(html.runtimeType);
-              String strHtml = html as String;
-              split(strHtml);
-              // return NavigationDecision.prevent;
+  print(url);
+  _webViewController = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse(url))
+    ..setNavigationDelegate(NavigationDelegate(
+      onNavigationRequest: (NavigationRequest request) {
+        print("Navigating to: ${request.url}");
+        return NavigationDecision.navigate;
+      },
+      onPageFinished: (String url) {
+        _webViewController
+            .runJavaScriptReturningResult("document.body.outerHTML")
+            .then((html) async {
+          print("Page finished loading. URL: $url");
+          if (url.contains("code=")) {
+            print("OAuth code found in URL:");
+            print(html);
 
-              // MyApp 또는 원하는 페이지로 이동
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
-              );
-            }
-          }).catchError((error) {
-            print("Error getting HTML: $error");
-          });
-        },
-      ));
-  }
+            print(html.runtimeType);
+            String strHtml = html as String;
+           split(strHtml);
+            // return NavigationDecision.prevent;
+
+            // MyApp 또는 원하는 페이지로 이동
+           
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
+            );
+          }
+        }).catchError((error) {
+          print("Error getting HTML: $error");
+        });
+      },
+    ));
+}
+
+  
+
 
   Future<void> _getServerUrl() async {
     try {
@@ -78,7 +88,29 @@ class _LoginState extends State<Login> {
     print(_serverUrl);
   }
 
-  void split(String html) {
+ 
+
+  Future<void> _getUserPet() async{
+    List<Map<String,dynamic>> petList = await _petServer.getPetList();
+    List<Map<String,dynamic>> petValueList = [];
+    for(Map<String,dynamic> value in petList){
+      Map<String,dynamic>petInfo = await _petServer.getPetRegistration(value['petPk']);
+      Map<String,dynamic>petAddInfo = await _petServer.getAddPetInfo(value['petPk']);
+      petInfo['pk'] = value['petPk'];
+      if(petAddInfo['petExtraInfo']['environment']!= null){
+        petInfo['isAddInfo'] = true;
+      }
+      else{
+        petInfo['isAddInfo'] = false;
+      }
+      petValueList.add(petInfo);
+    }
+    await _secureStorage.write(key: 'pet', value: jsonEncode(petValueList));
+
+  }
+  
+  void split(String html)async {
+
     print("넘어온 html");
     print(html);
     RegExp jsonPattern = RegExp(r'\{.*\}', dotAll: true); // 중괄호 포함 부분 추출
@@ -102,16 +134,21 @@ class _LoginState extends State<Login> {
           refreshToken = parts[i + 2];
         }
       }
-      saveToken(accessToken, refreshToken);
+      await saveToken(accessToken, refreshToken);
+       await _getUserPet();
 
       print("Access Token: $accessToken");
       print("Refresh Token: $refreshToken");
     } else {
       print("No JSON object found.");
     }
+
+
   }
 
+
   Future<void> saveToken(String accessToken, String refreshToken) async {
+
     await _secureStorage.deleteAll();
 
     await _secureStorage.write(key: 'accessToken', value: accessToken);

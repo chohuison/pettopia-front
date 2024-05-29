@@ -118,7 +118,7 @@ class Pet {
   }
 
   //pet기본 정보 작성
-  Future<void> createPet(Map<String, dynamic> petInfo) async {
+  Future<void> createPet(Map<String, dynamic> petInfo , bool isProfile,BuildContext context) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
@@ -141,13 +141,20 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record created successfully!");
+      if(isProfile == false){
+          Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
+      }
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
   }
 
   //pet기본 정보 수정
-  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk,BuildContext context) async {
+  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk,
+      BuildContext context, bool isCreate) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
@@ -170,17 +177,36 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record modify successfully!");
-         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyApp()),
-        );
+      if (isCreate == false) {
+        await _secureStorage.delete(key: 'pet');
+        List<Map<String, dynamic>> petList = await getPetList();
+        List<Map<String, dynamic>> petValueList = [];
+        for (Map<String, dynamic> value in petList) {
+          Map<String, dynamic> petInfo =
+              await getPetRegistration(value['petPk']);
+          Map<String, dynamic> petAddInfo = await getAddPetInfo(value['petPk']);
+          petInfo['pk'] = value['petPk'];
+          if (petAddInfo['petExtraInfo']['environment'] != null) {
+            petInfo['isAddInfo'] = true;
+          } else {
+            petInfo['isAddInfo'] = false;
+          }
+          petValueList.add(petInfo);
+        }
+        await _secureStorage.write(key: 'pet', value: jsonEncode(petValueList));
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
   }
 
 //반려동물 추가정보 작성
-  Future<void> createAddPet(Map<String, dynamic> petInfo, int petPk) async {
+  Future<void> createAddPet(
+      Map<String, dynamic> petInfo, int petPk, BuildContext context) async {
     await _getServerUrl();
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
@@ -202,6 +228,27 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record created successfully!");
+      String? jsonData = await _secureStorage.read(key: 'pet');
+      if (jsonData != null) {
+        List<dynamic> appPetList = jsonDecode(jsonData);
+        List<Map<String, dynamic>> newPetList = [];
+        for (Map<String, dynamic> value in appPetList) {
+          if (value['pk'] == petPk) {
+            value['isAddInfo'] = true;
+            newPetList.add(value);
+          } else {
+            newPetList.add(value);
+          }
+          newPetList.add(value);
+        }
+        await _secureStorage.delete(key: 'pet');
+        await _secureStorage.write(key: 'pet', value: jsonEncode(newPetList));
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MyApp()),
+        );
+      }
     } else {
       print("Failed to create addinfo record. Status code :${response.body}");
     }
@@ -306,17 +353,17 @@ class Pet {
     }
   }
 
-  
   //반려동물 api 등록증 조회
-  Future<Map<String, dynamic>> getAPIPetInfo(String dogRegNo, String ownerName) async {
+  Future<Map<String, dynamic>> getAPIPetInfo(
+      String dogRegNo, String ownerName) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
 
-    String finalUrl = _serverDbUrl + "api/v1/map/pet?dogRegNo=$dogRegNo&ownernm=$ownerName";
-
+    String finalUrl =
+        _serverDbUrl + "api/v1/map/pet?dogRegNo=$dogRegNo&ownernm=$ownerName";
 
     final url = Uri.parse(finalUrl);
     print(url);
@@ -336,11 +383,46 @@ class Pet {
           jsonDecode(utf8.decode(response.bodyBytes));
 
       print(jsonData);
-      return jsonData; 
+      return jsonData;
     } else {
-        print("Failed to get petInfo Status code :${response.body}");
-     return {};
+      print("Failed to get petInfo Status code :${response.body}");
+      return {};
+    }
+  }
 
+  //반려동물 등록증 정보 가져오기
+  Future<Map<String, dynamic>> getPetRegistration(int petPk) async {
+    await _getServerUrl();
+
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+
+    String finalUrl =
+        _serverDbUrl + "api/v1/pet/pet_registration_certificate/$petPk";
+
+    final url = Uri.parse(finalUrl);
+    print(finalUrl);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $assessToken',
+    };
+
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      final Map<String, dynamic> jsonData =
+          jsonDecode(utf8.decode(response.bodyBytes));
+
+      print(jsonData);
+      return jsonData; // 결과 반환
+    } else {
+      throw Exception(
+          "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
   }
 }

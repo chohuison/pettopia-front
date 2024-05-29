@@ -48,7 +48,7 @@ class _CreatePetState extends State<CreatePet> {
   late String errMesg = "";
   String _profile = "";
   XFile? _file = null;
-    final _storage = FlutterSecureStorage();
+  final _storage = FlutterSecureStorage();
 
   int _getRadioValue(bool value) {
     if (value == true) {
@@ -91,34 +91,33 @@ class _CreatePetState extends State<CreatePet> {
   bool _getBoolType(int value) {
     return value == 0;
   }
-  //반려동물 정보 폰에 저장
-  Future<void> _saveAppHandle(Map<String,dynamic>value) async{
-    String?jsonData = await _storage.read(key:'pet');
-    List<Map<String,dynamic>> petList =[];
-    Map<String,dynamic> newPetValue = {
-      'profile' : value['profile'],
-       'dogRegNo': value['dogRegNo'],
-          'dogNm': value['dogNm'],
-          'speciesPk': _breedPk,
-          'sexNm': value['sexNm'],
-          'neuterYn':value['neuterYn'],
-          'birth':value['birth'],
-          'protectorName': value['protectorName'],
-          'protectorPhoneNum': value['protectorPhoneNum'],
-          'isAddInfo':false
 
+  //반려동물 정보 폰에 저장
+  Future<void> _saveAppHandle(Map<String, dynamic> value,int petPk) async {
+    String? jsonData = await _storage.read(key: 'pet');
+    List<dynamic> petList = [];
+    Map<String, dynamic> newPetValue = {
+      'pk':petPk,
+      'profile': value['profile'],
+      'dogRegNo': value['dogRegNo'],
+      'dogNm': value['dogNm'],
+      'speciesPk': _breedPk,
+      'sexNm': value['sexNm'],
+      'neuterYn': value['neuterYn'],
+      'birth': value['birth'],
+      'protectorName': value['protectorName'],
+      'protectorPhoneNum': value['protectorPhoneNum'],
+      'isAddInfo': false
     };
-    if(jsonData == null){
+    if (jsonData == null) {
       petList.add(newPetValue);
-    
-    }else{
+    } else {
       petList = jsonDecode(jsonData);
       petList.add(newPetValue);
-       await _storage.delete(key: 'pet');
-     
-       
+      print(petList);
+      await _storage.delete(key: 'pet');
     }
-        await _storage.write(key: 'pet', value: jsonEncode(petList));
+    await _storage.write(key: 'pet', value: jsonEncode(petList));
   }
 
   Future<void> _saveButtonHandle() async {
@@ -157,7 +156,11 @@ class _CreatePetState extends State<CreatePet> {
           'protectorPhoneNum': _parentPhoneNum
         };
         print(petInfo);
-        await _pet.createPet(petInfo);
+        
+        
+        
+        if (_file != null) {
+            await _pet.createPet(petInfo,true,context);
         List<Map<String, dynamic>> petList = await _pet.getPetList();
         int petPk = 0;
         for (Map<String, dynamic> pet in petList) {
@@ -166,7 +169,6 @@ class _CreatePetState extends State<CreatePet> {
             print("여기서 petPk: $petPk");
           }
         }
-        if (_file != null) {
           String presignedUrl = await _pet.s3Upload(_file!, petPk);
           print(presignedUrl);
           setState(() {
@@ -175,12 +177,23 @@ class _CreatePetState extends State<CreatePet> {
           print("profile: $_profile");
           petInfo['profile'] = _profile;
           print(petInfo);
-          _saveAppHandle(petInfo);
+        
 
-          await _pet.modifyPet(petInfo, petPk,context);
-
+          await _pet.modifyPet(petInfo, petPk, context,true);
+           _saveAppHandle(petInfo,petPk);
+        }else{
+              await _pet.createPet(petInfo,false,context);
+              List<Map<String, dynamic>> petList = await _pet.getPetList();
+        int petPk = 0;
+        for (Map<String, dynamic> pet in petList) {
+          if (pet['dogNm'] == petInfo['dogNm']) {
+            petPk = pet['petPk'];
+            print("여기서 petPk: $petPk");
+          }
+           _saveAppHandle(petInfo,petPk);
         }
-     
+        }
+         
       }
     }
   }
