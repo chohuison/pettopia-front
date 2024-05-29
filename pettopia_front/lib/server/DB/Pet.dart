@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pettopia_front/main.dart';
 
 class Pet {
   String _serverDbUrl = "";
@@ -145,7 +147,7 @@ class Pet {
   }
 
   //pet기본 정보 수정
-  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk) async {
+  Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk,BuildContext context) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
@@ -168,6 +170,10 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record modify successfully!");
+         Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MyApp()),
+        );
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
