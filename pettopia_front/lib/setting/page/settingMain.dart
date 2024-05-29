@@ -8,6 +8,7 @@ import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pettopia_front/setting/widget/creatPetCheckPopup.dart';
+import 'package:pettopia_front/setting/widget/petInfoCheckPopup.dart';
 
 class SettingMain extends StatefulWidget {
   const SettingMain({Key? key}) : super(key: key);
@@ -113,9 +114,14 @@ class _SettingMainhState extends State<SettingMain> {
       child: ElevatedButton(
         onPressed: () async {
           if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreatePet()),
+        showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content:PetInfoCheckPopup(),
+                  surfaceTintColor: Colors.white,
+                );
+              },
             );
           } else if (index == 1) {
               final Size screenSize = MediaQuery.of(context).size;
