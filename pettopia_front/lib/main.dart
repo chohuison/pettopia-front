@@ -35,7 +35,20 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+    //그냥 펫 정보 잘 처리되나 확인할라고 
+    _getPetInfo();
+  
   }
+
+  //그냥 펫 정보 
+  Future<void> _getPetInfo()async{
+    print("폰에 저장된 펫 정보들");
+    String? jsonData = await _storage.read(key: 'pet');
+    if(jsonData !=null){
+      List<dynamic> petList = jsonDecode(jsonData);
+      print(petList);
+    }
+  } 
 
   Future<void> _getCurrentLocation() async {
     if (await isCheckedWeather()) {
