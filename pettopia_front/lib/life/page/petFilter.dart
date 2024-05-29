@@ -80,7 +80,7 @@ class _PetFilterSearchState extends State<PetFilter>
     return ScreenUtilInit(
       designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+        debugShowCheckedModeBanner: false,
         title: "petfilter",
         builder: (context, child) {
           return MediaQuery(
@@ -137,7 +137,40 @@ class _PetFilterSearchState extends State<PetFilter>
                             SizedBox(width: 20.w),
                             _button("갤러리", _getGallery)
                           ],
-                        ))
+                        )),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.h),
+                      width: 350.w,
+                      height: 150.h,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFF5EBE0),
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                            width: 1,
+                            color: Color.fromARGB(255, 165, 142, 128),
+                          )),
+                      child: ListView(
+                        children: [
+                          Wrap(
+                            children: [
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                              _filterBtn(),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
                   ])),
             ],
           ),
@@ -168,5 +201,19 @@ Widget _button(String buttonName, Function controller) {
         ),
       ),
     ),
+  );
+}
+
+// 일단 필터 보여주기만 했는데 연결하다가 필요하면 클래스 분리해야 할듯
+Widget _filterBtn() {
+  return Container(
+    margin: EdgeInsets.only(bottom: 5.h, left: 3.w, right: 3.w),
+    width: 60.w,
+    height: 60.h,
+    child: IconButton(
+        onPressed: () {
+          print("버튼 선택됨");
+        },
+        icon: Image.asset('assets/img/exFilter.png')),
   );
 }
