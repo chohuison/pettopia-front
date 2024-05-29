@@ -111,12 +111,9 @@ class _ModifyPetState extends State<ModifyPet> {
       }
       print(petInfo);
 
-      _pet.modifyPet(petInfo, widget.petPk);
+      _pet.modifyPet(petInfo, widget.petPk,context);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyApp()),
-      );
+  
     }
   }
 
