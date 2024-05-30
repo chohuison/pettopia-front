@@ -12,6 +12,7 @@ import 'package:pettopia_front/life/widget/checkCreateDiaryPopup.dart';
 import 'package:pettopia_front/server/DB/Diary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
 import 'package:pettopia_front/setting/widget/diaryCalendar.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class DiaryWidget extends StatefulWidget {
   final List<Map<String, dynamic>> petList;
@@ -35,6 +36,8 @@ class _DiaryWidgetState extends State<DiaryWidget>
   Pet _petServer = new Pet();
   Diary _diaryServer = Diary();
 
+  DateTime _selectedDate = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -47,13 +50,14 @@ class _DiaryWidgetState extends State<DiaryWidget>
     });
   }
 
-  void onHandleDate(DateTime date) {
+  void _onHandleDate(DateTime date) {
     _date = date;
   }
 
   Future<void> _writeDiary() async {
     print("name: " + _name + ", petName: " + _petName);
-    List<Map<String,dynamic>> medicenList = await _diaryServer.getMedicenList(_petPk);
+    List<Map<String, dynamic>> medicenList =
+        await _diaryServer.getMedicenList(_petPk);
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -66,31 +70,30 @@ class _DiaryWidgetState extends State<DiaryWidget>
   }
 
   Future<void> _viewDiary() async {
-    Map<String,dynamic> diaryValue = await _diaryServer.getDiary(_petPk,_date);
-    if(diaryValue.length> 0 ){
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ViewDiary(
-              diaryPk: diaryValue['diaryPk'],
-              diaryValue:diaryValue,
-                  date: _date,
-                  name: _petName,
-                  pk: _petPk,
-                )));
+    Map<String, dynamic> diaryValue =
+        await _diaryServer.getDiary(_petPk, _date);
+    if (diaryValue.length > 0) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ViewDiary(
+                    diaryPk: diaryValue['diaryPk'],
+                    diaryValue: diaryValue,
+                    date: _date,
+                    name: _petName,
+                    pk: _petPk,
+                  )));
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: CreateDiaryCheckPopup(),
+            surfaceTintColor: Colors.white,
+          );
+        },
+      );
     }
-    else{
-showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content:CreateDiaryCheckPopup(),
-                  surfaceTintColor: Colors.white,
-                );
-              },
-            );
-    }
-
   }
 
   @override
@@ -99,7 +102,7 @@ showDialog(
         margin: EdgeInsets.only(top: 10.h),
         child: Column(
           children: [
-            DiaryCalendar(onHandleDate: onHandleDate),
+            _calendar(),
             Row(
               children: [
                 // SelectBox Container
@@ -146,6 +149,29 @@ showDialog(
             fontWeight: FontWeight.bold,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _calendar() {
+    return Container(
+      color: Color(0xFFE3D5CA),
+      margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 10.h),
+      child: TableCalendar(
+        focusedDay: _selectedDate,
+        firstDay: DateTime(2020),
+        lastDay: DateTime(2030),
+        selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
+        onDaySelected: (
+          DateTime selectedDay,
+          DateTime focusedDay,
+        ) {
+          print(selectedDay);
+          setState(() {
+            _selectedDate = selectedDay;
+          });
+          _onHandleDate(selectedDay);
+        },
       ),
     );
   }
