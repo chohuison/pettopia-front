@@ -239,7 +239,6 @@ class Pet {
           } else {
             newPetList.add(value);
           }
-          newPetList.add(value);
         }
         await _secureStorage.delete(key: 'pet');
         await _secureStorage.write(key: 'pet', value: jsonEncode(newPetList));
