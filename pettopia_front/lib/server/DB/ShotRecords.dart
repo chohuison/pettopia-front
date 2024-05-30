@@ -4,6 +4,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/material.dart';
+import 'package:pettopia_front/hospital/page/shortRecords.dart';
+
 
 class ShotRecords{
     String _serverDbUrl="";
@@ -45,7 +48,7 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
 
 
 
-  Future<void> makeShotRecords(int petPk, String type, int num, int age, DateTime createAt) async{
+  Future<void> makeShotRecords(int petPk, String type, int num, int age, DateTime createAt,BuildContext context) async{
     
         String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
@@ -67,6 +70,10 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
 
   if(response.statusCode == 201){
     print("Shot record created successfully!");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShortRecords()),
+      );
   }else{
     print("Failed to create shot record. Status code :${response.body}");
   }
@@ -74,7 +81,7 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
 
   }
 
-    Future<void> modifySHotCharts(int pk,int petPk, String type, int num, int age) async{
+    Future<void> modifySHotCharts(int pk,int petPk, String type, int num, int age,BuildContext context) async{
          String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
@@ -93,14 +100,18 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
 
   if(response.statusCode == 201){
     print("Shot record created successfully!");
+     Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShortRecords()),
+      );
   }else{
-    print("Failed to create shot record. Status code :${response.statusCode}");
+    print("Failed to create shot record. Status code :${response.body}");
   }
 
 
   }
 
-    Future<void> deleteShotRecord(int pk) async{
+    Future<void> deleteShotRecord(int pk,BuildContext context) async{
          String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
@@ -114,6 +125,10 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
      headers: headers,);
   if(response.statusCode == 204){
     print("Shot record delete successfully!");
+     Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShortRecords()),
+      );
   }else{
     print("Failed to create shot record. Status code :${response.statusCode}");
   }
