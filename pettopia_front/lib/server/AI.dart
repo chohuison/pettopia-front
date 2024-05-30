@@ -5,16 +5,25 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AI {
-  final String serverUrl='http://10.0.2.2:5000';
+  String _serverAIUrl="";
 
   AI();
+ Future<void> _getServerUrl() async {
+    try {
+      await dotenv.load(fileName: ".env");
+    } catch (e) {
+      print("Error loading .env file: $e"); // 오류 메시지 출력
+    }
+    _serverAIUrl = dotenv.env['AI_SERVER_URI'] ?? 'YOUR_KAKAO_APP_KEY';
+    print(_serverAIUrl);
+  }
 
 
   Future<XFile?> applyPetFilter( XFile pickedImage, String species, String noseFilter, String hornsFilter) async {
-    final uri = Uri.parse('$serverUrl/pet_filter');
+    final uri = Uri.parse('$_serverAIUrl/pet_filter');
     final request = http.MultipartRequest('POST', uri);
 
 
@@ -49,7 +58,10 @@ class AI {
   }
 
   Future<List<Map<String, dynamic>>> getPetDiseaseRecommendation() async {
-  final uri = Uri.parse('$serverUrl/PetDiseaseRecommend');
+   await _getServerUrl();
+   String url = _serverAIUrl+"PetDiseaseRecommend";
+  final uri = Uri.parse(url);
+  print(uri);
 
   // JSON 데이터로 POST 요청을 생성
   final requestBody = {
@@ -79,6 +91,7 @@ class AI {
     // 상태 코드가 200이면 성공으로 간주합니다.
     if (response.statusCode == 200) {
       final responseData = jsonDecode(utf8.decode(response.bodyBytes));
+      print(responseData);
       List<Map<String,dynamic>> list = [];
       list.add(responseData['response']);
       print(list);
