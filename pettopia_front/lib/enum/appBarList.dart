@@ -1,18 +1,21 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pettopia_front/hospital/page/findDisease.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
 import 'package:pettopia_front/hospital/page/skinDisease.dart';
+import 'package:pettopia_front/hospital/widget/cnaPetFindDesisePopUp.dart';
 import 'package:pettopia_front/life/page/petDiary.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
 import 'package:pettopia_front/life/page/petSpeacker.dart';
 import 'package:pettopia_front/life/page/petTip.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pettopia_front/life/page/writeDiary.dart';
 
 class AppBarList {
+    final FlutterSecureStorage _storage = FlutterSecureStorage();
   List<Map<String, dynamic>> _hospitalAppBar = [
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '병원찾기'},
     {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '명냥접종'},
@@ -44,29 +47,59 @@ class AppBarList {
     return _hospitalAppBar;
   }
 
-  void hospitalAppBarHandler(int index, BuildContext context) {
+  Future<void> hospitalAppBarHandler(int index, BuildContext context) async {
     if (index == 0) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HospitalSearch()),
       );
     } else if (index == 1) {
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ShortRecords()),
       );
     } else if (index == 2) {
+      
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SkinDisease()),
       );
     } else if (index == 3) {
-      Navigator.push(
+         List<Map<String,dynamic>> petList = await _getPetIsAddList();
+        if(petList.length>0){
+  Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => FindDisease()),
+        MaterialPageRoute(builder: (context) => FindDisease(petList: petList,)),
       );
+        }else{
+        showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: CanFindDiseasePopUP(),
+                    surfaceTintColor: Colors.white,
+                  );
+                },
+              );
+        }
+   
     }
   }
+
+ Future<List<Map<String, dynamic>>> _getPetIsAddList() async {
+  List<Map<String, dynamic>> result = [];
+  String? jsonData = await _storage.read(key: 'pet');
+  if (jsonData != null) {
+    List<dynamic> defaultPetList = jsonDecode(jsonData);
+    for (dynamic value in defaultPetList) {
+      if (value['isAddInfo'] == true) {
+        result.add({'petPk': value['pk'], 'dogNm':value['dogNm']});
+      }
+    }
+  }
+  return result;
+}
 
   void beautyAppBarHandler(int index, BuildContext context) {
     if (index == 0) {

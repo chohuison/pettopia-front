@@ -6,10 +6,12 @@ import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/hospital/widget/SimilarDiseaseList.dart';
+import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/server/AI.dart';
 
 class FindDisease extends StatefulWidget {
-  const FindDisease({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> petList;
+  const FindDisease({Key? key, required this.petList}) : super(key: key);
 
   @override
   _FindDiseaseState createState() => _FindDiseaseState();
@@ -24,6 +26,8 @@ class _FindDiseaseState extends State<FindDisease>
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
   final aiServer = AI();
+  late String _petName = widget.petList.first['dogNm'];
+  late int _petPk = 1;
 
   @override
   void initState() {
@@ -43,13 +47,20 @@ class _FindDiseaseState extends State<FindDisease>
       });
   }
 
+  void handlePetList(String petName, int petPk) {
+    setState(() {
+      _petName = petName;
+      _petPk = petPk;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       builder: (context, child) {
         return MaterialApp(
-             debugShowCheckedModeBanner: false ,
+          debugShowCheckedModeBanner: false,
           title: "Find Disease",
           builder: (context, child) {
             return MediaQuery(
@@ -78,40 +89,17 @@ class _FindDiseaseState extends State<FindDisease>
                     child: Column(
                       children: <Widget>[
                         Container(
-                            margin: EdgeInsets.symmetric(vertical: 10.0.h),
-                            width: 340.w,
-                            height: 80.h,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF5EBE0),
-                              borderRadius: BorderRadius.circular(35),
-                            ),
-                            child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 20.0.w, vertical: 5.0.h),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "잠깐!",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          fontSize: 17.sp, color: Colors.red),
-                                    ),
-                                    Text("아직 우리 아이의 정보를 등록하지 않으셧다면?"),
-                                    Text("반려 동물 정보 등록하기",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontSize: 13.sp,
-                                            color: Color(0xFF3013E1)))
-                                  ],
-                                ))),
-                        _button(_buttonController),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 25.w, right: 25.w, top: 9.h, bottom: 15.h),
-                          height: 2.h,
-                          color: Color.fromARGB(255, 200, 180, 167),
+                          margin: EdgeInsets.only(top:15.h),
+                          child: Row(
+                          children: <Widget>[
+                           PetSelectBox(
+                                  onRegionSelected: handlePetList,
+                                  petName: widget.petList),
+                            _button(_buttonController),
+                          ],
                         ),
+                        ),
+                       
                         Text("우리 아이와 비슷한 아이들은 이런 지병이 있어요"),
                         if (_diseaseList != null)
                           SilimarDiseaseList(
@@ -131,7 +119,7 @@ class _FindDiseaseState extends State<FindDisease>
 
 Widget _button(Function controller) {
   return Container(
-    margin: EdgeInsets.only(top: 3.h),
+    margin: EdgeInsets.only(left: 10.w, bottom: 20.w),
     width: 100.w,
     height: 30.h,
     decoration: BoxDecoration(

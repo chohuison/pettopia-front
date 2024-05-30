@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,6 +10,7 @@ import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pettopia_front/setting/widget/creatPetCheckPopup.dart';
+import 'package:pettopia_front/setting/widget/createPetAddInfoPopup.dart';
 import 'package:pettopia_front/setting/widget/petInfoCheckPopup.dart';
 
 class SettingMain extends StatefulWidget {
@@ -19,34 +22,35 @@ class SettingMain extends StatefulWidget {
 
 class _SettingMainhState extends State<SettingMain> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-  List <Map<String,dynamic>> _petList =[];
-   Map<String,dynamic> _petInfo={};
-   Map<String,dynamic> _petAddInfo={};
-   List<dynamic> _medicenList = [];
-   int _height = 800;
+  List<Map<String, dynamic>> _petList = [];
+  Map<String, dynamic> _petInfo = {};
+  Map<String, dynamic> _petAddInfo = {};
+  List<dynamic> _medicenList = [];
+  int _height = 800;
 
   Pet _petServer = Pet();
   Future<void> _getList() async {
-       _petList = await _petServer.getPetList();
+    _petList = await _petServer.getPetList();
   }
 
-  Future <void>_getPetInfo() async{
-    _petInfo = await _petServer.getPetInfo(_petList.first['petPk'] );
+  Future<void> _getPetInfo() async {
+    _petInfo = await _petServer.getPetInfo(_petList.first['petPk']);
   }
-  Future <void> _getPetAddInfo() async {
-    Map<String,dynamic>petAddExtraInfo = await _petServer.getAddPetInfo(_petList.first['petPk']);
+
+  Future<void> _getPetAddInfo() async {
+    Map<String, dynamic> petAddExtraInfo =
+        await _petServer.getAddPetInfo(_petList.first['petPk']);
     _petAddInfo = petAddExtraInfo['petExtraInfo'];
-    _medicenList=petAddExtraInfo['responseMedicineList']['list'];
+    _medicenList = petAddExtraInfo['responseMedicineList']['list'];
     _height = _medicenList.length * 160 + 800;
   }
-  
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size( 411.42857142857144, 683.4285714285714),
+      designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+        debugShowCheckedModeBanner: false,
         title: "settingMain",
         builder: (context, child) {
           return MediaQuery(
@@ -114,74 +118,87 @@ class _SettingMainhState extends State<SettingMain> {
       child: ElevatedButton(
         onPressed: () async {
           if (index == 0) {
-        showDialog(
+            showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content:PetInfoCheckPopup(),
+                  content: PetInfoCheckPopup(),
                   surfaceTintColor: Colors.white,
                 );
               },
             );
           } else if (index == 1) {
-              final Size screenSize = MediaQuery.of(context).size;
-    final double screenWidth = screenSize.width;
-    final double screenHeight = screenSize.height;
-    print(screenWidth);
-    print(screenHeight);
-   
-           await _getList();
-            print("가져온 petList");
-            print(_petList);
-            if(_petList.length<1){
+            // //추가 정보 작성이 가능한 펫들만 넘겨주기 위해 
+              String? jsonData = await _secureStorage.read(key: 'pet');
+              if (jsonData != null) {
+                bool isCreateAddInfo = false;
+                List<dynamic> petInfoList =
+                    await jsonDecode(jsonData);
+                List<Map<String, dynamic>> canAddInfoPetList = [];
+                for (Map<String, dynamic> value in petInfoList) {
+                  if (value['isAddInfo'] == false) {
+                    isCreateAddInfo = true;
+                    canAddInfoPetList
+                        .add({'petPk': value['pk'], 'dogNm': value['dogNm']});
+                  }
+                }
+                if (isCreateAddInfo = true) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PetAddInformation(
+                              petList: canAddInfoPetList,
+                            )),
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: CreatePetAddInfoPopup(),
+                        surfaceTintColor: Colors.white,
+                      );
+                    },
+                  );
+                }
+              } else {
                 showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content:CreatePetCheckPopup(),
-                  surfaceTintColor: Colors.white,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: PetInfoCheckPopup(),
+                      surfaceTintColor: Colors.white,
+                    );
+                  },
                 );
-              },
-            );
-            }else{
-      Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PetAddInformation(
-                        petList: _petList,
-                      )),
-            );
+              }
             }
-      
-    
-          } else if (index == 2) {
+           else if (index == 2) {
             await _getList();
-            if(_petList.length<1){
-                showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content:CreatePetCheckPopup(),
-                  surfaceTintColor: Colors.white,
-                );
-              },
-            );
-            }else{
-   await _getPetInfo();
-            await _getPetAddInfo();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ViewPetInformation(
-                          petList: _petList,
-                          petInfo : _petInfo,
-                          petAddInfo : _petAddInfo,
-                          medicen: _medicenList,
-                          height: _height,
-                        )));
+            if (_petList.length < 1) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: CreatePetCheckPopup(),
+                    surfaceTintColor: Colors.white,
+                  );
+                },
+              );
+            } else {
+              await _getPetInfo();
+              await _getPetAddInfo();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewPetInformation(
+                            petList: _petList,
+                            petInfo: _petInfo,
+                            petAddInfo: _petAddInfo,
+                            medicen: _medicenList,
+                            height: _height,
+                          )));
             }
-         
-
           } else if (index == 3) {
             await _secureStorage.deleteAll();
           }
