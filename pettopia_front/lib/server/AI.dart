@@ -155,11 +155,12 @@ return "FEE_FOOD";
     if (response.statusCode == 200) {
       final responseData = jsonDecode(utf8.decode(response.bodyBytes));
       print("responseData $responseData");
-        Map<String, dynamic> responseMap = responseData['response'];
+        List<dynamic> responseMap = responseData['response'];
+        Map<String,dynamic> data = responseMap[0];
         print(responseMap);
-
+      print(data);
   
-      return  responseMap;
+      return  data;
     } else {
       print("Failed to get pet disease recommendation. Status code: ${response.statusCode}");
       return {};
