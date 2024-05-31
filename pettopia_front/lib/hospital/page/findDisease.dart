@@ -21,7 +21,7 @@ class _FindDiseaseState extends State<FindDisease>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  late  Map<String,dynamic> _diseaseList = {};
+  late  Map<String,dynamic> _diseaseValue = {};
 
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
@@ -43,7 +43,7 @@ class _FindDiseaseState extends State<FindDisease>
     
     if (mounted)
       setState(() {
-        _diseaseList = _findDiseae;
+        _diseaseValue = _findDiseae;
       });
   }
 
@@ -100,11 +100,11 @@ class _FindDiseaseState extends State<FindDisease>
                         ),
                         ),
                        
-                        Text("우리 아이와 비슷한 아이들은 이런 지병이 있어요"),
-                        // if (_diseaseList != null)
-                        //   SilimarDiseaseList(
-                        //     diseaseList: _diseaseList!,
-                        //   ),
+                        Text("우리 아이와 비슷한 아이는 이런 지병이 있어요"),
+                        if (_diseaseValue['breed'] != null)
+                          SilimarDiseaseList(
+                            diseaseValue: _diseaseValue!,
+                          ),
                       ],
                     )),
               ],
