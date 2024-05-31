@@ -6,9 +6,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:pettopia_front/enum/PetBreedList.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 
 class AI {
   String _serverAIUrl="";
+  Pet _petServer = Pet();
 
   AI();
  Future<void> _getServerUrl() async {
@@ -56,29 +59,89 @@ class AI {
       return null; 
     }
   }
+  String _getEncodingSex(bool sexNm, bool neuterYn){
+    if(sexNm == true){
+      if(neuterYn == true){
+        return "CM"; 
+      }
+      else{
+        return "IM";
+      }
+    }
+    else{
+      if(neuterYn == true){
+        return "SF";
+      }
+      else{
+        return "IF";
+      }
+    }
+  }
+  String _getExersice(int value){
+    if(value ==0){
+      return "LOW";
+    }
+    else if(value == 1){
+      return "MID";
+    }
+    else{
+      return "HIGH";
+    }
+  }
 
-  Future<List<Map<String, dynamic>>> getPetDiseaseRecommendation() async {
+  String _getDefaction(int value){
+    if(value ==0 ){
+      return "NORMAL";
+    }
+    else{
+      return "STRANGE";
+    }
+  }
+
+  String _getFoodKind(int value){
+    if(value ==0){
+return "FEED";
+    }
+    else if(value ==1){
+return "FEE_FOOD";
+    }
+  else{
+    return "FOOD";
+  }
+  }
+
+  Future <Map<String, dynamic>> getPetDiseaseRecommendation(int petPk) async {
    await _getServerUrl();
    String url = _serverAIUrl+"PetDiseaseRecommend";
   final uri = Uri.parse(url);
   print(uri);
+  Map<String,dynamic> petInfo = await _petServer.getPetInfo(petPk);
+  Map<String,dynamic> petAddInfo = await _petServer.getAddPetInfo(petPk);
+  Map<String,dynamic> petOnlyAddInfo =petAddInfo['petExtraInfo'];
+  PetBreedList _petBreedList = PetBreedList();
+   int currentYear = DateTime.now().year;
+   String strPetBirthYear = petInfo['birth'].toString();
+   String yearSubStr = strPetBirthYear.substring(0,4);
+   int petBirtYear = int.parse(yearSubStr);
+   int age = currentYear - petBirtYear;
 
   // JSON 데이터로 POST 요청을 생성
   final requestBody = {
-    'species': '강아지',
-    'breed': 'BEA',
+    'species': _petBreedList.findSpeciesValue(petInfo['speciesName']),
+    'breed': petInfo['speciesName'],
     'age': 2,
-    'pet_class': 'SH',
-    'sex': 'IM',
-    'weight': 10.4,
-    'environment': 'IN_DOOR',
-    'exercise': 'LOW',
+    'pet_class': petInfo['hair']==0?"SH":"LH",
+    'sex': _getEncodingSex(petInfo['sexNm'], petInfo['neuterYn']),
+    'weight': petInfo['weight'],
+    'environment': petOnlyAddInfo['environment'] == 0 ?"IN_DOOR" : "OUT_DOOR",
+    'exercise': _getExersice(petOnlyAddInfo['exercise']),
     'defecation': 'NORMAL',
-    'food_count': 4,
+    'food_count': petOnlyAddInfo['foodCnt'],
     'food_amount': 4,
-    'snack_amount': 1,
-    'food_kind': 'FEED',
+    'snack_amount': petOnlyAddInfo['snackCnt'],
+    'food_kind': _getFoodKind(petOnlyAddInfo['foodKind']),
   }; 
+  print(requestBody);
 
   try {
     // POST 요청을 보냅니다.
@@ -91,18 +154,19 @@ class AI {
     // 상태 코드가 200이면 성공으로 간주합니다.
     if (response.statusCode == 200) {
       final responseData = jsonDecode(utf8.decode(response.bodyBytes));
-      print(responseData);
-      List<Map<String,dynamic>> list = [];
-      list.add(responseData['response']);
-      print(list);
-      return  list;
+      print("responseData $responseData");
+        Map<String, dynamic> responseMap = responseData['response'];
+        print(responseMap);
+
+  
+      return  responseMap;
     } else {
       print("Failed to get pet disease recommendation. Status code: ${response.statusCode}");
-      return [];
+      return {};
     }
   } catch (e) {
     print("Error during request: $e");
-    return [];
+    return {};
   }
 }
 
