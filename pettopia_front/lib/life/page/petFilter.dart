@@ -15,6 +15,7 @@ import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
 import 'package:pettopia_front/life/page/TakePictureScreen.dart';
 import 'package:camera/camera.dart';
+import 'package:pettopia_front/life/widget/breedSelectBox.dart';
 import 'package:pettopia_front/server/AI.dart';
 
 class PetFilter extends StatefulWidget {
@@ -43,6 +44,20 @@ class _PetFilterSearchState extends State<PetFilter>
     _lifeAppBar = _appBarList.getLifeAppBar();
 
     _initializeData();
+  }
+
+  String _selectedBreed = "";
+  int breedPk = 0;
+  void _fetchBreedList(String selectedBreed) {
+    print(selectedBreed);
+    setState(() {
+      _selectedBreed = selectedBreed;
+      if (selectedBreed == "강아지") {
+        breedPk = 1;
+      } else {
+        breedPk = 2;
+      }
+    });
   }
 
   Future<void> _getCamera() async {
@@ -106,72 +121,84 @@ class _PetFilterSearchState extends State<PetFilter>
                     color: Color(0xFFE3D5CA),
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  child: Column(children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
-                      width: 250.h,
-                      height: 250.h,
-                      child: (file != null)
-                          ? Image.file(
-                              File(file!.path),
-                              fit: BoxFit.cover,
-                            )
-                          : const Icon(
-                              Icons.camera_alt_outlined,
-                              size: 50,
-                              color: Colors.black,
-                            ),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF5EBE0),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            width: 1,
-                            color: Color.fromARGB(255, 165, 142, 128),
-                          )),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 10.h, left: 75.w),
-                        child: Row(
-                          children: <Widget>[
-                            _button("촬영하기", _getCamera),
-                            SizedBox(width: 20.w),
-                            _button("갤러리", _getGallery)
-                          ],
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      width: 350.w,
-                      height: 150.h,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF5EBE0),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            width: 1,
-                            color: Color.fromARGB(255, 165, 142, 128),
-                          )),
-                      child: ListView(
-                        children: [
-                          Wrap(
+                  child: Stack(
+                    children: [
+                      Column(children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 60.h, 0, 0),
+                          width: 200.h,
+                          height: 200.h,
+                          child: (file != null)
+                              ? Image.file(
+                                  File(file!.path),
+                                  fit: BoxFit.cover,
+                                )
+                              : const Icon(
+                                  Icons.camera_alt_outlined,
+                                  size: 50,
+                                  color: Colors.black,
+                                ),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                width: 1,
+                                color: Color.fromARGB(255, 165, 142, 128),
+                              )),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 10.h, left: 75.w),
+                            child: Row(
+                              children: <Widget>[
+                                _button("촬영하기", _getCamera),
+                                SizedBox(width: 20.w),
+                                _button("갤러리", _getGallery)
+                              ],
+                            )),
+                        Container(
+                          margin: EdgeInsets.only(top: 10.h),
+                          width: 350.w,
+                          height: 150.h,
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                width: 1,
+                                color: Color.fromARGB(255, 165, 142, 128),
+                              )),
+                          child: ListView(
                             children: [
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
-                              _filterBtn(),
+                              Wrap(
+                                children: [
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                  _filterBtn(),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      ),
-                    )
-                  ])),
+                          ),
+                        )
+                      ]),
+                      Positioned(
+                          width: 200.w,
+                          child: Container(
+                            // color: Colors.red,
+                            height: 150.h,
+                            child: BreedSelectBox(
+                                onRegionSelected: _fetchBreedList),
+                          )),
+                    ],
+                  )),
             ],
           ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 3),
