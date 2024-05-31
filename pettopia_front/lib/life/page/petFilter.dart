@@ -73,12 +73,17 @@ class _PetFilterSearchState extends State<PetFilter>
   Future<void> _getGallery() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      file = pickedImage;
+    });
     if (pickedImage == null) {
       return;
     }
+  }
 
+  Future<void> _filter(String nose, String horn) async {
     XFile? filteredImage = await petFilterService.applyPetFilter(
-        pickedImage, '강이지', 'nose.png', 'horns2.png'); // 필터 적용 요청
+        file!, '강이지', nose, horn); // 필터 적용 요청
 
     setState(() {
       file = filteredImage;
@@ -170,19 +175,19 @@ class _PetFilterSearchState extends State<PetFilter>
                             children: [
                               Wrap(
                                 children: [
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
-                                  _filterBtn(),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
                                 ],
                               )
                             ],
@@ -206,41 +211,42 @@ class _PetFilterSearchState extends State<PetFilter>
       ),
     );
   }
-}
 
-Widget _button(String buttonName, Function controller) {
-  return SizedBox(
-    width: 100.w,
-    height: 40.h,
-    child: ElevatedButton(
-      onPressed: () {
-        controller();
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
-      ),
-      child: Text(
-        buttonName,
-        style: TextStyle(
-          fontSize: 13,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
+  Widget _button(String buttonName, Function controller) {
+    return SizedBox(
+      width: 100.w,
+      height: 40.h,
+      child: ElevatedButton(
+        onPressed: () {
+          controller();
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
+        ),
+        child: Text(
+          buttonName,
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
 // 일단 필터 보여주기만 했는데 연결하다가 필요하면 클래스 분리해야 할듯
-Widget _filterBtn() {
-  return Container(
-    margin: EdgeInsets.only(bottom: 5.h, left: 3.w, right: 3.w),
-    width: 60.w,
-    height: 60.h,
-    child: IconButton(
-        onPressed: () {
-          print("버튼 선택됨");
-        },
-        icon: Image.asset('assets/img/exFilter.png')),
-  );
+  Widget _filterBtn(String nose, String horn) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 5.h, left: 3.w, right: 3.w),
+      width: 60.w,
+      height: 60.h,
+      child: IconButton(
+          onPressed: () {
+            print("버튼 선택됨");
+            _filter(nose, horn);
+          },
+          icon: Image.asset('assets/img/exFilter.png')),
+    );
+  }
 }

@@ -76,12 +76,10 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
         _errorText = "필수 입력 사항을 모두 입력해주세요";
       });
     } else {
-      shotRecordsServer.modifySHotCharts(widget.chartValue['pk'], _pk, _type,
-          int.parse(_count), int.parse(_age));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ShortRecords()),
-      );
+      print(widget.chartValue['pk']);
+      shotRecordsServer.modifySHotCharts(widget.chartValue['pk'], _Petpk, _type,
+          int.parse(_count), int.parse(_age),context);
+   
     }
   }
 

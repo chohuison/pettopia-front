@@ -69,11 +69,8 @@ class _ShortWriteValueState extends State<ShortWriteValue>
       });
     } else {
       shotRecordsServer.makeShotRecords(
-          _pk, _type, _count, _age, widget.selectedDay);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ShortRecords()),
-      );
+          _pk, _type, _count, _age, widget.selectedDay, context);
+    
     }
   }
 

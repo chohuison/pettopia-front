@@ -15,7 +15,7 @@ class _DeleteCheckPopupState extends State<DeleteCheckPopup> {
 
   final shotRecordsServer = ShotRecords();
   void delete () async {
-    shotRecordsServer.deleteShotRecord(widget.pk);
+    shotRecordsServer.deleteShotRecord(widget.pk,context);
   }
   @override
   Widget build(BuildContext context) {
@@ -65,10 +65,7 @@ class _DeleteCheckPopupState extends State<DeleteCheckPopup> {
                   child: ElevatedButton(
                     onPressed: () {
                       delete();
-                   Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ShortRecords()),
-      );
+                
                     },
                     style: ButtonStyle(
                       side: MaterialStateProperty.all<BorderSide>(
