@@ -15,6 +15,7 @@ import 'package:pettopia_front/hospital/widget/hospitalValue.dart';
 import 'package:pettopia_front/hospital/widget/regionSelectBox.dart';
 import 'package:pettopia_front/life/page/TakePictureScreen.dart';
 import 'package:camera/camera.dart';
+import 'package:pettopia_front/life/widget/breedSelectBox.dart';
 import 'package:pettopia_front/server/AI.dart';
 
 class PetFilter extends StatefulWidget {
@@ -45,6 +46,20 @@ class _PetFilterSearchState extends State<PetFilter>
     _initializeData();
   }
 
+  String _selectedBreed = "";
+  int breedPk = 0;
+  void _fetchBreedList(String selectedBreed) {
+    print(selectedBreed);
+    setState(() {
+      _selectedBreed = selectedBreed;
+      if (selectedBreed == "강아지") {
+        breedPk = 1;
+      } else {
+        breedPk = 2;
+      }
+    });
+  }
+
   Future<void> _getCamera() async {
     ImagePicker().pickImage(source: ImageSource.camera).then((image) {
       if (image != null) {
@@ -58,18 +73,16 @@ class _PetFilterSearchState extends State<PetFilter>
   Future<void> _getGallery() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-        setState(() {
-          file=pickedImage;
-        });
+    setState(() {
+      file = pickedImage;
+    });
     if (pickedImage == null) {
       return;
     }
-
-  
   }
 
-  Future<void> _filter( String nose,String horn) async{
-  XFile? filteredImage = await petFilterService.applyPetFilter(
+  Future<void> _filter(String nose, String horn) async {
+    XFile? filteredImage = await petFilterService.applyPetFilter(
         file!, '강이지', nose, horn); // 필터 적용 요청
 
     setState(() {
@@ -113,72 +126,84 @@ class _PetFilterSearchState extends State<PetFilter>
                     color: Color(0xFFE3D5CA),
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  child: Column(children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
-                      width: 250.h,
-                      height: 250.h,
-                      child: (file != null)
-                          ? Image.file(
-                              File(file!.path),
-                              fit: BoxFit.cover,
-                            )
-                          : const Icon(
-                              Icons.camera_alt_outlined,
-                              size: 50,
-                              color: Colors.black,
-                            ),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF5EBE0),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            width: 1,
-                            color: Color.fromARGB(255, 165, 142, 128),
-                          )),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 10.h, left: 75.w),
-                        child: Row(
-                          children: <Widget>[
-                            _button("촬영하기", _getCamera),
-                            SizedBox(width: 20.w),
-                            _button("갤러리", _getGallery)
-                          ],
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      width: 350.w,
-                      height: 150.h,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFF5EBE0),
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            width: 1,
-                            color: Color.fromARGB(255, 165, 142, 128),
-                          )),
-                      child: ListView(
-                        children: [
-                          Wrap(
+                  child: Stack(
+                    children: [
+                      Column(children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 60.h, 0, 0),
+                          width: 200.h,
+                          height: 200.h,
+                          child: (file != null)
+                              ? Image.file(
+                                  File(file!.path),
+                                  fit: BoxFit.cover,
+                                )
+                              : const Icon(
+                                  Icons.camera_alt_outlined,
+                                  size: 50,
+                                  color: Colors.black,
+                                ),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                width: 1,
+                                color: Color.fromARGB(255, 165, 142, 128),
+                              )),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 10.h, left: 75.w),
+                            child: Row(
+                              children: <Widget>[
+                                _button("촬영하기", _getCamera),
+                                SizedBox(width: 20.w),
+                                _button("갤러리", _getGallery)
+                              ],
+                            )),
+                        Container(
+                          margin: EdgeInsets.only(top: 10.h),
+                          width: 350.w,
+                          height: 150.h,
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF5EBE0),
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                width: 1,
+                                color: Color.fromARGB(255, 165, 142, 128),
+                              )),
+                          child: ListView(
                             children: [
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
-                              _filterBtn( 'nose.png', 'horns2.png'),
+                              Wrap(
+                                children: [
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose.png', 'horns2.png'),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      ),
-                    )
-                  ])),
+                          ),
+                        )
+                      ]),
+                      Positioned(
+                          width: 200.w,
+                          child: Container(
+                            // color: Colors.red,
+                            height: 150.h,
+                            child: BreedSelectBox(
+                                onRegionSelected: _fetchBreedList),
+                          )),
+                    ],
+                  )),
             ],
           ),
           bottomNavigationBar: CustomBottomNavigatorBar(page: 3),
@@ -186,43 +211,42 @@ class _PetFilterSearchState extends State<PetFilter>
       ),
     );
   }
+
   Widget _button(String buttonName, Function controller) {
-  return SizedBox(
-    width: 100.w,
-    height: 40.h,
-    child: ElevatedButton(
-      onPressed: () {
-        controller();
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
-      ),
-      child: Text(
-        buttonName,
-        style: TextStyle(
-          fontSize: 13,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
+    return SizedBox(
+      width: 100.w,
+      height: 40.h,
+      child: ElevatedButton(
+        onPressed: () {
+          controller();
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFAFA59B)),
+        ),
+        child: Text(
+          buttonName,
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
 // 일단 필터 보여주기만 했는데 연결하다가 필요하면 클래스 분리해야 할듯
-Widget _filterBtn(String nose, String horn ) {
-  return Container(
-    margin: EdgeInsets.only(bottom: 5.h, left: 3.w, right: 3.w),
-    width: 60.w,
-    height: 60.h,
-    child: IconButton(
-        onPressed: () {
-          print("버튼 선택됨");
-          _filter(nose,horn);
-        },
-        icon: Image.asset('assets/img/exFilter.png')),
-  );
+  Widget _filterBtn(String nose, String horn) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 5.h, left: 3.w, right: 3.w),
+      width: 60.w,
+      height: 60.h,
+      child: IconButton(
+          onPressed: () {
+            print("버튼 선택됨");
+            _filter(nose, horn);
+          },
+          icon: Image.asset('assets/img/exFilter.png')),
+    );
+  }
 }
-}
-
-
