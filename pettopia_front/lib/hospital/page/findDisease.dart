@@ -21,13 +21,13 @@ class _FindDiseaseState extends State<FindDisease>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  late List<Map<String, dynamic>> _diseaseList = [];
+  late  Map<String,dynamic> _diseaseList = {};
 
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
   final aiServer = AI();
   late String _petName = widget.petList.first['dogNm'];
-  late int _petPk = 1;
+  late int _petPk =widget.petList.first['petPk'];
 
   @override
   void initState() {
@@ -38,9 +38,9 @@ class _FindDiseaseState extends State<FindDisease>
 
   //ai랑 연결
   void _buttonController() async {
-    List<Map<String, dynamic>> _findDiseae =
-        await aiServer.getPetDiseaseRecommendation();
-    ;
+   Map<String,dynamic> _findDiseae =
+        await aiServer.getPetDiseaseRecommendation(_petPk);
+    
     if (mounted)
       setState(() {
         _diseaseList = _findDiseae;
@@ -101,10 +101,10 @@ class _FindDiseaseState extends State<FindDisease>
                         ),
                        
                         Text("우리 아이와 비슷한 아이들은 이런 지병이 있어요"),
-                        if (_diseaseList != null)
-                          SilimarDiseaseList(
-                            diseaseList: _diseaseList!,
-                          ),
+                        // if (_diseaseList != null)
+                        //   SilimarDiseaseList(
+                        //     diseaseList: _diseaseList!,
+                        //   ),
                       ],
                     )),
               ],
