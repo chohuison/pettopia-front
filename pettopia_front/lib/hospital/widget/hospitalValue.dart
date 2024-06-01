@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/hospital/page/hospitalMap.dart';
 import 'package:pettopia_front/hospital/page/kakaoMap.dart';
-
 import 'package:pettopia_front/server/kakaoMapServer.dart';
 
 class HospitalValue extends StatefulWidget {
@@ -19,14 +19,20 @@ class HospitalValue extends StatefulWidget {
 class _HospitalValueState extends State<HospitalValue> {
   late Map<String, dynamic> xyValue;
   bool _isTapped = false;
-  kakaoMapServer _kakaoServer = kakaoMapServer();
+  final kakaoMapServer _kakaoServer = kakaoMapServer();
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(411.4, 683.4),
-        child: Container(
+      designSize: const Size(411.4, 683.4),
+      builder: (context, child) {
+        return Container(
           margin: EdgeInsets.only(
-              top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
+            top: 0.0.h,
+            left: 10.0.w,
+            right: 10.w,
+            bottom: 10.h,
+          ),
           width: 350.w,
           height: _isTapped ? 350.h : 90.h,
           decoration: BoxDecoration(
@@ -38,80 +44,84 @@ class _HospitalValueState extends State<HospitalValue> {
               Row(
                 children: <Widget>[
                   Container(
-                      width: 250.w,
-                      margin: EdgeInsets.only(
-                        top: 15.0.h,
-                        left: 10.0.w,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            widget.value['name'],
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    width: 250.w,
+                    margin: EdgeInsets.only(
+                      top: 15.0.h,
+                      left: 10.0.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.value['name'],
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Text(
-                            widget.value['address'],
-                            style: TextStyle(
-                              fontSize: 14.0,
-                            ),
+                        ),
+                        Text(
+                          widget.value['address'],
+                          style: TextStyle(
+                            fontSize: 14.0,
                           ),
-                          Text(
-                            widget.value['phoneNumber'],
-                            style: TextStyle(
-                              fontSize: 14.0,
-                            ),
+                        ),
+                        Text(
+                          widget.value['phoneNumber'],
+                          style: TextStyle(
+                            fontSize: 14.0,
                           ),
-                        ],
-                      )),
+                        ),
+                      ],
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () async {
-                      xyValue = await _kakaoServer.getXY( widget.value['address']);
+                      xyValue =
+                          await _kakaoServer.getXY(widget.value['address']);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HospitalMap(
+                                  xyValue: xyValue, value: widget.value)));
 
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           KakaoMap(x: xyValue['x'], y: xyValue['y'])),
-                      // );
-                      setState(() {
-                        _isTapped = !_isTapped;
-                      });
+                      // setState(() {
+                      //   _isTapped = !_isTapped;
+                      // });
                     },
                     child: Container(
                       margin: EdgeInsets.only(
-                          top: 5.0.h, left: 15.0.w, bottom: 5.h),
+                        top: 5.0.h,
+                        left: 15.0.w,
+                        bottom: 5.h,
+                      ),
                       width: 50.w,
                       height: 50.h,
                       decoration: BoxDecoration(
                         color: Color(0xFFAFA59B),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      //여기 아이콘 넣기 그려야할듯 ..?
+                      // 여기에 아이콘을 추가할 수 있습니다
                     ),
-                  )
+                  ),
                 ],
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
-                child: Expanded(
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 500),
-                    height: _isTapped ? 250.h : 0,
-                    width: 300.w,
-                    color: Colors.transparent, // 배경색을 투명하게 설정
-                    child: _isTapped
-                        ? KakaoMap(x: xyValue['x'], y: xyValue['y'], name:widget.value['name'])
-                        : Container(), // _isTapped가 false일 경우 빈 컨테이너를 표시
+              if (_isTapped)
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 10.h, 0, 0),
+                    color: Colors.transparent,
+                    child: KakaoMap(
+                      x: xyValue['x'],
+                      y: xyValue['y'],
+                      name: widget.value['name'],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
-        ));
+        );
+      },
+    );
   }
 }
