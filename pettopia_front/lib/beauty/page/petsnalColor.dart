@@ -25,6 +25,7 @@ class _PetsnalColorState extends State<PetsnalColor>
   late List<Map<String, dynamic>> _beautyAppBar;
   AppBarList _appBarList = AppBarList();
   AI _aiServer = AI();
+   List<List<int>> colors=[];
 
   @override
   void initState() {
@@ -49,7 +50,7 @@ class _PetsnalColorState extends State<PetsnalColor>
       return;
     }
     
-    await _aiServer.applyPetColor(pickedImage);
+ _aiServer.applyPetColor(pickedImage);
 
     setState(() {
       file = pickedImage;
