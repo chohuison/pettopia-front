@@ -94,55 +94,38 @@ class Diary {
     }
   }
 
-  //다이어리 리스트 조회
-  Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
-    await _getServerUrl();
-    print("프론트 원래 날짜 $date");
-    String dateStr = DateFormat("yyyy-MM-dd").format(date);
-    print("프론트 날짜 $dateStr");
+  //날짜로 다이어리 조회
+Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
+  await _getServerUrl();
+  String dateValue = date.toIso8601String().split('T').first;
+  String? accessToken = await _secureStorage.read(key: 'accessToken');
+  print("accessToken");
+  print(accessToken);
 
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
-    print("accessToken");
-    print(assessToken);
+  String finalUrl = _serverDbUrl + "api/v1/life/diary/date/$petPk?date=$dateValue";
+  final url = Uri.parse(finalUrl);
+  print(url);
+  final headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $accessToken',
+  };
 
-    String finalUrl = _serverDbUrl + "api/v1/life/diary/list/$petPk";
-    final url = Uri.parse(finalUrl);
-    print(url);
-    final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $assessToken',
-    };
+  final response = await http.get(
+    url,
+    headers: headers,
+  );
 
-    final response = await http.get(
-      url,
-      headers: headers,
-    );
-
-    if (response.statusCode == 200) {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-      final List<dynamic> jsonData =
-          jsonDecode(utf8.decode(response.bodyBytes));
-      Map<String, dynamic> diary = {};
-      int diaryPk = 0;
-      if (jsonData.length > 0) {
-        for (dynamic value in jsonData) {
-          if (value['calendarDate'].toString() == dateStr.toString()) {
-            diary = value;
-            diaryPk = value['diaryPk'];
-          }
-        }
-      }
-      print(diary);
-      Map<String, dynamic> diaryValue = {};
-      if (diary.length > 0) { diaryValue = await getDiaryValue(diaryPk);}
-     
-      print(diaryValue);
-      return diaryValue; // 결과 반환
-    } else {
-      throw Exception(
-          "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
-    }
+  if (response.statusCode == 200) {
+    print(jsonDecode(utf8.decode(response.bodyBytes)));
+    Map<String, dynamic> diaryValue = jsonDecode(utf8.decode(response.bodyBytes));
+    
+    return diaryValue; // 결과 반환
+  } else {
+    throw Exception(
+        "Failed to fetch diary. Status code: ${response.statusCode}, Response: ${response.body}"); // 예외 발생
   }
+}
+
 
   //다이어리 값 조회
   Future<Map<String, dynamic>> getDiaryValue(int diaryPk) async {

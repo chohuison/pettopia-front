@@ -52,7 +52,7 @@ class _WriteDiaryState extends State<WriteDiary>
 
   List<Map<String, dynamic>> _medicenWidgetValue = [];
   List<Widget> containerList = [];
-  int _widgetPk=0;
+  int _widgetPk = 0;
 
   @override
   void initState() {
@@ -75,12 +75,11 @@ class _WriteDiaryState extends State<WriteDiary>
   }
 
   void _medecinHandler(String name, int count) {
-   
     setState(() {
       _mecidenName = name;
       _medicenCount = count;
     });
-     print(_mecidenName);
+    print(_mecidenName);
   }
 
   void _medecinCountHandle(int count) {
@@ -89,12 +88,13 @@ class _WriteDiaryState extends State<WriteDiary>
     });
   }
 
-  void _addMedicine( String medicenName, int medicenCount) {
-    print("medicenName: "+medicenName);
+  void _addMedicine(String medicenName, int medicenCount) {
+    print("medicenName: " + medicenName);
     setState(() {
-      _medicenWidgetValue
-          .add({'pk': _widgetPk, 'medicenName': medicenName, 'cnt': medicenCount});
-      containerList.add(_medicineContainer(_widgetPk, medicenName, medicenCount));
+      _medicenWidgetValue.add(
+          {'pk': _widgetPk, 'medicenName': medicenName, 'cnt': medicenCount});
+      containerList
+          .add(_medicineContainer(_widgetPk, medicenName, medicenCount));
     });
     _widgetPk++;
   }
@@ -132,14 +132,13 @@ class _WriteDiaryState extends State<WriteDiary>
       _isMedicine = newValue;
     });
   }
-  String _getConditionOfDefecation(int value){
-    if(value ==0){
+
+  String _getConditionOfDefecation(int value) {
+    if (value == 0) {
       return "NORMAL";
-    }
-    else if(value ==1){
+    } else if (value == 1) {
       return "PROBLEM";
-    }
-    else {
+    } else {
       return "NO";
     }
   }
@@ -187,7 +186,7 @@ class _WriteDiaryState extends State<WriteDiary>
     return ScreenUtilInit(
       designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+        debugShowCheckedModeBanner: false,
         title: "writeDiary",
         builder: (context, child) {
           return MediaQuery(
@@ -257,7 +256,7 @@ class _WriteDiaryState extends State<WriteDiary>
                                   ],
                                 )),
                             Container(
-                               width: 350.w,
+                                width: 350.w,
                                 margin: EdgeInsets.only(top: 10.h, left: 10.w),
                                 child: Row(
                                   children: <Widget>[
@@ -269,7 +268,6 @@ class _WriteDiaryState extends State<WriteDiary>
                                   ],
                                 )),
                             Container(
-                           
                                 margin: EdgeInsets.only(top: 10.h, left: 10.w),
                                 child: Row(
                                   children: <Widget>[
@@ -282,21 +280,24 @@ class _WriteDiaryState extends State<WriteDiary>
                                 )),
                             //약
                             Container(
-                                width: 350.w,
-                              margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 25.w),
+                              width: 350.w,
+                              margin: EdgeInsets.only(
+                                  top: 10.h, left: 10.w, right: 25.w),
                               child: Column(
                                 children: [
-                                  Row(
-                                    children: <Widget>[
-                                      _typeContainer("약 *"),
-                                      _radio(_isMedicine, _updateIsMedicine)
-                                    ],
-                                  ),
+                                  widget.medicenList.length < 1
+                                      ? Container()
+                                      : Row(
+                                          children: <Widget>[
+                                            _typeContainer("약 *"),
+                                            _radio(
+                                                _isMedicine, _updateIsMedicine)
+                                          ],
+                                        ),
                                   ...containerList,
                                   if (_isMedicine == true)
                                     Container(
-
-  width: 350.w,
+                                      width: 350.w,
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(20.0),
@@ -306,7 +307,6 @@ class _WriteDiaryState extends State<WriteDiary>
                                         ),
                                       ),
                                       height: 150.h,
-                                     
                                       child: Medicine(
                                         onHandleMedicine: _medecinHandler,
                                         addMedicine: _addMedicine,
@@ -345,7 +345,7 @@ class _WriteDiaryState extends State<WriteDiary>
                             _defecationDes(
                                 _defecationDescription, _updateDefecationDes),
                             Container(
-                                width: 350.w,
+                              width: 350.w,
                               margin: EdgeInsets.only(top: 10.h, left: 10.w),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

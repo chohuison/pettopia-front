@@ -9,6 +9,7 @@ import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/life/page/viewDiary.dart';
 import 'package:pettopia_front/life/page/writeDiary.dart';
 import 'package:pettopia_front/life/widget/checkCreateDiaryPopup.dart';
+import 'package:pettopia_front/life/widget/createPetDiaryCheckPopup.dart';
 import 'package:pettopia_front/life/widget/daySelectPopUp.dart';
 import 'package:pettopia_front/server/DB/Diary.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
@@ -72,18 +73,31 @@ class _DiaryWidgetState extends State<DiaryWidget>
                 onDaySelected: (
                   DateTime selectedDay,
                   DateTime focusedDay,
-                ) {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                            surfaceTintColor: Colors.white,
-                            content: DaySelectPopUp(petList: widget.petList));
-                      });
-                  print(selectedDay);
-                  setState(() {
-                    _selectedDate = selectedDay;
-                  });
+                ) async {
+                  if (widget.petList.length < 1) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              surfaceTintColor: Colors.white,
+                              content: CreatePetDiaryCheckPopup());
+                        });
+                  } else {
+                    Map<String,dynamic > valueDiary = await _diaryServer.getDiary(_petPk,selectedDay);
+                    bool isCreate = valueDiary['diaryPk'] == null ? true: false;
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              surfaceTintColor: Colors.white,
+                              content: DaySelectPopUp(petList: widget.petList, isCreate: isCreate, diaryValue: valueDiary,));
+                        });
+                    print(selectedDay);
+                    setState(() {
+                      _selectedDate = selectedDay;
+                    });
+                  }
+
                   _onHandleDate(selectedDay);
                 },
               ),
