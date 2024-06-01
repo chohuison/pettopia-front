@@ -26,6 +26,7 @@ class AI {
 
 
   Future<XFile?> applyPetFilter( XFile pickedImage, String species, String noseFilter, String hornsFilter) async {
+     await _getServerUrl();
     final uri = Uri.parse('$_serverAIUrl/pet_filter');
     final request = http.MultipartRequest('POST', uri);
 
@@ -173,5 +174,34 @@ return "FEE_FOOD";
 
 
 
+
+  Future<Map<String,dynamic>> applyPetColor( XFile pickedImage) async {
+     await _getServerUrl();
+    final uri = Uri.parse('$_serverAIUrl/pet_color');
+    final request = http.MultipartRequest('POST', uri);
+    print("pickedImage.path: ");
+    print(pickedImage.path);
+
+    request.files.add(await http.MultipartFile.fromPath('petImage', pickedImage.path));
+
+    try {
+      final response = await request.send(); 
+    
+      if (response.statusCode == 200) {
+    final responseData = await response.stream.bytesToString();
+      final responseJson = json.decode(responseData);
+      print("responseJson: ");
+      print(responseJson);
+
+        return {}; 
+      } else {
+        print("Failed to apply filter. Status code: ${response.statusCode}");
+        return {};
+      }
+    } catch (e) {
+      print("Error applying filter: $e");
+      return {}; 
+    }
+  }
   
 }
