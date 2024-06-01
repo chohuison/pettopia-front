@@ -175,7 +175,7 @@ return "FEE_FOOD";
 
 
 
-  Future<Map<String,dynamic>> applyPetColor( XFile pickedImage) async {
+  Future<List<List<int>>> applyPetColor( XFile pickedImage) async {
      await _getServerUrl();
     final uri = Uri.parse('$_serverAIUrl/pet_color');
     final request = http.MultipartRequest('POST', uri);
@@ -189,18 +189,22 @@ return "FEE_FOOD";
     
       if (response.statusCode == 200) {
     final responseData = await response.stream.bytesToString();
-      final responseJson = json.decode(responseData);
-      print("responseJson: ");
-      print(responseJson);
+     final Map<String, dynamic> parsedData = json.decode(responseData);
 
-        return {}; 
+    // 리스트 추출
+    List<List<int>> colors = List<List<int>>.from(
+      parsedData['response'].map((color) => List<int>.from(color))
+    );
+    print(colors);
+
+        return colors; 
       } else {
         print("Failed to apply filter. Status code: ${response.statusCode}");
-        return {};
+        return [];
       }
     } catch (e) {
       print("Error applying filter: $e");
-      return {}; 
+      return []; 
     }
   }
   
