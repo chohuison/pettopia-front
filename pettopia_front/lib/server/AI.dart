@@ -28,6 +28,7 @@ class AI {
   Future<XFile?> applyPetFilter( XFile pickedImage, String species, String noseFilter, String hornsFilter) async {
      await _getServerUrl();
     final uri = Uri.parse('$_serverAIUrl/pet_filter');
+   
     final request = http.MultipartRequest('POST', uri);
 
 
@@ -43,6 +44,7 @@ class AI {
       print("다 기다림");  
       if (response.statusCode == 200) {
         final responseData = await response.stream.toBytes(); 
+        print(responseData);
         final tempDir = await getTemporaryDirectory();
         final tempPath = tempDir.path;
         String tempFileName = '${DateTime.now().millisecondsSinceEpoch}.png';
@@ -189,9 +191,12 @@ return "FEE_FOOD";
     
       if (response.statusCode == 200) {
     final responseData = await response.stream.bytesToString();
-      final responseJson = json.decode(responseData);
+      final Map<String, dynamic> responseJson = json.decode(responseData);
       print("responseJson: ");
       print(responseJson);
+        List<List<int>> colors = List<List<int>>.from(
+        responseJson['response'].map((color) => List<int>.from(color))
+      );
 
         return {}; 
       } else {
