@@ -61,8 +61,11 @@ class APIServer {
 
    Future<List<Map<String, dynamic>>> getBeautyService(String address) async {
     String? assessToken = await _secureStorage.read(key: 'accessToken');
+    String ?refreshToken = await _secureStorage.read(key:'refreshToken');
     print("accessToken");
     print(assessToken);
+    print("refreshToken");
+    print(refreshToken);
     print(address);
     await _getServerUrl();
     final serverUrl = _serverDbUrl+ "api/v1/map/beauty/$address";
