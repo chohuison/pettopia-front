@@ -44,6 +44,7 @@ dependencies:
   time: ^2.0.0
   geolocator: ^7.1.0
   geocode: 1.0.3
+  audioplayers: ^6.0.0
 
    
 
@@ -80,6 +81,7 @@ flutter:
   assets:
   - assets/img/
   - assets/img/txtLogo.png
+  - assets/audio/
   - .env
   # To add assets to your application, add an assets section, like this:
   # assets:
