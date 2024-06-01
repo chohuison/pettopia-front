@@ -9,9 +9,15 @@ import 'package:pettopia_front/server/DB/Pet.dart';
 
 class DaySelectPopUp extends StatefulWidget {
   final List<Map<String, dynamic>> petList;
+
+  //true -> 작성버튼만 나오게 false -> 보기 버튼만 나오게
+  final bool isCreate;
+    final Map<String,dynamic> diaryValue;
   const DaySelectPopUp({
     Key? key,
     required this.petList,
+    required this.isCreate,
+    required this.diaryValue,
   }) : super(key: key);
 
   @override
@@ -46,7 +52,6 @@ class _DaySelectPopUpState extends State<DaySelectPopUp>
   }
 
   Future<void> _writeDiary() async {
-    print("name: " + _name + ", petName: " + _petName);
     List<Map<String, dynamic>> medicenList =
         await _diaryServer.getMedicenList(_petPk);
     Navigator.push(
@@ -61,30 +66,17 @@ class _DaySelectPopUpState extends State<DaySelectPopUp>
   }
 
   Future<void> _viewDiary() async {
-    Map<String, dynamic> diaryValue =
-        await _diaryServer.getDiary(_petPk, _date);
-    if (diaryValue.length > 0) {
-      Navigator.push(
+
+        Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => ViewDiary(
-                    diaryPk: diaryValue['diaryPk'],
-                    diaryValue: diaryValue,
+                    diaryPk: widget.diaryValue['diaryPk'],
+                    diaryValue: widget.diaryValue,
                     date: _date,
                     name: _petName,
                     pk: _petPk,
                   )));
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: CreateDiaryCheckPopup(),
-            surfaceTintColor: Colors.white,
-          );
-        },
-      );
-    }
   }
 
   @override
@@ -123,8 +115,9 @@ class _DaySelectPopUpState extends State<DaySelectPopUp>
                       onRegionSelected: _petNameHandler,
                       petName: widget.petList),
                 ),
-                _button("다이어리 작성", _writeDiary),
-                _button("다이어리 보기", _viewDiary)
+                widget.isCreate == true ? _button("다이어리 작성", _writeDiary) : _button("다이어리 보기", _viewDiary)
+                ,
+                
               ],
             ),
           ),
