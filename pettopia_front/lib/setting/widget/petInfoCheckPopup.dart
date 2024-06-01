@@ -16,80 +16,79 @@ class PetInfoCheckPopup extends StatefulWidget {
 }
 
 class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
-   Map<String, dynamic> _petInfo = {};
-    String _dogRegNo = "";
-    String _ownerName = "";
-    String _errorMessage = "";
-    Pet _petServer = Pet();
-    PetBreedList _petBreedList = PetBreedList();
+  Map<String, dynamic> _petInfo = {};
+  String _dogRegNo = "";
+  String _ownerName = "";
+  String _errorMessage = "";
+  Pet _petServer = Pet();
+  PetBreedList _petBreedList = PetBreedList();
 
-    void _handlePetInfo() async {
-
-      if (_dogRegNo == "" || _ownerName == "") {
-        setState(() {
-          _errorMessage = "반려동물 등록 번호와 주인 이름 둘 다 모두 입력해주세요";
-        });
+  void _handlePetInfo() async {
+    if (_dogRegNo == "" || _ownerName == "") {
+      setState(() {
+        _errorMessage = "반려동물 등록 번호와 주인 이름 둘 다 모두 입력해주세요";
+      });
+    } else {
+      Map<String, dynamic> petInfo =
+          await _petServer.getAPIPetInfo(_dogRegNo, _ownerName);
+      setState(() {
+        _petInfo = petInfo;
+      });
+      if (petInfo['dogRegNo'] != null) {
+        Map<String, dynamic> species =
+            _petBreedList.getSpeciesByPetInfo(petInfo['kindNm']);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CreatePet(
+                    petInfo: petInfo,
+                    parentName: _ownerName,
+                    speciesName: species['speciesName'],
+                    speciesPk: species['pk'],
+                  )),
+        );
       } else {
-        Map<String, dynamic> petInfo =
-            await _petServer.getAPIPetInfo(_dogRegNo, _ownerName);
         setState(() {
-          _petInfo = petInfo;
+          _errorMessage = "일치하는 정보가 없습니다. 수동 등록 해주세요";
         });
-        if (petInfo['dogRegNo'] != null) {
-          Map<String,dynamic> species = _petBreedList.getSpeciesByPetInfo(petInfo['kindNm']);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreatePet(
-                      petInfo: petInfo,
-                      parentName: _ownerName,
-                      speciesName: species['speciesName'],
-                      speciesPk: species['pk'],
-                    )),
-          );
-        } else {
-          setState(() {
-            _errorMessage = "일치하는 정보가 없습니다. 수동 등록 해주세요";
-          });
-        }
       }
     }
+  }
 
-    void _createPetHandler() {
-      List<Map<String,dynamic>> species =  _petBreedList.getSpecies();
-      String speciesName = species.first['speciesName'];
-      print("수동 등록");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => CreatePet(
-                  petInfo: {},
-                  parentName: _ownerName,
-                  speciesName:speciesName,
-                  speciesPk: 1,
-                )),
-      );
-    }
+  void _createPetHandler() {
+    List<Map<String, dynamic>> species = _petBreedList.getSpecies();
+    String speciesName = species.first['speciesName'];
+    print("수동 등록");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CreatePet(
+                petInfo: {},
+                parentName: _ownerName,
+                speciesName: speciesName,
+                speciesPk: 1,
+              )),
+    );
+  }
 
-    void _dogRegNoController(String value) {
-      _dogRegNo = value;
-    }
+  void _dogRegNoController(String value) {
+    _dogRegNo = value;
+  }
 
-    void _ownerNameController(String value) {
-      _ownerName = value;
-    }
+  void _ownerNameController(String value) {
+    _ownerName = value;
+  }
 
   @override
   Widget build(BuildContext context) {
-   
     return ScreenUtilInit(
       designSize: const Size(411.42857142857144, 683.4285714285714),
       child: MaterialApp(
         builder: (context, child) {
           //전체 창 크기 조절 이걸로 하면됨 !
           return SizedBox(
-            height: 310.h,
-            width: 300.w,
+            height: 430.h,
+            width: 320.w,
             child: child,
           );
         },
@@ -103,40 +102,49 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
                   icon: Icon(Icons.close))
             ],
           ),
-          body: Container(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 20.h,
-                ),
-                Center(
-                  child: Text(
-                    "반려동물 등록증을",
-                    style:
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          body: SingleChildScrollView(
+            child: Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 5.h,
                   ),
-                ),
-                Center(
-                  child: Text(
-                    "만드셨습니까 ?",
-                    style:
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  Center(
+                    child: Text(
+                      "반려동물 등록증을",
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                _textFieldContainer(
-                    "반려동물 등록번호", "반려동물 등록번호를 입력해주세요", _dogRegNoController),
-                _textFieldContainer(
-                    "보호자 이름", "보호자 이름을 입력해주세요", _ownerNameController),
-                Text(
-                  _errorMessage,
-                  style: TextStyle(color: Colors.red),
-                ),
-                _button("정보 조회하기", _handlePetInfo),
-                SizedBox(
-                  height: 3.h,
-                ),
-                _button("수동 등록하기", _createPetHandler),
-              ],
+                  Center(
+                    child: Text(
+                      "만드셨습니까 ?",
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10.h),
+                    child: Column(
+                      children: [
+                        _textFieldContainer("반려동물\n등록번호", "반려동물 등록번호를 입력해주세요",
+                            _dogRegNoController),
+                        _textFieldContainer(
+                            "보호자 이름", "보호자 이름을 입력해주세요", _ownerNameController),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    _errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  _button("정보 조회하기", _handlePetInfo),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  _button("수동 등록하기", _createPetHandler),
+                ],
+              ),
             ),
           ),
         ),
@@ -147,7 +155,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
   Widget _typeContainer(String name) {
     return Container(
         width: 80.w,
-        height: 30.h,
+        height: 60.h,
         margin: EdgeInsets.only(right: 15.w),
         decoration: BoxDecoration(
           color: Color(0xFFD5BDAF),
@@ -162,14 +170,14 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
   Widget _textFieldContainer(
       String containerName, String labelText, Function contorller) {
     return Container(
-        margin: EdgeInsets.only(bottom: 5.h),
-        width: 250.w,
-        height: 30.h,
+        margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
+        width: 320.w,
+        height: 70.h,
         child: Row(
           children: <Widget>[
             _typeContainer(containerName),
             Container(
-                width: 150.w,
+                width: 180.w,
                 child: TextField(
                     onChanged: (text) {
                       contorller(text);
@@ -177,7 +185,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
                     decoration: InputDecoration(
                       hintText: labelText,
                       hintStyle: TextStyle(
-                        fontSize: 11.0.sp,
+                        fontSize: 13.0.sp,
                         color: Color(0xFFAFA59B),
                       ),
                       border: UnderlineInputBorder(
