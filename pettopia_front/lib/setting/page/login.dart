@@ -76,6 +76,47 @@ class _LoginState extends State<Login> {
 }
 
   
+void _naverWebViewSetting() async {
+    await _getServerUrl();
+    String url = _serverUrl + "oauth2/authorization/naver";
+    // String url = 'http://10.0.2.2/' + "oauth2/authorization/kakao";
+
+  print(url);
+  _webViewController = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse(url))
+    ..setNavigationDelegate(NavigationDelegate(
+      onNavigationRequest: (NavigationRequest request) {
+        print("Navigating to: ${request.url}");
+        return NavigationDecision.navigate;
+      },
+      onPageFinished: (String url) {
+        _webViewController
+            .runJavaScriptReturningResult("document.body.outerHTML")
+            .then((html) async {
+          print("Page finished loading. URL: $url");
+          if (url.contains("code=")) {
+            print("OAuth code found in URL:");
+            print(html);
+
+            print(html.runtimeType);
+            String strHtml = html as String;
+           split(strHtml);
+            // return NavigationDecision.prevent;
+
+            // MyApp 또는 원하는 페이지로 이동
+           
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()), // 여기에 원하는 페이지를 넣으세요
+            );
+          }
+        }).catchError((error) {
+          print("Error getting HTML: $error");
+        });
+      },
+    ));
+}
 
 
   Future<void> _getServerUrl() async {
@@ -218,7 +259,22 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  _naverLogin(),
+                  Container(
+    width: 185.w,
+    height: 50.h,
+    child: IconButton(
+      onPressed: () {
+        _naverWebViewSetting();
+        launchLogin();
+      },
+      icon: Image.asset(
+        'assets/img/naver_login.png',
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.cover,
+      ),
+    ),
+  ),
                   _googleLogin(),
                 ],
               ),
