@@ -130,7 +130,26 @@ class _CreatePetState extends State<CreatePet> {
         errMesg = "필수 입력값을 모두 입력해주세요!";
       });
     } else {
-      bool isCreate = true;
+      String birthStr = _birth.toString();
+      
+      //birth 형식이 올바르지 않을 경우
+      if(birthStr.length != 8){
+      setState(() {
+        errMesg = "생년월인 입력 형식이 올바르지 않습니다.";
+      });    
+      }else{
+        String strYear = birthStr.substring(0,4);
+        int year = int.parse(strYear);
+         DateTime now = DateTime.now();
+  int currentYear = now.year;
+        if(
+year>currentYear
+        ){
+ setState(() {
+        errMesg = "생년월인 입력 형식이 올바르지 않습니다.";
+      });   
+        }else{
+bool isCreate = true;
       List<Map<String, dynamic>> beforePetList = await _pet.getPetList();
       for (Map<String, dynamic> value in beforePetList) {
         if (value['dogNm'] == _petName) {
@@ -195,6 +214,10 @@ class _CreatePetState extends State<CreatePet> {
         }
          
       }
+      }
+      
+        }
+
     }
   }
 
