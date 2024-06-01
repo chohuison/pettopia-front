@@ -83,7 +83,7 @@ class _PetFilterSearchState extends State<PetFilter>
 
   Future<void> _filter(String nose, String horn) async {
     XFile? filteredImage = await petFilterService.applyPetFilter(
-        file!, '강이지', nose, horn); // 필터 적용 요청
+        file!, _selectedBreed, nose, horn); // 필터 적용 요청
 
     setState(() {
       file = filteredImage;

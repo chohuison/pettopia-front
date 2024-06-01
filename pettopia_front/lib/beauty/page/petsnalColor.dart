@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
+import 'package:pettopia_front/server/AI.dart';
 
 class PetsnalColor extends StatefulWidget {
   const PetsnalColor({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _PetsnalColorState extends State<PetsnalColor>
   XFile? file;
   late List<Map<String, dynamic>> _beautyAppBar;
   AppBarList _appBarList = AppBarList();
+  AI _aiServer = AI();
 
   @override
   void initState() {
@@ -46,13 +48,8 @@ class _PetsnalColorState extends State<PetsnalColor>
     if (pickedImage == null) {
       return;
     }
-
-    // XFile? filteredImage = await petFilterService.applyPetFilter(
-    //     pickedImage, '강이지', 'nose.png', 'horns2.png'); // 필터 적용 요청
-
-    // setState(() {
-    //   file = filteredImage;
-    // });
+    
+    await _aiServer.applyPetColor(pickedImage);
 
     setState(() {
       file = pickedImage;
