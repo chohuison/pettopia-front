@@ -37,7 +37,7 @@ class _PetDiaryState extends State<PetDiary>
         designSize: const Size(411.4, 683.4),
         child: MaterialApp(
              debugShowCheckedModeBanner: false ,
-            title: "shortRecords",
+            title: "petDiary",
             builder: (context, child) {
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
