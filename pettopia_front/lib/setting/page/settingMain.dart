@@ -128,21 +128,31 @@ class _SettingMainhState extends State<SettingMain> {
               },
             );
           } else if (index == 1) {
-            // //추가 정보 작성이 가능한 펫들만 넘겨주기 위해 
-              String? jsonData = await _secureStorage.read(key: 'pet');
-              if (jsonData != null) {
-                bool isCreateAddInfo = false;
-                List<dynamic> petInfoList =
-                    await jsonDecode(jsonData);
+            // //추가 정보 작성이 가능한 펫들만 넘겨주기 위해
+            String? jsonData = await _secureStorage.read(key: 'pet');
+            if (jsonData != null) {
+              List<dynamic> petInfoList = await jsonDecode(jsonData);
+              if (petInfoList.length < 1) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: CreatePetCheckPopup(),
+                      surfaceTintColor: Colors.white,
+                    );
+                  },
+                );
+              } else {
                 List<Map<String, dynamic>> canAddInfoPetList = [];
                 for (Map<String, dynamic> value in petInfoList) {
                   if (value['isAddInfo'] == false) {
-                    isCreateAddInfo = true;
                     canAddInfoPetList
                         .add({'petPk': value['pk'], 'dogNm': value['dogNm']});
                   }
                 }
-                if (isCreateAddInfo = true) {
+                print("canAddInfoPetList");
+                print(canAddInfoPetList);
+                if (canAddInfoPetList.length > 1) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -161,19 +171,20 @@ class _SettingMainhState extends State<SettingMain> {
                     },
                   );
                 }
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: PetInfoCheckPopup(),
-                      surfaceTintColor: Colors.white,
-                    );
-                  },
-                );
               }
+            } else {
+              print("여기 걸림");
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: CreatePetCheckPopup(),
+                    surfaceTintColor: Colors.white,
+                  );
+                },
+              );
             }
-           else if (index == 2) {
+          } else if (index == 2) {
             await _getList();
             if (_petList.length < 1) {
               showDialog(
