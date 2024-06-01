@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/enum/region.dart';
 
 class PetSelectBox extends StatefulWidget {
   final void Function(String selectValue, int selectValuePk)? onRegionSelected;
@@ -50,7 +49,14 @@ class _PetSelectBoxState extends State<PetSelectBox>
                         color: Colors.white,
                         border: Border.all(color: Colors.black, width: 1),
                       ),
-                      child: Center(child: Text(_selectBoxValue))),
+                      child: Center(
+                          child: Text(
+                        _selectBoxValue,
+                        style: TextStyle(
+                          color: Colors.black, // 글자 색상 설정
+                          fontSize: 14.sp, // 글자 크기 설정
+                        ),
+                      ))),
                   GestureDetector(
                       onTap: () {
                         setState(() {
@@ -100,7 +106,14 @@ class _PetSelectBoxState extends State<PetSelectBox>
                             widget.onRegionSelected!(
                                 _selectBoxValue, _selectBoxValuePk);
                           },
-                          child: Center(child: Text(record)));
+                          child: Center(
+                              child: Text(
+                            record,
+                            style: TextStyle(
+                              color: Colors.black, // 글자 색상 설정
+                              fontSize: 14.sp, // 글자 크기 설정
+                            ),
+                          )));
                     }
                   },
                   separatorBuilder: (BuildContext context, int index) =>
