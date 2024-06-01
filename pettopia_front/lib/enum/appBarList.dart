@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:pettopia_front/beauty/page/beautyMap.dart';
+import 'package:pettopia_front/beauty/page/petsnalColor.dart';
 import 'package:pettopia_front/hospital/page/findDisease.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
@@ -103,7 +105,16 @@ class AppBarList {
 
   void beautyAppBarHandler(int index, BuildContext context) {
     if (index == 0) {
-    } else {}
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PetsnalColor()),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => BeautyMapSearch()),
+      );
+    }
   }
 
   Future<void> lifeAppBarHandler(int index, BuildContext context) async {
