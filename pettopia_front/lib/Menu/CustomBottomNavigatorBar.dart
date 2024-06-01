@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pettopia_front/beauty/page/petColor.dart';
 import 'package:pettopia_front/beauty/page/petsnalColor.dart';
 import 'package:pettopia_front/hospital/page/hospitalSearch.dart';
 import 'package:pettopia_front/life/page/petFilter.dart';
