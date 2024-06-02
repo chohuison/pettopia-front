@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:geocode/geocode.dart';
+import 'package:pettopia_front/enum/PetBreedList.dart';
 import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/life/widget/breedSelectBox.dart';
 import 'package:pettopia_front/mainPage/page/DraggableSheet';
@@ -35,9 +36,19 @@ class _MyAppState extends State<MyApp> {
   APIServer _apiServer = APIServer();
   late String _weatherUrl = "";
   final _storage = FlutterSecureStorage();
+  final PetBreedList _petBreedList = PetBreedList();
   late List<dynamic> petList = [];
   late String _petName = "";
   late int _petPk = 0;
+  late String _profile ="";
+  late String _dogRegNo ="";
+  late String _speciesName ="";
+  late String _sexNm ="";
+  late String _neuterYn="";
+  late int _birth=0;
+  late String _protectorName="";
+  late String _protectorPhoneNum="";
+  late Map<String,dynamic> _curretnPetValue={};
 
   @override
   void initState() {
@@ -49,14 +60,27 @@ class _MyAppState extends State<MyApp> {
 
   //그냥 펫 정보
   Future<void> _getPetInfo() async {
-    print("폰에 저장된 펫 정보들");
+ 
     String? jsonData = await _storage.read(key: 'pet');
     if (jsonData != null) {
       petList = jsonDecode(jsonData);
+         print("폰에 저장된 펫 정보들");
       print(petList);
       if (petList.isNotEmpty) {
         _petName = petList[0]['dogNm'];
         _petPk = petList[0]['pk'];
+        _curretnPetValue = petList[0];
+        _profile = petList[0]['profile'];
+        _dogRegNo = petList[0]['dogRegNo'];
+        _speciesName=_petBreedList.findSpeciesBySpeciesName(petList[0]['speciesName']);
+        _sexNm = getSex(petList[0]['sexNm']);
+        _neuterYn = getNeuterYn(petList[0]['neuterYn']);
+        _birth=petList[0]['birth'];
+        _protectorName=petList[0]['protectorName'];
+        _protectorPhoneNum=petList[0]['protectorPhoneNum'];
+        _curretnPetValue=petList[0];
+
+      
       } else {
         _petName = "Unknown";
         _petPk = 0;
@@ -66,11 +90,25 @@ class _MyAppState extends State<MyApp> {
     print(_petPk);
   }
 
-  void _petNameHandler(String value, int valuePk) {
+  void _petNameHandler(String value, int valuePk, Map<String,dynamic> petValue) {
     setState(() {
       _petName = value;
       _petPk = valuePk;
+      _curretnPetValue=petValue;
     });
+  }
+  String getSex(bool value){
+    if(value == true){
+      return "남";
+    }else{
+      return "여";
+    }
+  }
+  String getNeuterYn(bool value){
+    if(value==true)
+    {return "O";}else{
+      return "X";
+    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -134,7 +172,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4), // 디자인 기준 크기를 설정합니다.
+      designSize: const Size(411.42857142857144, 683.4285714285714), // 디자인 기준 크기를 설정합니다.
       child: MaterialApp(
         title: "main_page",
         debugShowCheckedModeBanner: false,
@@ -165,11 +203,13 @@ class _MyAppState extends State<MyApp> {
                     height: 610.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
+               if(petList.length>1)
                   Container(
                     margin: EdgeInsets.only(top: 30.h, left: 20.w),
                     child: MainSelectBox(
                         onRegionSelected: _petNameHandler, petName: petList),
                   ),
+                      if(petList.length>1)
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -191,7 +231,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
+        
   Widget _petCard() {
     return Column(
       children: [
@@ -205,16 +245,23 @@ class _MyAppState extends State<MyApp> {
         // 반려동물 사진 보여주는 Container
         Container(
           margin: EdgeInsets.fromLTRB(100.w, 20.h, 100.w, 20.h),
-          color: Colors.yellow,
+          // color: Colors.yellow,
           width: 200.w,
           height: 200.h,
+        child: _curretnPetValue['profile'] != ""
+          ? Image.network(_curretnPetValue['profile']!)
+          : Icon(
+              Icons.error,
+              size: 50.0,
+              color: Colors.red,
+            ),
         ),
         Text(
-          _petName,
+          _curretnPetValue['dogNm'],
           style: TextStyle(fontSize: 20.sp),
         ),
         Text(
-          "00000000000000000",
+            _curretnPetValue['dogRegNo'],
           style: TextStyle(fontSize: 17.sp),
         ),
         Row(
@@ -230,15 +277,15 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "생년월일: " + "2018.01.01",
+                    "생년월일: " +  _curretnPetValue['birth'].toString(),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "종류: " + "웰시코기",
+                    "종류: " + _petBreedList.findSpeciesBySpeciesName(_curretnPetValue['speciesName']),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "연락처: " + "010-1234-5678",
+                    "연락처: " + _protectorPhoneNum,
                     style: TextStyle(fontSize: 15.sp),
                   ),
                 ],
@@ -254,15 +301,15 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "성별: " + "여",
+                    "성별: " +  getSex(_curretnPetValue['sexNm']),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "중성화 여부: " + "O",
+                    "중성화 여부: " +  getNeuterYn(_curretnPetValue['neuterYn']),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "보호자: " + "홍길동",
+                    "보호자: " + _curretnPetValue['protectorName'],
                     style: TextStyle(fontSize: 15.sp),
                   ),
                 ],
