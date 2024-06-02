@@ -36,8 +36,8 @@ class AppBarList {
   ];
 
   List<Map<String, dynamic>> _beautyAppBar = [
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫스널컬러'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '미용실 찾기'},
+    {'imgUrl': 'assets/img/icon/petsnal_color.png', 'title': '펫스널컬러'},
+    {'imgUrl': 'assets/img/icon/salon_map.png', 'title': '미용실 찾기'},
   ];
 
   AppBarList();
