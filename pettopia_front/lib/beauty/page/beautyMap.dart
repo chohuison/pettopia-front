@@ -37,9 +37,10 @@ class _BeautyMapSearchState extends State<BeautyMapSearch>
   //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯
   void _fetchHospitalList(String selectedRegion) async {
     print(selectedRegion);
-    List<Map<String, dynamic>> list =  await _apiServer.getBeautyService(context,selectedRegion);
+    List<Map<String, dynamic>> list =
+        await _apiServer.getBeautyService(context, selectedRegion);
     setState(() {
-     _hospitalList = list;
+      _hospitalList = list;
     });
   }
 
@@ -48,7 +49,7 @@ class _BeautyMapSearchState extends State<BeautyMapSearch>
     return ScreenUtilInit(
       designSize: const Size(411.4, 683.4),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+        debugShowCheckedModeBanner: false,
         title: "beautySearch",
         builder: (context, child) {
           return MediaQuery(
@@ -98,16 +99,15 @@ class _BeautyMapSearchState extends State<BeautyMapSearch>
                           width: 200.w,
                           // this Container
                           child: Container(
-                            // color: Colors.red,
-                            height: 300.h,
-                            child: RegionSelectBox(
-                                    onRegionSelected: _fetchHospitalList)
-                          ))
+                              // color: Colors.red,
+                              height: 300.h,
+                              child: RegionSelectBox(
+                                  onRegionSelected: _fetchHospitalList)))
                     ],
                   )),
             ],
           ),
-          bottomNavigationBar: CustomBottomNavigatorBar(page: 1),
+          bottomNavigationBar: CustomBottomNavigatorBar(page: 0),
         ),
       ),
     );
