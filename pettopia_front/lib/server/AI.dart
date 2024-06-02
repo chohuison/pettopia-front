@@ -25,17 +25,65 @@ class AI {
   }
 
 
-  Future<XFile?> applyPetFilter( XFile pickedImage, String species, String noseFilter, String hornsFilter) async {
+  Future<XFile?> applyPetFilterDog( XFile pickedImage, String species, String noseFilter, String hornsFilter) async {
      await _getServerUrl();
-    final uri = Uri.parse('$_serverAIUrl/pet_filter');
+    // final uri = Uri.parse('$_serverAIUrl/pet_filter');
+    String finalUrl = _serverAIUrl+"pet_filter_dog";
+     final uri = Uri.parse(finalUrl);
+    print(uri);
+    // final uri = Uri.parse('http://10.0.2.2:5000/pet_filter');
    
     final request = http.MultipartRequest('POST', uri);
 
-
     request.files.add(await http.MultipartFile.fromPath('petImage', pickedImage.path));
-    request.fields['species'] = species;
     request.fields['petFilterNose'] = noseFilter;
     request.fields['petFilterHorns'] = hornsFilter; 
+    print("request: ");
+    print(request);
+    print(noseFilter);
+    print(hornsFilter);
+
+    try {
+      final response = await request.send(); 
+      print("기다리는중");
+      await Future.delayed(const Duration(seconds: 5)); 
+      print("다 기다림");  
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.toBytes(); 
+        print(responseData);
+        final tempDir = await getTemporaryDirectory();
+        final tempPath = tempDir.path;
+        String tempFileName = '${DateTime.now().millisecondsSinceEpoch}.png';
+        String tempFilePath = '$tempPath/$tempFileName';
+
+        await File(tempFilePath).writeAsBytes(responseData); 
+
+        return XFile(tempFilePath); 
+      } else {
+        print("Failed to apply filter. Status code: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      print("Error applying filter: $e");
+      return null; 
+    }
+  }
+
+    Future<XFile?> applyCatFilter( XFile pickedImage) async {
+     await _getServerUrl();
+    // final uri = Uri.parse('$_serverAIUrl/pet_filter');
+    String finalUrl = _serverAIUrl+"pet_filter_dog";
+     final uri = Uri.parse(finalUrl);
+    print(uri);
+    // final uri = Uri.parse('http://10.0.2.2:5000/pet_filter');
+   
+    final request = http.MultipartRequest('POST', uri);
+
+    request.files.add(await http.MultipartFile.fromPath('petImage', pickedImage.path));
+    request.fields['petFilterCat'] = "galsses";
+ 
+    print("request: ");
+    print(request);
 
     try {
       final response = await request.send(); 
