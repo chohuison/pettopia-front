@@ -54,6 +54,7 @@ class _HospitalValueState extends State<HospitalValue> {
                       children: <Widget>[
                         Text(
                           widget.value['name'],
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontSize: 15.0,
@@ -62,12 +63,14 @@ class _HospitalValueState extends State<HospitalValue> {
                         ),
                         Text(
                           widget.value['address'],
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.0,
                           ),
                         ),
                         Text(
                           widget.value['phoneNumber'],
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14.0,
                           ),
@@ -105,7 +108,10 @@ class _HospitalValueState extends State<HospitalValue> {
                         child: Container(
                             width: 10.w,
                             height: 10.h,
-                            child: Image.asset('assets/img/mapIcon.png'))),
+                            child: Container(
+                                padding: EdgeInsets.all(10.w),
+                                child: Image.asset(
+                                    'assets/img/icon/map_select.png')))),
                   ),
                 ],
               ),
