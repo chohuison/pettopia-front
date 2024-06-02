@@ -6,13 +6,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:pettopia_front/hospital/page/shortRecords.dart';
+import 'package:pettopia_front/server/DB/jwt.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 
 
 class ShotRecords{
     String _serverDbUrl="";
   final String serverUrl='/api/v1/shot_records/';
     final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-  
+    JWT _jwt = JWT();
+
   ShotRecords();
 
    Future<void> _getServerUrl() async {
@@ -49,8 +52,9 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
 
 
   Future<void> makeShotRecords(int petPk, String type, int num, int age, DateTime createAt,BuildContext context) async{
-    
-        String? assessToken= await _secureStorage.read(key: 'accessToken');
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
+      String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
      await _getServerUrl();
@@ -77,12 +81,20 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
   }else{
     print("Failed to create shot record. Status code :${response.body}");
   }
+          }else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+          }
+  
 
 
   }
 
     Future<void> modifySHotCharts(int pk,int petPk, String type, int num, int age,BuildContext context) async{
-         String? assessToken= await _secureStorage.read(key: 'accessToken');
+               bool isToken = await _jwt.tokenValidation();
+               if(isToken){
+   String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
          await _getServerUrl();
@@ -107,12 +119,20 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
   }else{
     print("Failed to create shot record. Status code :${response.body}");
   }
+               }else{
+                 Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+               }
+      
 
 
   }
 
     Future<void> deleteShotRecord(int pk,BuildContext context) async{
-         String? assessToken= await _secureStorage.read(key: 'accessToken');
+            bool isToken = await _jwt.tokenValidation();
+            if(isToken){
+     String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
      final headers ={'Content-Type': 'application/json',
@@ -132,12 +152,20 @@ Map<String,dynamic> AddShotRecordRequestToJson(int petPk, String type, int num, 
   }else{
     print("Failed to create shot record. Status code :${response.statusCode}");
   }
+            }else{
+                         Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+            }
+    
 
 
   }
 
-Future<List<Map<String, dynamic>>> getChartList() async {
-      await _getServerUrl();
+Future<List<Map<String, dynamic>>> getChartList(BuildContext context) async {
+    bool isToken = await _jwt.tokenValidation();
+    if(isToken){
+     await _getServerUrl();
     String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
@@ -165,6 +193,14 @@ Future<List<Map<String, dynamic>>> getChartList() async {
   } else {
     throw Exception("Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
   }
+    }else{
+          Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
+    return [];
+    }
+ 
 }
 
 

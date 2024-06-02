@@ -93,11 +93,11 @@ class _CreatePetState extends State<CreatePet> {
   }
 
   //반려동물 정보 폰에 저장
-  Future<void> _saveAppHandle(Map<String, dynamic> value,int petPk) async {
+  Future<void> _saveAppHandle(Map<String, dynamic> value, int petPk) async {
     String? jsonData = await _storage.read(key: 'pet');
     List<dynamic> petList = [];
     Map<String, dynamic> newPetValue = {
-      'pk':petPk,
+      'pk': petPk,
       'profile': value['profile'],
       'dogRegNo': value['dogRegNo'],
       'dogNm': value['dogNm'],
@@ -121,8 +121,7 @@ class _CreatePetState extends State<CreatePet> {
   }
 
   Future<void> _saveButtonHandle() async {
-    if (_petNumber == "" ||
-        _petName == "" ||
+    if (_petName == "" ||
         _birth == "" ||
         _parentName == "" ||
         _parentPhoneNum == "") {
@@ -131,93 +130,88 @@ class _CreatePetState extends State<CreatePet> {
       });
     } else {
       String birthStr = _birth.toString();
-      
+
       //birth 형식이 올바르지 않을 경우
-      if(birthStr.length != 8){
-      setState(() {
-        errMesg = "생년월인 입력 형식이 올바르지 않습니다.";
-      });    
-      }else{
-        String strYear = birthStr.substring(0,4);
-        int year = int.parse(strYear);
-         DateTime now = DateTime.now();
-  int currentYear = now.year;
-        if(
-year>currentYear
-        ){
- setState(() {
-        errMesg = "생년월인 입력 형식이 올바르지 않습니다.";
-      });   
-        }else{
-bool isCreate = true;
-      List<Map<String, dynamic>> beforePetList = await _pet.getPetList();
-      for (Map<String, dynamic> value in beforePetList) {
-        if (value['dogNm'] == _petName) {
-          isCreate = false;
-          break;
-        }
-      }
-      if (isCreate == false) {
+      if (birthStr.length != 8) {
         setState(() {
-          errMesg = "해당 반려동물을 이미 등록하셨습니다.";
+          errMesg = "생년월인 입력 형식이 올바르지 않습니다.";
         });
       } else {
-        Map<String, dynamic> petInfo = {
-          'dogRegNo': _petNumber,
-          'dogNm': _petName,
-          'speciesPk': _breedPk,
-          'hair': _fur,
-          'sexNm': _getBoolType(_sex),
-          'neuterYn': _getBoolType(_neutering),
-          'birth': int.parse(_birth),
-          'weight': double.parse(_wight),
-          'protectorName': _parentName,
-          'protectorPhoneNum': _parentPhoneNum
-        };
-        print(petInfo);
-        
-        
-        
-        if (_file != null) {
-            await _pet.createPet(petInfo,true,context);
-        List<Map<String, dynamic>> petList = await _pet.getPetList();
-        int petPk = 0;
-        for (Map<String, dynamic> pet in petList) {
-          if (pet['dogNm'] == petInfo['dogNm']) {
-            petPk = pet['petPk'];
-            print("여기서 petPk: $petPk");
-          }
-        }
-          String presignedUrl = await _pet.s3Upload(_file!, petPk);
-          print(presignedUrl);
+        String strYear = birthStr.substring(0, 4);
+        int year = int.parse(strYear);
+        DateTime now = DateTime.now();
+        int currentYear = now.year;
+        if (year > currentYear) {
           setState(() {
-            _profile = presignedUrl;
+            errMesg = "생년월인 입력 형식이 올바르지 않습니다.";
           });
-          print("profile: $_profile");
-          petInfo['profile'] = _profile;
-          print(petInfo);
-        
-
-          await _pet.modifyPet(petInfo, petPk, context,true);
-           _saveAppHandle(petInfo,petPk);
-        }else{
-              await _pet.createPet(petInfo,false,context);
-              List<Map<String, dynamic>> petList = await _pet.getPetList();
-        int petPk = 0;
-        for (Map<String, dynamic> pet in petList) {
-          if (pet['dogNm'] == petInfo['dogNm']) {
-            petPk = pet['petPk'];
-            print("여기서 petPk: $petPk");
+        } else {
+          bool isCreate = true;
+          List<Map<String, dynamic>> beforePetList =
+              await _pet.getPetList(context);
+          for (Map<String, dynamic> value in beforePetList) {
+            if (value['dogNm'] == _petName) {
+              isCreate = false;
+              break;
+            }
           }
-           _saveAppHandle(petInfo,petPk);
-        }
-        }
-         
-      }
-      }
-      
-        }
+          if (isCreate == false) {
+            setState(() {
+              errMesg = "해당 반려동물을 이미 등록하셨습니다.";
+            });
+          } else {
+            Map<String, dynamic> petInfo = {
+              'dogRegNo': _petNumber,
+              'dogNm': _petName,
+              'speciesPk': _breedPk,
+              'hair': _fur,
+              'sexNm': _getBoolType(_sex),
+              'neuterYn': _getBoolType(_neutering),
+              'birth': int.parse(_birth),
+              'weight': double.parse(_wight),
+              'protectorName': _parentName,
+              'protectorPhoneNum': _parentPhoneNum
+            };
+            print(petInfo);
 
+            if (_file != null) {
+              await _pet.createPet(petInfo, true, context);
+              List<Map<String, dynamic>> petList =
+                  await _pet.getPetList(context);
+              int petPk = 0;
+              for (Map<String, dynamic> pet in petList) {
+                if (pet['dogNm'] == petInfo['dogNm']) {
+                  petPk = pet['petPk'];
+                  print("여기서 petPk: $petPk");
+                }
+              }
+              String presignedUrl = await _pet.s3Upload(context, _file!, petPk);
+              print(presignedUrl);
+              setState(() {
+                _profile = presignedUrl;
+              });
+              print("profile: $_profile");
+              petInfo['profile'] = _profile;
+              print(petInfo);
+
+              await _pet.modifyPet(petInfo, petPk, context, true);
+              _saveAppHandle(petInfo, petPk);
+            } else {
+              await _pet.createPet(petInfo, false, context);
+              List<Map<String, dynamic>> petList =
+                  await _pet.getPetList(context);
+              int petPk = 0;
+              for (Map<String, dynamic> pet in petList) {
+                if (pet['dogNm'] == petInfo['dogNm']) {
+                  petPk = pet['petPk'];
+                  print("여기서 petPk: $petPk");
+                }
+                _saveAppHandle(petInfo, petPk);
+              }
+            }
+          }
+        }
+      }
     }
   }
 

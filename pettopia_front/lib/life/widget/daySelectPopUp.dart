@@ -55,7 +55,7 @@ class _DaySelectPopUpState extends State<DaySelectPopUp>
 
   Future<void> _writeDiary() async {
     List<Map<String, dynamic>> medicenList =
-        await _diaryServer.getMedicenList(_petPk);
+        await _diaryServer.getMedicenList(context,_petPk);
     Navigator.push(
         context,
         MaterialPageRoute(

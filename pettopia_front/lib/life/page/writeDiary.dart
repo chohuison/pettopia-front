@@ -159,12 +159,8 @@ class _WriteDiaryState extends State<WriteDiary>
       'calendarDate': _date.toIso8601String().split('T').first,
     };
     print(diaryInfo);
-    _diaryServer.createDiary(_petPk, diaryInfo);
+    _diaryServer.createDiary(context,_petPk, diaryInfo);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyApp()),
-    );
   }
 
   void _deleteMedicine(int pk) {

@@ -41,8 +41,8 @@ class AppBarList {
   ];
 
   AppBarList();
-  Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
+  Future<void> _getList(BuildContext context) async {
+    _petList = await _petServer.getPetList(context);
   }
 
   List<Map<String, dynamic>> getHospitalAppBar() {
@@ -127,7 +127,7 @@ class AppBarList {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PetTip()));
     } else if (index == 2) {
-      await _getList();
+      await _getList(context);
       print("가져온 petList");
       print(_petList);
       Navigator.push(

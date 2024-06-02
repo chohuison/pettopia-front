@@ -83,7 +83,7 @@ class _DiaryWidgetState extends State<DiaryWidget>
                               content: CreatePetDiaryCheckPopup());
                         });
                   } else {
-                    Map<String,dynamic > valueDiary = await _diaryServer.getDiary(_petPk,selectedDay);
+                    Map<String,dynamic > valueDiary = await _diaryServer.getDiary(context,_petPk,selectedDay);
                     bool isCreate = valueDiary['diaryPk'] == null ? true: false;
                     showDialog(
                         context: context,

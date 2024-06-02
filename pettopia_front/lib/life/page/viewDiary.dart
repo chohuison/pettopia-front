@@ -322,7 +322,7 @@ class _ViewDiaryState extends State<ViewDiary>
         onPressed: () async {
           if (name == "수정") {
             List<Map<String, dynamic>> medicenList =
-                await _diaryServer.getMedicenList(_petPk);
+                await _diaryServer.getMedicenList(context,_petPk);
             print("medicenList: $medicenList");
             Navigator.push(
               context,
@@ -336,11 +336,8 @@ class _ViewDiaryState extends State<ViewDiary>
                       )),
             );
           } else if (name == "삭제") {
-            await _diaryServer.deleteDiary(widget.diaryPk);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyApp()),
-            );
+            await _diaryServer.deleteDiary(context,widget.diaryPk);
+           
           }
         },
         style: ButtonStyle(
