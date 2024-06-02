@@ -37,10 +37,15 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
   String _selectedBreed="";
   String _tipCategory="";
   int breedPk =0;
+  
+  bool _isSelected = false;
+  int _index = 0;
   Tip _tipServer = Tip();
   void _fetchBreedList(String selectedBreed) {
     print(selectedBreed);
+   
     setState(() {
+       _index =0;
     _selectedBreed =selectedBreed;
     if(selectedBreed == "강아지"){
       breedPk=1;
@@ -69,8 +74,6 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
   }
 
 
-  bool _isSelected = false;
-  int _index = 0;
 
   Future<void> _getIndex(int index)async {
     _index = index;
@@ -127,6 +130,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
                                       children: <Widget>[
                                         if (_tipList != null)
                                           TipBar(
+                                            breedPk: breedPk,
                                             indexNum: _index,
                                             index: (index) {
                                               setState(
