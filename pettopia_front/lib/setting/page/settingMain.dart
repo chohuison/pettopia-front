@@ -5,8 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
+import 'package:pettopia_front/server/DB/Users.dart';
 import 'package:pettopia_front/server/DB/jwt.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,6 +31,7 @@ class _SettingMainhState extends State<SettingMain> {
   List<dynamic> _medicenList = [];
   int _height = 800;
   JWT _jwt = JWT();
+  Users users = Users();
 
   Pet _petServer = Pet();
   Future<void> _getList() async {
@@ -215,6 +218,11 @@ class _SettingMainhState extends State<SettingMain> {
             }
           } else if (index == 3) {
             await _secureStorage.deleteAll();
+            await users.logoutKakao();
+              Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
           }
         },
         style: ButtonStyle(

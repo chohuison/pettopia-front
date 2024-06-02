@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   late List<Map<String, dynamic>> _petList = [];
 
   Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
+    _petList = await _petServer.getPetList(context);
   }
 
   late String _petName = _petList.first['dogNm'];

@@ -25,6 +25,7 @@ class _HospitalMapState extends State<HospitalMap> {
     return ScreenUtilInit(
         designSize: const Size(411.4, 683.4),
         child: MaterialApp(
+               debugShowCheckedModeBanner: false,
           home: Scaffold(
             appBar: AppBar(
               actions: [
