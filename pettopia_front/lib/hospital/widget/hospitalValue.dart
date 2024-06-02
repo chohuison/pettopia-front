@@ -90,19 +90,22 @@ class _HospitalValueState extends State<HospitalValue> {
                       // });
                     },
                     child: Container(
-                      margin: EdgeInsets.only(
-                        top: 5.0.h,
-                        left: 15.0.w,
-                        bottom: 5.h,
-                      ),
-                      width: 50.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFAFA59B),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      // 여기에 아이콘을 추가할 수 있습니다
-                    ),
+                        margin: EdgeInsets.only(
+                          top: 5.0.h,
+                          left: 15.0.w,
+                          bottom: 5.h,
+                        ),
+                        width: 50.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFAFA59B),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        // 여기에 아이콘을 추가할 수 있습니다
+                        child: Container(
+                            width: 10.w,
+                            height: 10.h,
+                            child: Image.asset('assets/img/mapIcon.png'))),
                   ),
                 ],
               ),
