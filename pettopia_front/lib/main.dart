@@ -125,8 +125,9 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
-              body: Column(
+              body: Stack(
                 children: [
+                  // 날씨 API Container
                   Container(
                       width: 100.h,
                       height: 100.h,
