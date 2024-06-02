@@ -6,10 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:geocode/geocode.dart';
+import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
+import 'package:pettopia_front/life/widget/breedSelectBox.dart';
 import 'package:pettopia_front/mainPage/page/DraggableSheet';
 import 'package:geolocator/geolocator.dart';
 import 'package:pettopia_front/server/DB/API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pettopia_front/server/DB/Pet.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,24 +34,41 @@ class _MyAppState extends State<MyApp> {
   APIServer _apiServer = APIServer();
   late String _weatherUrl = "";
   final _storage = FlutterSecureStorage();
+
+  Pet _petServer = Pet();
+  late List<Map<String, dynamic>> _petList = [];
+
+  Future<void> _getList() async {
+    _petList = await _petServer.getPetList();
+  }
+
+  late String _petName = _petList.first['dogNm'];
+  late int _petPk = _petList.first['petPk'];
+
+  void _petNameHandler(String value, int valuePk) {
+    setState(() {
+      _petName = value;
+      _petPk = valuePk;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
-    //그냥 펫 정보 잘 처리되나 확인할라고 
+    //그냥 펫 정보 잘 처리되나 확인할라고
     _getPetInfo();
-  
   }
 
-  //그냥 펫 정보 
-  Future<void> _getPetInfo()async{
+  //그냥 펫 정보
+  Future<void> _getPetInfo() async {
     print("폰에 저장된 펫 정보들");
     String? jsonData = await _storage.read(key: 'pet');
-    if(jsonData !=null){
+    if (jsonData != null) {
       List<dynamic> petList = jsonDecode(jsonData);
       print(petList);
     }
-  } 
+  }
 
   Future<void> _getCurrentLocation() async {
     if (await isCheckedWeather()) {
@@ -125,15 +145,32 @@ class _MyAppState extends State<MyApp> {
         home: Builder(
           builder: (context) {
             return Scaffold(
-              body: Column(
+              body: Stack(
                 children: [
+                  // 날씨 API Container
                   Container(
-                      width: 100.h,
-                      height: 100.h,
-                      color: Colors.blue,
+                      margin: EdgeInsets.only(top: 90.h, left: 155.w),
+                      width: 170.w,
+                      height: 130.h,
+                      color: Color.fromARGB(255, 162, 207, 221),
                       child: _weatherUrl != ""
                           ? Image.network(_weatherUrl)
                           : Container()),
+                  Container(
+                    // color: Colors.yellow,
+                    width: 420.w,
+                    height: 600.h,
+                    child: Image.asset("assets/img/mainImage.png"),
+                  ),
+                  // Container(
+                  //   width: 150.w,
+                  //   height: 100.h,
+                  //   // color: Colors.blue,
+                  //   // SelectBox 실행 시 예외 발생
+                  //   child: PetSelectBox(
+                  //       onRegionSelected: _petNameHandler, petName: _petList),
+                  // ),
+
                   Expanded(
                     child: DraggableSheet(child: _petCard()),
                   ),
