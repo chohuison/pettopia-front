@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
+import 'package:pettopia_front/enum/PetBreedList.dart';
 import 'package:pettopia_front/setting/widget/createPetInformationValue.dart';
 import 'package:pettopia_front/setting/widget/createPetParentValue.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
@@ -49,6 +50,7 @@ class _CreatePetState extends State<CreatePet> {
   String _profile = "";
   XFile? _file = null;
   final _storage = FlutterSecureStorage();
+  PetBreedList _petBreedList = PetBreedList();
 
   int _getRadioValue(bool value) {
     if (value == true) {
@@ -101,7 +103,7 @@ class _CreatePetState extends State<CreatePet> {
       'profile': value['profile'],
       'dogRegNo': value['dogRegNo'],
       'dogNm': value['dogNm'],
-      'speciesPk': _breedPk,
+      'speciesName': _petBreedList.speciesNameByPk(_breedPk),
       'sexNm': value['sexNm'],
       'neuterYn': value['neuterYn'],
       'birth': value['birth'],
