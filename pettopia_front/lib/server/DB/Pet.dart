@@ -7,11 +7,13 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pettopia_front/main.dart';
+import 'package:pettopia_front/server/DB/jwt.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 
 class Pet {
   String _serverDbUrl = "";
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-
+  JWT _jwt = JWT();
   Pet();
   //env파일에 있는 serverUrl가져오기
   Future<void> _getServerUrl() async {
@@ -25,9 +27,10 @@ class Pet {
   }
 
 //s3url
-  Future<String> getPresignedUrl(int petPk) async {
+  Future<String> getPresignedUrl(BuildContext context, int petPk) async {
     await _getServerUrl();
-    print("petPk : $petPk");
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){ print("petPk : $petPk");
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     String finalUrl = _serverDbUrl + 'api/v1/s3/presigned';
     print(finalUrl);
@@ -58,11 +61,22 @@ class Pet {
       throw Exception(
           "Failed to fetch presignedUrl. Status code: ${response.body}"); // 예외 발생
     }
+
+      }else{
+         Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+
+        return "";
+      }
+   
   }
 
   //s3사진 업로드//
-  Future<String> s3Upload(XFile xFile, int petPk) async {
-    String presignedUrl = await getPresignedUrl(petPk);
+  Future<String> s3Upload(BuildContext context ,XFile xFile, int petPk) async {
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
+    String presignedUrl = await getPresignedUrl(context , petPk);
     final url = Uri.parse(presignedUrl);
     final File imageFile = File(xFile.path);
 
@@ -78,13 +92,21 @@ class Pet {
     } catch (e) {
       return "error $e";
     }
+          }else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+          }
+          return "";
+
   }
 
   //petList가져오기
-  Future<List<Map<String, dynamic>>> getPetList() async {
+  Future<List<Map<String, dynamic>>> getPetList(BuildContext context) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
+  String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
 
@@ -115,13 +137,23 @@ class Pet {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+          }
+          else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return [];
+          }
+
+  
   }
 
   //pet기본 정보 작성
-  Future<void> createPet(Map<String, dynamic> petInfo , bool isProfile,BuildContext context) async {
+  Future<void> createPet( Map<String, dynamic> petInfo , bool isProfile,BuildContext context) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
+  String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
     String finalUrl = _serverDbUrl + "api/v1/pet/info";
@@ -150,14 +182,22 @@ class Pet {
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
+          }else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+          }
+  
   }
 
   //pet기본 정보 수정
   Future<void> modifyPet(Map<String, dynamic> petInfo, int petPk,
       BuildContext context, bool isCreate) async {
-    await _getServerUrl();
 
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    await _getServerUrl();
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){
+ String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
     String finalUrl = _serverDbUrl + "api/v1/pet/info/$petPk";
@@ -179,12 +219,12 @@ class Pet {
       print("Shot record modify successfully!");
       if (isCreate == false) {
         await _secureStorage.delete(key: 'pet');
-        List<Map<String, dynamic>> petList = await getPetList();
+        List<Map<String, dynamic>> petList = await getPetList(context);
         List<Map<String, dynamic>> petValueList = [];
         for (Map<String, dynamic> value in petList) {
           Map<String, dynamic> petInfo =
-              await getPetRegistration(value['petPk']);
-          Map<String, dynamic> petAddInfo = await getAddPetInfo(value['petPk']);
+              await getPetRegistration(context,value['petPk']);
+          Map<String, dynamic> petAddInfo = await getAddPetInfo(context,value['petPk']);
           petInfo['pk'] = value['petPk'];
           if (petAddInfo['petExtraInfo']['environment'] != null) {
             petInfo['isAddInfo'] = true;
@@ -202,13 +242,21 @@ class Pet {
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
+      }else{
+         Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      }
+   
   }
 
 //반려동물 추가정보 작성
   Future<void> createAddPet(
       Map<String, dynamic> petInfo, int petPk, BuildContext context) async {
     await _getServerUrl();
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
+  String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
     String finalUrl = _serverDbUrl + "api/v1/pet/extrainfo/$petPk";
@@ -251,11 +299,19 @@ class Pet {
     } else {
       print("Failed to create addinfo record. Status code :${response.body}");
     }
+          }else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+          }
+  
   }
 
   //반려동물 기본 정보 가져오기
-  Future<Map<String, dynamic>> getPetInfo(int petPk) async {
+  Future<Map<String, dynamic>> getPetInfo(BuildContext context, int petPk) async {
     await _getServerUrl();
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
@@ -286,13 +342,21 @@ class Pet {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+          }else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return {};
+          }
+
   }
 
   //반려동물 추가 정보 가져오기
-  Future<Map<String, dynamic>> getAddPetInfo(int petPk) async {
+  Future<Map<String, dynamic>> getAddPetInfo(BuildContext context, int petPk) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+          bool isToken = await _jwt.tokenValidation();
+          if(isToken){
+ String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
 
@@ -321,12 +385,20 @@ class Pet {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+          }else{
+             Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return {};
+          }
+   
   }
 
 //pet추가 정보 수정
-  Future<void> modifyAddPetInfo(Map<String, dynamic> petInfo, int petPk) async {
+  Future<void> modifyAddPetInfo(BuildContext context,Map<String, dynamic> petInfo, int petPk) async {
     await _getServerUrl();
-
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
@@ -350,14 +422,21 @@ class Pet {
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
+      }else{
+         Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      }
+
   }
 
   //반려동물 api 등록증 조회
   Future<Map<String, dynamic>> getAPIPetInfo(
-      String dogRegNo, String ownerName) async {
+      BuildContext context,String dogRegNo, String ownerName) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){
+String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
 
@@ -387,13 +466,21 @@ class Pet {
       print("Failed to get petInfo Status code :${response.body}");
       return {};
     }
+      }else{
+         Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return {};
+      }
+    
   }
 
   //반려동물 등록증 정보 가져오기
-  Future<Map<String, dynamic>> getPetRegistration(int petPk) async {
+  Future<Map<String, dynamic>> getPetRegistration(BuildContext context,int petPk) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+        bool isToken = await _jwt.tokenValidation();
+        if(isToken){
+   String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
 
@@ -423,5 +510,12 @@ class Pet {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+        }else{
+           Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return {};
+        }
+ 
   }
 }

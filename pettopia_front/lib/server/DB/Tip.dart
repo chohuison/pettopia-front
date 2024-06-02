@@ -1,15 +1,19 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:pettopia_front/server/DB/jwt.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 import 'package:time/time.dart';
 
 class Tip {
   String _serverDbUrl = "";
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  JWT _jwt = JWT();
 
   Tip();
   //env파일에 있는 serverUrl가져오기
@@ -25,8 +29,10 @@ class Tip {
 
  
   //팁 가져오기
-  Future<List<Map<String, dynamic>>> getTip(int speciesPk, String tipCategory) async {
-    await _getServerUrl();
+  Future<List<Map<String, dynamic>>> getTip(BuildContext context,int speciesPk, String tipCategory) async {
+       bool isToken = await _jwt.tokenValidation();
+       if(isToken){
+           await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
@@ -59,6 +65,15 @@ class Tip {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+       }else{    
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
+    return [];
+
+       }
+ 
   }
 
 

@@ -193,12 +193,9 @@ class _ModifyDiaryState extends State<ModifyDiary>
       'calendarDate': _date.toIso8601String().split('T').first,
     };
     print(diaryInfo);
-    _diaryServer.modifyDiary(widget.diaryPk, diaryInfo);
+    _diaryServer.modifyDiary(context,widget.diaryPk, diaryInfo);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyApp()),
-    );
+
   }
 
   void _deleteMedicine(int pk) {

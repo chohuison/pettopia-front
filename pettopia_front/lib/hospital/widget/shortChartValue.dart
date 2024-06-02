@@ -26,7 +26,7 @@ class ShortChartValueState extends State<ShortChartValue> {
     Pet _petServer = Pet();
   List<Map<String,dynamic>> _petList = [];
   Future<void> _getPetList () async{
-    _petList = await _petServer.getPetList();
+    _petList = await _petServer.getPetList(context);
     
   }
   @override

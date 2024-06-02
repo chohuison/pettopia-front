@@ -30,7 +30,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
       });
     } else {
       Map<String, dynamic> petInfo =
-          await _petServer.getAPIPetInfo(_dogRegNo, _ownerName);
+          await _petServer.getAPIPetInfo(context,_dogRegNo, _ownerName);
       setState(() {
         _petInfo = petInfo;
       });

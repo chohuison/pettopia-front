@@ -55,7 +55,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
   }
 
   void _getPetInfo() async {
-    Map<String, dynamic> newPetInfo = await _petServer.getPetInfo(_petPk);
+    Map<String, dynamic> newPetInfo = await _petServer.getPetInfo(context,_petPk);
     setState(() {
       _petInfo = newPetInfo;
     });
@@ -63,7 +63,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
 
   void _getPetAddInfo() async {
     Map<String, dynamic> newPetAddExtraInfo =
-        await _petServer.getAddPetInfo(_petPk);
+        await _petServer.getAddPetInfo(context,_petPk);
     Map<String, dynamic> newPetAddInfo = newPetAddExtraInfo['petExtraInfo'];
     List<dynamic> medicen = newPetAddExtraInfo['responseMedicineList']['list'];
     setState(() {

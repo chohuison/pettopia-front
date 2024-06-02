@@ -82,8 +82,8 @@ class _MyAppState extends State<MyApp> {
         double lat = position.latitude;
         double lon = position.longitude;
         print('Latitude: $lat, Longitude: $lon');
-        Map<String, dynamic> weatherInfo =
-            await _apiServer.getWeather(lat.toString(), lon.toString());
+        Map<String, dynamic> weatherInfo = await _apiServer.getWeather(
+            context, lat.toString(), lon.toString());
         setState(() {
           String imgUrl = weatherInfo['icon'];
           _weatherUrl = "https://openweathermap.org/img/wn/$imgUrl@2x.png";
@@ -165,12 +165,11 @@ class _MyAppState extends State<MyApp> {
                     height: 610.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
-                  if (_petPk != 0)
-                    Container(
-                      margin: EdgeInsets.only(top: 40.h, left: 10.w),
-                      child: MainSelectBox(
-                          onRegionSelected: _petNameHandler, petName: petList),
-                    ),
+                  Container(
+                    margin: EdgeInsets.only(top: 30.h, left: 20.w),
+                    child: MainSelectBox(
+                        onRegionSelected: _petNameHandler, petName: petList),
+                  ),
                   Positioned(
                     bottom: 0,
                     left: 0,

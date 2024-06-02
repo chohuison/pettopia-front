@@ -39,7 +39,7 @@ class _FindDiseaseState extends State<FindDisease>
   //ai랑 연결
   void _buttonController() async {
    Map<String,dynamic> _findDiseae =
-        await aiServer.getPetDiseaseRecommendation(_petPk);
+        await aiServer.getPetDiseaseRecommendation(context,_petPk);
     
     if (mounted)
       setState(() {
