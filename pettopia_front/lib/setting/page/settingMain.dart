@@ -32,16 +32,16 @@ class _SettingMainhState extends State<SettingMain> {
 
   Pet _petServer = Pet();
   Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
+    _petList = await _petServer.getPetList(context);
   }
 
   Future<void> _getPetInfo() async {
-    _petInfo = await _petServer.getPetInfo(_petList.first['petPk']);
+    _petInfo = await _petServer.getPetInfo(context,_petList.first['petPk']);
   }
 
   Future<void> _getPetAddInfo() async {
     Map<String, dynamic> petAddExtraInfo =
-        await _petServer.getAddPetInfo(_petList.first['petPk']);
+        await _petServer.getAddPetInfo(context,_petList.first['petPk']);
     _petAddInfo = petAddExtraInfo['petExtraInfo'];
     _medicenList = petAddExtraInfo['responseMedicineList']['list'];
     _height = _medicenList.length * 160 + 800;
@@ -120,6 +120,7 @@ class _SettingMainhState extends State<SettingMain> {
       child: ElevatedButton(
         onPressed: () async {
           if (index == 0) {
+   
             showDialog(
               context: context,
               builder: (BuildContext context) {

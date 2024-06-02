@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         double lon = position.longitude;
         print('Latitude: $lat, Longitude: $lon');
         Map<String, dynamic> weatherInfo =
-            await _apiServer.getWeather(lat.toString(), lon.toString());
+            await _apiServer.getWeather(context,lat.toString(), lon.toString());
         setState(() {
           String imgUrl = weatherInfo['icon'];
           _weatherUrl = "https://openweathermap.org/img/wn/$imgUrl@2x.png";

@@ -37,7 +37,7 @@ class _HospitalSearchState extends State<HospitalSearch>
   //여기 나중에 지역 바뀔때마다 병원 가져오면 될듯
   void _fetchHospitalList(String selectedRegion) async {
     print(selectedRegion);
-    List<Map<String, dynamic>> list =  await _apiServer.getHospitalService(selectedRegion);
+    List<Map<String, dynamic>> list =  await _apiServer.getHospitalService(context,selectedRegion);
     setState(() {
      _hospitalList = list;
     });

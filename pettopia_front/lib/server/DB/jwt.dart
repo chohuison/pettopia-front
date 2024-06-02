@@ -23,27 +23,40 @@ class JWT {
     print(_serverDbUrl);
   }
   
-Future<Map<String, dynamic>?> refreshTokens() async {
+Future<bool> tokenValidation() async {
   _getServerUrl();
-    final serverUrl = _serverDbUrl+ "api/v1/jwt/refresh";
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    final serverUrl = _serverDbUrl+ "api/v1/jwt/access?authHeader=Bearer $assessToken";
+   
   final url = Uri.parse(serverUrl);
-  String? assessToken = await _secureStorage.read(key: 'accessToken');
-  String? refreshToken = await _secureStorage.read(key: 'refreshToken');
-    Map<String, String> headers = {
+
+   Map<String, String> headers = {
       'Content-Type': 'application/json; charset=UTF-8',
 
       'Authorization': 'Bearer $assessToken', // JWT 토큰,
     };
-  final body = json.encode({'refreshToken': refreshToken});
+   
 
-  final response = await http.post(url, headers: headers, body: body);
+  final response = await http.get(url, headers:headers);
 
   if (response.statusCode == 200) {
+    print("나온 답");
     print(json.decode(response.body));
-    return json.decode(response.body) as Map<String, dynamic>;
+    Map<String,dynamic> responseMap = json.decode(response.body);
+    if(responseMap['message']!=null){
+      return true;
+    }else if(responseMap['accessToken']!=null){
+       await _secureStorage.delete(key: 'accessToken');
+       await _secureStorage.delete(key: 'refreshToken');
+           await _secureStorage.write(key: 'accessToken', value: responseMap['accessToken']);
+    await _secureStorage.write(key: 'refreshToken', value: responseMap['refreshToken']);
+    return true;
+    }
+    else{
+      return false;
+    }
   } else {
-    print('Failed to refresh tokens. Status code: ${response.statusCode}');
-    return null;
+    return false;
   }
 }
 

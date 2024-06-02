@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // dotenv 가져오기
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:pettopia_front/main.dart';
+import 'package:pettopia_front/server/DB/jwt.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 import 'package:time/time.dart';
 
 class Diary {
@@ -12,6 +16,7 @@ class Diary {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   Diary();
+  JWT _jwt = JWT();
   //env파일에 있는 serverUrl가져오기
   Future<void> _getServerUrl() async {
     try {
@@ -24,13 +29,15 @@ class Diary {
   }
 
   //다이어리 등록
-  Future<void> createDiary(int petPk, Map<String, dynamic> diaryInfo) async {
+  Future<void> createDiary(BuildContext context, int petPk, Map<String, dynamic> diaryInfo) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-    String finalUrl = _serverDbUrl + "api/v1/life/diary/$petPk";
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){
+  String finalUrl = _serverDbUrl + "api/v1/life/diary/$petPk";
     print(finalUrl);
     final url = Uri.parse(finalUrl);
     final headers = {
@@ -51,21 +58,34 @@ class Diary {
     );
 
     if (response.statusCode == 201) {
+      
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp()),
+    );
       print("Shot record created successfully!");
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
+      }else{
+         Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
+      }
+  
   }
 
   //약 정보 가져오기
-  Future<List<Map<String, dynamic>>> getMedicenList(int petPk) async {
+  Future<List<Map<String, dynamic>>> getMedicenList(BuildContext context, int petPk) async {
     await _getServerUrl();
 
     String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
-
-    String finalUrl = _serverDbUrl + "api/v1/medicine/$petPk";
+  bool isToken = await _jwt.tokenValidation();
+  if(isToken){
+String finalUrl = _serverDbUrl + "api/v1/medicine/$petPk";
 
     final url = Uri.parse(finalUrl);
     print(url);
@@ -92,12 +112,21 @@ class Diary {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+  }else{
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return [];
+  }
+    
   }
 
   //날짜로 다이어리 조회
-Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
+Future<Map<String, dynamic>> getDiary(BuildContext context, int petPk, DateTime date) async {
   await _getServerUrl();
-  String dateValue = date.toIso8601String().split('T').first;
+    bool isToken = await _jwt.tokenValidation();
+    if(isToken){
+String dateValue = date.toIso8601String().split('T').first;
   String? accessToken = await _secureStorage.read(key: 'accessToken');
   print("accessToken");
   print(accessToken);
@@ -124,14 +153,22 @@ Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
     throw Exception(
         "Failed to fetch diary. Status code: ${response.statusCode}, Response: ${response.body}"); // 예외 발생
   }
+    }else{
+        Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return {};
+    }
+  
 }
 
 
   //다이어리 값 조회
-  Future<Map<String, dynamic>> getDiaryValue(int diaryPk) async {
+  Future<Map<String, dynamic>> getDiaryValue(BuildContext context, int diaryPk) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){
+   String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
 
@@ -161,12 +198,22 @@ Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
       throw Exception(
           "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
     }
+      }else{
+          Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return {};
+      }
+
+ 
   }
 //다이어리 수정
-    Future<void> modifyDiary(int diaryPk,Map<String, dynamic> petInfo) async {
+    Future<void> modifyDiary(BuildContext context, int diaryPk,Map<String, dynamic> petInfo) async {
     await _getServerUrl();
-
-    String? assessToken = await _secureStorage.read(key: 'accessToken');
+            bool isToken = await  _jwt.tokenValidation();
+           print(isToken);
+           if(isToken){
+ String? assessToken = await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
     String finalUrl = _serverDbUrl + "api/v1/life/diary/$diaryPk";
@@ -186,12 +233,26 @@ Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
 
     if (response.statusCode == 200) {
       print("Shot record modify successfully!");
+          Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MyApp()),
+    );
     } else {
       print("Failed to create shot record. Status code :${response.body}");
     }
+           }
+           else{
+              Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+           }
+   
   }
+
 //다이어리 삭제
-   Future<void> deleteDiary(int diaryPk) async{
+   Future<void> deleteDiary(BuildContext context, int diaryPk) async{
+      bool isToken = await _jwt.tokenValidation();
+      if(isToken){
          String? assessToken= await _secureStorage.read(key: 'accessToken');
     print("accessToken");
     print(assessToken);
@@ -204,10 +265,21 @@ Future<Map<String, dynamic>> getDiary(int petPk, DateTime date) async {
     final response = await http.delete(uri,
      headers: headers,);
   if(response.statusCode == 204){
+     Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()),
+            );
     print("Shot record delete successfully!");
   }else{
     print("Failed to create shot record. Status code :${response.statusCode}");
   }
+      }else{
+        Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => Login()),
+);
+      }
+
 
 
   }

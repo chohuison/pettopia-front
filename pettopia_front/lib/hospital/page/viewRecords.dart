@@ -29,7 +29,7 @@ class _ViewRecordsState extends State<ViewRecords> with AutomaticKeepAliveClient
 
   }
   void getChartList()async{
- _chartList= await shotRecordsServer.getChartList();
+ _chartList= await shotRecordsServer.getChartList(context);
       if(mounted){
     setState(() {
         _isOpen = true;

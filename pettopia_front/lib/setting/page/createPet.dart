@@ -150,7 +150,7 @@ year>currentYear
       });   
         }else{
 bool isCreate = true;
-      List<Map<String, dynamic>> beforePetList = await _pet.getPetList();
+      List<Map<String, dynamic>> beforePetList = await _pet.getPetList(context);
       for (Map<String, dynamic> value in beforePetList) {
         if (value['dogNm'] == _petName) {
           isCreate = false;
@@ -180,7 +180,7 @@ bool isCreate = true;
         
         if (_file != null) {
             await _pet.createPet(petInfo,true,context);
-        List<Map<String, dynamic>> petList = await _pet.getPetList();
+        List<Map<String, dynamic>> petList = await _pet.getPetList(context);
         int petPk = 0;
         for (Map<String, dynamic> pet in petList) {
           if (pet['dogNm'] == petInfo['dogNm']) {
@@ -188,7 +188,7 @@ bool isCreate = true;
             print("여기서 petPk: $petPk");
           }
         }
-          String presignedUrl = await _pet.s3Upload(_file!, petPk);
+          String presignedUrl = await _pet.s3Upload(context,_file!, petPk);
           print(presignedUrl);
           setState(() {
             _profile = presignedUrl;
@@ -202,7 +202,7 @@ bool isCreate = true;
            _saveAppHandle(petInfo,petPk);
         }else{
               await _pet.createPet(petInfo,false,context);
-              List<Map<String, dynamic>> petList = await _pet.getPetList();
+              List<Map<String, dynamic>> petList = await _pet.getPetList(context);
         int petPk = 0;
         for (Map<String, dynamic> pet in petList) {
           if (pet['dogNm'] == petInfo['dogNm']) {
