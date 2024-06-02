@@ -34,11 +34,18 @@ class _PetsnalColorState extends State<PetsnalColor>
   }
 
   Future<void> _getCamera() async {
-    ImagePicker().pickImage(source: ImageSource.camera).then((image) {
+    ImagePicker().pickImage(source: ImageSource.camera).then((image) async {
       if (image != null) {
         setState(() {
           file = image;
         });
+            
+ List<List<int>> colors = await _aiServer.applyPetColor(image);
+
+   setState(() {
+     _colors=  colors.map((color) =>
+        Color.fromRGBO(color[0], color[1], color[2], 1.0)).toList();
+   });
       }
     });
   }

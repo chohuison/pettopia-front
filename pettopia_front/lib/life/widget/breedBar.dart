@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class TipBar extends StatefulWidget {
   final int indexNum;
   final void Function(int index) index;
-  const TipBar({Key? key, required this.indexNum, required this.index})
+  final int breedPk;
+  const TipBar({Key? key, required this.indexNum, required this.index,required this.breedPk})
       : super(key: key);
 
   @override
@@ -16,16 +17,18 @@ class _BreedBarState extends State<TipBar>
   @override
   bool get wantKeepAlive => true;
 
-  int _breedNum = 0;
-  int _indexNum = 0;
+  late int _breedNum = widget.breedPk;
+  late int _indexNum = widget.indexNum;
 
   @override
   void initState() {
     _indexNum = widget.indexNum;
+    print(_indexNum);
+    print(widget.breedPk);
     super.initState();
   }
 
-  @override
+  @override//
   Widget build(BuildContext context) {
     super.build(context);
 
@@ -46,7 +49,7 @@ class _BreedBarState extends State<TipBar>
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
               ),
-              backgroundColor: _indexNum == 1
+              backgroundColor:  widget.indexNum == 1
                   ? MaterialStateProperty.all<Color>(Color(0xFFD6CCC2))
                   : MaterialStateProperty.all<Color>(Color(0xFFEDEDE9)),
             ),
@@ -70,7 +73,7 @@ class _BreedBarState extends State<TipBar>
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
               ),
-              backgroundColor: _indexNum == 2
+              backgroundColor:  widget.indexNum == 2
                   ? MaterialStateProperty.all<Color>(Color(0xFFD6CCC2))
                   : MaterialStateProperty.all<Color>(Color(0xFFEDEDE9)),
             ),
@@ -94,7 +97,7 @@ class _BreedBarState extends State<TipBar>
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
               ),
-              backgroundColor: _indexNum == 3
+              backgroundColor:  widget.indexNum == 3
                   ? MaterialStateProperty.all<Color>(Color(0xFFD6CCC2))
                   : MaterialStateProperty.all<Color>(Color(0xFFEDEDE9)),
             ),
@@ -104,6 +107,7 @@ class _BreedBarState extends State<TipBar>
                     color: Colors.black,
                     fontWeight: FontWeight.bold))),
         SizedBox(width: 5.w),
+        widget.breedPk == 1 ? 
         ElevatedButton(
             onPressed: () {
               widget.index(4);
@@ -118,7 +122,7 @@ class _BreedBarState extends State<TipBar>
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
               ),
-              backgroundColor: _indexNum == 4
+              backgroundColor:  widget.indexNum == 4
                   ? MaterialStateProperty.all<Color>(Color(0xFFD6CCC2))
                   : MaterialStateProperty.all<Color>(Color(0xFFEDEDE9)),
             ),
@@ -126,7 +130,7 @@ class _BreedBarState extends State<TipBar>
                 style: TextStyle(
                     fontSize: 10,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold)))
+                    fontWeight: FontWeight.bold))):Container()
       ]),
     );
   }
