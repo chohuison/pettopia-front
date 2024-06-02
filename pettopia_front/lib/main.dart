@@ -162,16 +162,14 @@ class _MyAppState extends State<MyApp> {
                     height: 600.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
-                  print
-                  if (_petList.length > 0)
-                    Container(
-                      width: 150.w,
-                      height: 100.h,
-                      // color: Colors.blue,
-                      // SelectBox 실행 시 예외 발생
-                      child: PetSelectBox(
-                          onRegionSelected: _petNameHandler, petName: _petList),
-                    ),
+                  // Container(
+                  //   width: 150.w,
+                  //   height: 100.h,
+                  //   // color: Colors.blue,
+                  //   // SelectBox 실행 시 예외 발생
+                  //   child: PetSelectBox(
+                  //       onRegionSelected: _petNameHandler, petName: _petList),
+                  // ),
 
                   Expanded(
                     child: DraggableSheet(child: _petCard()),
