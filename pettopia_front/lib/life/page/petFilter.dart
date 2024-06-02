@@ -82,7 +82,7 @@ class _PetFilterSearchState extends State<PetFilter>
   }
 
   Future<void> _filter(String nose, String horn) async {
-    XFile? filteredImage = await petFilterService.applyPetFilter(
+    XFile? filteredImage = await petFilterService.applyPetFilterDog(
         file!, _selectedBreed, nose, horn); // 필터 적용 요청
 
     setState(() {
@@ -175,19 +175,19 @@ class _PetFilterSearchState extends State<PetFilter>
                             children: [
                               Wrap(
                                 children: [
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
-                                  _filterBtn('nose.png', 'horns2.png'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
+                                  _filterBtn('nose', 'horns2'),
                                 ],
                               )
                             ],
