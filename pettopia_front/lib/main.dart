@@ -10,6 +10,7 @@ import 'package:pettopia_front/hospital/widget/petSeletBox.dart';
 import 'package:pettopia_front/life/widget/breedSelectBox.dart';
 import 'package:pettopia_front/mainPage/page/DraggableSheet';
 import 'package:geolocator/geolocator.dart';
+import 'package:pettopia_front/mainPage/widget/mainSelectBox.dart';
 import 'package:pettopia_front/server/DB/API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
@@ -34,23 +35,9 @@ class _MyAppState extends State<MyApp> {
   APIServer _apiServer = APIServer();
   late String _weatherUrl = "";
   final _storage = FlutterSecureStorage();
-
-  Pet _petServer = Pet();
-  late List<Map<String, dynamic>> _petList = [];
-
-  Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
-  }
-
-  late String _petName = _petList.first['dogNm'];
-  late int _petPk = _petList.first['petPk'];
-
-  void _petNameHandler(String value, int valuePk) {
-    setState(() {
-      _petName = value;
-      _petPk = valuePk;
-    });
-  }
+  late List<dynamic> petList = [];
+  late String _petName = "";
+  late int _petPk = 0;
 
   @override
   void initState() {
@@ -65,9 +52,25 @@ class _MyAppState extends State<MyApp> {
     print("폰에 저장된 펫 정보들");
     String? jsonData = await _storage.read(key: 'pet');
     if (jsonData != null) {
-      List<dynamic> petList = jsonDecode(jsonData);
+      petList = jsonDecode(jsonData);
       print(petList);
+      if (petList.isNotEmpty) {
+        _petName = petList[0]['dogNm'];
+        _petPk = petList[0]['pk'];
+      } else {
+        _petName = "Unknown";
+        _petPk = 0;
+      }
     }
+    print(_petName);
+    print(_petPk);
+  }
+
+  void _petNameHandler(String value, int valuePk) {
+    setState(() {
+      _petName = value;
+      _petPk = valuePk;
+    });
   }
 
   Future<void> _getCurrentLocation() async {
@@ -151,7 +154,7 @@ class _MyAppState extends State<MyApp> {
                   Container(
                       margin: EdgeInsets.only(top: 90.h, left: 155.w),
                       width: 170.w,
-                      height: 130.h,
+                      height: 140.h,
                       color: Color.fromARGB(255, 162, 207, 221),
                       child: _weatherUrl != ""
                           ? Image.network(_weatherUrl)
@@ -159,20 +162,22 @@ class _MyAppState extends State<MyApp> {
                   Container(
                     // color: Colors.yellow,
                     width: 420.w,
-                    height: 600.h,
+                    height: 610.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
-                  // Container(
-                  //   width: 150.w,
-                  //   height: 100.h,
-                  //   // color: Colors.blue,
-                  //   // SelectBox 실행 시 예외 발생
-                  //   child: PetSelectBox(
-                  //       onRegionSelected: _petNameHandler, petName: _petList),
-                  // ),
-
-                  Expanded(
-                    child: DraggableSheet(child: _petCard()),
+                  if (_petPk != 0)
+                    Container(
+                      margin: EdgeInsets.only(top: 40.h, left: 10.w),
+                      child: MainSelectBox(
+                          onRegionSelected: _petNameHandler, petName: petList),
+                    ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                        height: 600.h,
+                        child: DraggableSheet(child: _petCard())),
                   ),
                 ],
               ),
@@ -206,7 +211,7 @@ class _MyAppState extends State<MyApp> {
           height: 200.h,
         ),
         Text(
-          "뽀삐",
+          _petName,
           style: TextStyle(fontSize: 20.sp),
         ),
         Text(
