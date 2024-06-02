@@ -9,12 +9,14 @@ import 'package:pettopia_front/server/DB/Pet.dart';
 
 class DaySelectPopUp extends StatefulWidget {
   final List<Map<String, dynamic>> petList;
+  final DateTime date;
 
   //true -> 작성버튼만 나오게 false -> 보기 버튼만 나오게
   final bool isCreate;
     final Map<String,dynamic> diaryValue;
   const DaySelectPopUp({
     Key? key,
+    required this.date,
     required this.petList,
     required this.isCreate,
     required this.diaryValue,
@@ -28,7 +30,7 @@ class _DaySelectPopUpState extends State<DaySelectPopUp>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  late DateTime _date = DateTime.now();
+  late DateTime _date = widget.date;
   late String _name = "";
   late String _petName = widget.petList.first['dogNm'];
   late int _petPk = widget.petList.first['petPk'];
