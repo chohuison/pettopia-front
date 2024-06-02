@@ -23,8 +23,8 @@ class _PetAddInformationState extends State<PetAddInformation> {
 
   late int _enviorment = 0;
   late int? _exercise = 0;
-  late int? _eatCount = 0;
-  late int? _snackCount = 0;
+  late String _eatCount = "";
+  late String _snackCount = "";
   late int? _eatKind = 0;
   late String _petName = widget.petList.first['dogNm'];
   late int _petPk = widget.petList.first['petPk'];
@@ -85,9 +85,9 @@ class _PetAddInformationState extends State<PetAddInformation> {
   }
 
   void onHandleEat(String eatCount, int eatKind, String snackCount) {
-    _eatCount = int.parse(eatCount);
+    _eatCount = eatCount;
     _eatKind = eatKind;
-    _snackCount = int.parse(snackCount);
+    _snackCount = snackCount;
   }
 
   void _saveButton(){
@@ -108,9 +108,9 @@ class _PetAddInformationState extends State<PetAddInformation> {
       'petExtraInfo': {
         'environment': _enviorment,
         'exercise': _exercise,
-        'foodCnt': _eatCount,
+        'foodCnt': int.parse(_eatCount),
         'foodKind': _eatKind,
-        'snackCnt': _snackCount,
+        'snackCnt': int.parse(_snackCount),
       },
          'requestMedicineList':{
         'list': _requestMedicineList.length > 0 ? _requestMedicineList : [],

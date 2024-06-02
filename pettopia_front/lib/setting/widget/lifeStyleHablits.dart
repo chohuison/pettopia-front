@@ -21,7 +21,7 @@ class _LifeStyleHabitsState extends State<LifeStyleHabits>
   bool get wantKeepAlive => true;
 
   late int? _enviorment = 0; // true는 실내, false는 야외
-  late int? _exercise = 1;
+  late int? _exercise = 0;
 
   void _enviormentHandler(int value) {
     setState(() {
