@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MainSelectBox extends StatefulWidget {
-  final void Function(String selectValue, int selectValuePk)? onRegionSelected;
+  final void Function(String selectValue, int selectValuePk, Map<String,dynamic> petValue)? onRegionSelected;
   final List<dynamic> petName;
+
 
   const MainSelectBox(
       {Key? key, required this.onRegionSelected, required this.petName})
@@ -103,7 +104,7 @@ class _MainSelectBoxState extends State<MainSelectBox>
                               _selectBoxValuePk = widget.petName[index]['pk'];
                             });
                             widget.onRegionSelected!(
-                                _selectBoxValue, _selectBoxValuePk);
+                                _selectBoxValue, _selectBoxValuePk, widget.petName[index]);
                           },
                           child: Center(
                               child: Text(
