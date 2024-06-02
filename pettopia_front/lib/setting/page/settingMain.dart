@@ -5,8 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
+import 'package:pettopia_front/server/DB/Users.dart';
 import 'package:pettopia_front/server/DB/jwt.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,19 +31,20 @@ class _SettingMainhState extends State<SettingMain> {
   List<dynamic> _medicenList = [];
   int _height = 800;
   JWT _jwt = JWT();
+  Users users = Users();
 
   Pet _petServer = Pet();
   Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
+    _petList = await _petServer.getPetList(context);
   }
 
   Future<void> _getPetInfo() async {
-    _petInfo = await _petServer.getPetInfo(_petList.first['petPk']);
+    _petInfo = await _petServer.getPetInfo(context,_petList.first['petPk']);
   }
 
   Future<void> _getPetAddInfo() async {
     Map<String, dynamic> petAddExtraInfo =
-        await _petServer.getAddPetInfo(_petList.first['petPk']);
+        await _petServer.getAddPetInfo(context,_petList.first['petPk']);
     _petAddInfo = petAddExtraInfo['petExtraInfo'];
     _medicenList = petAddExtraInfo['responseMedicineList']['list'];
     _height = _medicenList.length * 160 + 800;
@@ -120,6 +123,7 @@ class _SettingMainhState extends State<SettingMain> {
       child: ElevatedButton(
         onPressed: () async {
           if (index == 0) {
+   
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -214,6 +218,11 @@ class _SettingMainhState extends State<SettingMain> {
             }
           } else if (index == 3) {
             await _secureStorage.deleteAll();
+            await users.logoutKakao();
+              Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),
+    );
           }
         },
         style: ButtonStyle(

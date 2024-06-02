@@ -23,7 +23,7 @@ class _CalendarState extends State<Calendar>
   Pet _petServer = Pet();
 
   Future<void> _getList() async {
-    _petList = await _petServer.getPetList();
+    _petList = await _petServer.getPetList(context);
   }
 
   @override

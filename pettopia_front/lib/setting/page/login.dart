@@ -132,11 +132,11 @@ void _naverWebViewSetting() async {
  
 
   Future<void> _getUserPet() async{
-    List<Map<String,dynamic>> petList = await _petServer.getPetList();
+    List<Map<String,dynamic>> petList = await _petServer.getPetList(context);
     List<Map<String,dynamic>> petValueList = [];
     for(Map<String,dynamic> value in petList){
-      Map<String,dynamic>petInfo = await _petServer.getPetRegistration(value['petPk']);
-      Map<String,dynamic>petAddInfo = await _petServer.getAddPetInfo(value['petPk']);
+      Map<String,dynamic>petInfo = await _petServer.getPetRegistration(context,value['petPk']);
+      Map<String,dynamic>petAddInfo = await _petServer.getAddPetInfo(context,value['petPk']);
       petInfo['pk'] = value['petPk'];
       if(petAddInfo['petExtraInfo']['environment']!= null){
         petInfo['isAddInfo'] = true;

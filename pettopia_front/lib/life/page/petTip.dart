@@ -75,7 +75,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
   Future<void> _getIndex(int index)async {
     _index = index;
     String tipCategory = getTipCategory(index);
-    List<Map<String,dynamic>> list = await _tipServer.getTip(breedPk, tipCategory);
+    List<Map<String,dynamic>> list = await _tipServer.getTip(context, breedPk, tipCategory);
     setState(() {
       _tipList=list;
     });

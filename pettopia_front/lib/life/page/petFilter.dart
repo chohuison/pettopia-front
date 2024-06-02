@@ -36,6 +36,7 @@ class _PetFilterSearchState extends State<PetFilter>
   late CameraDescription firstCamera;
   final petFilterService = AI();
   AppBarList _appBarList = AppBarList();
+  late List<Map<String,dynamic>> _pictureList=[];
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _PetFilterSearchState extends State<PetFilter>
       _selectedBreed = selectedBreed;
       if (selectedBreed == "강아지") {
         breedPk = 1;
+        // _pictureList=[{'breed':'강아지', ''}]
       } else {
         breedPk = 2;
       }

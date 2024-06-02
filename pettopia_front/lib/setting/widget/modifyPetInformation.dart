@@ -150,7 +150,7 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
       _file = pickedImage;
 
     });
-              String imagUrl =  await _petServer.s3Upload(_file!, widget.petPk);
+              String imagUrl =  await _petServer.s3Upload(context,_file!, widget.petPk);
     setState(() {
      _profile="";   
      _profile =imagUrl;

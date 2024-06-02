@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
@@ -161,13 +162,13 @@ return "FEE_FOOD";
   }
   }
 
-  Future <Map<String, dynamic>> getPetDiseaseRecommendation(int petPk) async {
+  Future <Map<String, dynamic>> getPetDiseaseRecommendation(BuildContext context,int petPk) async {
    await _getServerUrl();
    String url = _serverAIUrl+"PetDiseaseRecommend";
   final uri = Uri.parse(url);
   print(uri);
-  Map<String,dynamic> petInfo = await _petServer.getPetInfo(petPk);
-  Map<String,dynamic> petAddInfo = await _petServer.getAddPetInfo(petPk);
+  Map<String,dynamic> petInfo = await _petServer.getPetInfo(context,petPk);
+  Map<String,dynamic> petAddInfo = await _petServer.getAddPetInfo(context,petPk);
   Map<String,dynamic> petOnlyAddInfo =petAddInfo['petExtraInfo'];
   PetBreedList _petBreedList = PetBreedList();
    int currentYear = DateTime.now().year;
