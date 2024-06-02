@@ -123,7 +123,7 @@ Future <Map<String, dynamic>> getWeather(BuildContext context, String lat, Strin
     print(assessToken);
     await _getServerUrl();
       bool isToken = await _jwt.tokenValidation();
-  print(isToken);
+  print("날씨에서 : $isToken");
   if(isToken){
     final serverUrl = _serverDbUrl+ "api/v1/map/weather?lat=$lat&lon=$lon";
     print(serverUrl);

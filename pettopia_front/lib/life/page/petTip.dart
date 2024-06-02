@@ -45,7 +45,7 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
     print(selectedBreed);
    
     setState(() {
-       _index =0;
+      
     _selectedBreed =selectedBreed;
     if(selectedBreed == "강아지"){
       breedPk=1;

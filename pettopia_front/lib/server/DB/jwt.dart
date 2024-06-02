@@ -26,7 +26,8 @@ class JWT {
 Future<bool> tokenValidation() async {
   _getServerUrl();
     String? assessToken = await _secureStorage.read(key: 'accessToken');
-    final serverUrl = _serverDbUrl+ "api/v1/jwt/access?authHeader=Bearer $assessToken";
+    if(assessToken != null){
+  final serverUrl = _serverDbUrl+ "api/v1/jwt/access?authHeader=Bearer $assessToken";
    
   final url = Uri.parse(serverUrl);
 
@@ -58,6 +59,11 @@ Future<bool> tokenValidation() async {
   } else {
     return false;
   }
+    }
+    else{
+      return false;
+    }
+  
 }
 
 

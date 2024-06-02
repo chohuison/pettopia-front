@@ -15,14 +15,29 @@ import 'package:pettopia_front/mainPage/widget/mainSelectBox.dart';
 import 'package:pettopia_front/server/DB/API.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
+import 'package:pettopia_front/server/DB/jwt.dart';
+import 'package:pettopia_front/setting/page/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //가로가 더 길어질때 생기는 오류방지 크롬으로 실행했을시 생긴다는데 혹시 모르니깐 적용해놈
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  runApp(const MyApp());
+  JWT _jwt = JWT();
+  final _storage = FlutterSecureStorage();
+  String? assessToken = await _storage.read(key: 'accessToken');
+  if (assessToken != null) {
+    bool isToken = await _jwt.tokenValidation();
+    if (isToken == true) {
+      runApp(const MyApp());
+    } else {
+      print("여어기걸림");
+      runApp(const Login());
+    }
+  } else {
+    print("여기걸림");
+    runApp(const Login());
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -40,19 +55,20 @@ class _MyAppState extends State<MyApp> {
   late List<dynamic> petList = [];
   late String _petName = "";
   late int _petPk = 0;
-  late String _profile ="";
-  late String _dogRegNo ="";
-  late String _speciesName ="";
-  late String _sexNm ="";
-  late String _neuterYn="";
-  late int _birth=0;
-  late String _protectorName="";
-  late String _protectorPhoneNum="";
-  late Map<String,dynamic> _curretnPetValue={};
+  late String _profile = "";
+  late String _dogRegNo = "";
+  late String _speciesName = "";
+  late String _sexNm = "";
+  late String _neuterYn = "";
+  late int _birth = 0;
+  late String _protectorName = "";
+  late String _protectorPhoneNum = "";
+  late Map<String, dynamic> _curretnPetValue = {};
 
   @override
   void initState() {
     super.initState();
+    
     _getCurrentLocation();
     //그냥 펫 정보 잘 처리되나 확인할라고
     _getPetInfo();
@@ -60,58 +76,48 @@ class _MyAppState extends State<MyApp> {
 
   //그냥 펫 정보
   Future<void> _getPetInfo() async {
- 
     String? jsonData = await _storage.read(key: 'pet');
     if (jsonData != null) {
       petList = jsonDecode(jsonData);
-         print("폰에 저장된 펫 정보들");
       print(petList);
-      if (petList.isNotEmpty) {
-        _petName = petList[0]['dogNm'];
-        _petPk = petList[0]['pk'];
-        _curretnPetValue = petList[0];
-        _profile = petList[0]['profile'];
-        _dogRegNo = petList[0]['dogRegNo'];
-        _speciesName=_petBreedList.findSpeciesBySpeciesName(petList[0]['speciesName']);
-        _sexNm = getSex(petList[0]['sexNm']);
-        _neuterYn = getNeuterYn(petList[0]['neuterYn']);
-        _birth=petList[0]['birth'];
-        _protectorName=petList[0]['protectorName'];
-        _protectorPhoneNum=petList[0]['protectorPhoneNum'];
-        _curretnPetValue=petList[0];
-
-      
-      } else {
-        _petName = "Unknown";
-        _petPk = 0;
+      if (petList.length > 0) {
+        setState(() {
+          _curretnPetValue = petList[0];
+          print("폰에 저장된 펫 정보들");
+          _petName = petList[0]['dogNm'];
+          _petPk = petList[0]['pk'];
+        });
       }
     }
-    print(_petName);
-    print(_petPk);
   }
 
-  void _petNameHandler(String value, int valuePk, Map<String,dynamic> petValue) {
+  void _petNameHandler(
+      String value, int valuePk, Map<String, dynamic> petValue) {
     setState(() {
       _petName = value;
       _petPk = valuePk;
-      _curretnPetValue=petValue;
+      _curretnPetValue = petValue;
     });
   }
-  String getSex(bool value){
-    if(value == true){
+
+  String getSex(bool value) {
+    if (value == true) {
       return "남";
-    }else{
+    } else {
       return "여";
     }
   }
-  String getNeuterYn(bool value){
-    if(value==true)
-    {return "O";}else{
+
+  String getNeuterYn(bool value) {
+    if (value == true) {
+      return "O";
+    } else {
       return "X";
     }
   }
 
   Future<void> _getCurrentLocation() async {
+
     if (await isCheckedWeather()) {
       print("다시 날씨 정보 가져옴");
       try {
@@ -172,7 +178,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714), // 디자인 기준 크기를 설정합니다.
+      designSize: const Size(
+          411.42857142857144, 683.4285714285714), // 디자인 기준 크기를 설정합니다.
       child: MaterialApp(
         title: "main_page",
         debugShowCheckedModeBanner: false,
@@ -203,21 +210,21 @@ class _MyAppState extends State<MyApp> {
                     height: 610.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
-               if(petList.length>1)
-                  Container(
-                    margin: EdgeInsets.only(top: 30.h, left: 20.w),
-                    child: MainSelectBox(
-                        onRegionSelected: _petNameHandler, petName: petList),
-                  ),
-                      if(petList.length>1)
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                        height: 600.h,
-                        child: DraggableSheet(child: _petCard())),
-                  ),
+                  if (petList.length > 1)
+                    Container(
+                      margin: EdgeInsets.only(top: 30.h, left: 20.w),
+                      child: MainSelectBox(
+                          onRegionSelected: _petNameHandler, petName: petList),
+                    ),
+                  if (petList.length > 1)
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                          height: 600.h,
+                          child: DraggableSheet(child: _petCard())),
+                    ),
                 ],
               ),
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
@@ -231,7 +238,7 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-        
+
   Widget _petCard() {
     return Column(
       children: [
@@ -248,20 +255,20 @@ class _MyAppState extends State<MyApp> {
           // color: Colors.yellow,
           width: 200.w,
           height: 200.h,
-        child: _curretnPetValue['profile'] != ""
-          ? Image.network(_curretnPetValue['profile']!)
-          : Icon(
-              Icons.error,
-              size: 50.0,
-              color: Colors.red,
-            ),
+          child: _curretnPetValue['profile'] != ""
+              ? Image.network(_curretnPetValue['profile']!)
+              : Icon(
+                  Icons.error,
+                  size: 50.0,
+                  color: Colors.red,
+                ),
         ),
         Text(
           _curretnPetValue['dogNm'],
           style: TextStyle(fontSize: 20.sp),
         ),
         Text(
-            _curretnPetValue['dogRegNo'],
+          _curretnPetValue['dogRegNo'],
           style: TextStyle(fontSize: 17.sp),
         ),
         Row(
@@ -277,11 +284,13 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "생년월일: " +  _curretnPetValue['birth'].toString(),
+                    "생년월일: " + _curretnPetValue['birth'].toString(),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "종류: " + _petBreedList.findSpeciesBySpeciesName(_curretnPetValue['speciesName']),
+                    "종류: " +
+                        _petBreedList.findSpeciesBySpeciesName(
+                            _curretnPetValue['speciesName']),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
@@ -301,11 +310,11 @@ class _MyAppState extends State<MyApp> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "성별: " +  getSex(_curretnPetValue['sexNm']),
+                    "성별: " + getSex(_curretnPetValue['sexNm']),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "중성화 여부: " +  getNeuterYn(_curretnPetValue['neuterYn']),
+                    "중성화 여부: " + getNeuterYn(_curretnPetValue['neuterYn']),
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
