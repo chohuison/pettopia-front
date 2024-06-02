@@ -72,7 +72,7 @@ class AI {
     Future<XFile?> applyCatFilter( XFile pickedImage) async {
      await _getServerUrl();
     // final uri = Uri.parse('$_serverAIUrl/pet_filter');
-    String finalUrl = _serverAIUrl+"pet_filter_dog";
+    String finalUrl = _serverAIUrl+"pet_filter_cat";
      final uri = Uri.parse(finalUrl);
     print(uri);
     // final uri = Uri.parse('http://10.0.2.2:5000/pet_filter');
@@ -80,7 +80,7 @@ class AI {
     final request = http.MultipartRequest('POST', uri);
 
     request.files.add(await http.MultipartFile.fromPath('petImage', pickedImage.path));
-    request.fields['petFilterCat'] = "galsses";
+    request.fields['petFilterCat'] = "glasses";
  
     print("request: ");
     print(request);
