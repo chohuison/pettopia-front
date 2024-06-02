@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
+import 'package:pettopia_front/server/DB/jwt.dart';
 import 'package:pettopia_front/setting/page/createPet.dart';
 import 'package:pettopia_front/setting/page/petAddInformation.dart';
 import 'package:pettopia_front/setting/page/viewPetInformation.dart';
@@ -27,6 +28,7 @@ class _SettingMainhState extends State<SettingMain> {
   Map<String, dynamic> _petAddInfo = {};
   List<dynamic> _medicenList = [];
   int _height = 800;
+  JWT _jwt = JWT();
 
   Pet _petServer = Pet();
   Future<void> _getList() async {
@@ -152,7 +154,7 @@ class _SettingMainhState extends State<SettingMain> {
                 }
                 print("canAddInfoPetList");
                 print(canAddInfoPetList);
-                if (canAddInfoPetList.length > 1) {
+                if (canAddInfoPetList.length > 0) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
