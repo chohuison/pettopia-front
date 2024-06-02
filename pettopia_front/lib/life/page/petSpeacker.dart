@@ -7,15 +7,16 @@ import 'package:pettopia_front/Menu/AppBar.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/enum/appBarList.dart';
 import 'package:pettopia_front/life/widget/speciesButton.dart';
+import 'dart:math';
 
-class PetSpeacker extends StatefulWidget {
-  const PetSpeacker({Key? key}) : super(key: key);
+class PetSpeaker extends StatefulWidget {
+  const PetSpeaker({Key? key}) : super(key: key);
 
   @override
-  _PetSpeackerState createState() => _PetSpeackerState();
+  _PetSpeakerState createState() => _PetSpeakerState();
 }
 
-class _PetSpeackerState extends State<PetSpeacker>
+class _PetSpeakerState extends State<PetSpeaker>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -24,7 +25,7 @@ class _PetSpeackerState extends State<PetSpeacker>
   AppBarList _appBarList = AppBarList();
   late List<Map<String, dynamic>> _speackerList = [];
   late AudioPlayer _audioPlayer;
-  static const String audioPath = 'audio/big-waves-hit-land-5926.mp3';
+  bool _isPlaying = false;
 
   @override
   void initState() {
@@ -47,18 +48,47 @@ class _PetSpeackerState extends State<PetSpeacker>
     return index;
   }
 
+  void _toggleNatureAudio(Map<String, dynamic> value) async {
+    if (_isPlaying) {
+      await _audioPlayer.stop();
+      setState(() {
+        _isPlaying = false;
+        print("음악 꺼짐");
+      });
+    } else {
+      Random random = Random();
+      int randomIndex = random.nextInt(3) + 1;
+
+      await _audioPlayer.play(AssetSource(value['path']));
+      setState(() {
+        _isPlaying = true;
+        print("음악 켜짐");
+      });
+    }
+  }
+
   void _getSpeackerList(int index) {
     if (index == 1) {
       _speackerList = [
-        {"name": "훈련클리커", "value": "클릭하면 딸깍 소리가 납니다.\n훈련 후 클리커를 누르고 간식을 주세요"},
+        {
+          "name": "훈련클리커",
+          "value": "클릭하면 딸깍 소리가 납니다.\n훈련 후 클리커를 누르고 간식을 주세요.",
+          "path": "audio/clicker.mp3",
+        },
         {
           "name": "자연 백색소음",
-          "value": "강아지들은 백색소음을 들으면 스트레스가 감소해요.\n안정이 필요한 강아지에게 들려주세요"
+          "value": "강아지들은 백색소음을 들으면 스트레스가 감소해요.\n안정이 필요한 강아지에게 들려주세요.",
+          "path": "audio/rainforest-208926.mp3",
         }
       ];
     } else if (index == 2) {
       _speackerList = [
-        {"name": "훈련클리커", "value": "클릭하면 딸깍 소리가 납니다. \n훈련 후 클리커를 누르고 간식을 주세요"}
+        {
+          "name": "클래식",
+          "value": "고양이에게 클래식을 들려주면 \n스트레스를 낮추는 효과가 있습니다.",
+          "path":
+              "audio/etude-mediation-for-piano-violin-and-cello-in-f-177732.mp3"
+        }
       ];
     }
   }
@@ -89,7 +119,8 @@ class _PetSpeackerState extends State<PetSpeacker>
               Container(
                 height: 485.h,
                 width: 500.w,
-                margin: EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
+                margin:
+                    EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
                 decoration: BoxDecoration(
                   color: Color(0xFFE3D5CA),
                   borderRadius: BorderRadius.circular(25),
@@ -140,7 +171,7 @@ class _PetSpeackerState extends State<PetSpeacker>
       itemBuilder: (BuildContext context, int index) {
         if (list != null && index < list.length) {
           final record = list[index]!;
-          return buildListValue(record);
+          return buildListValue(record, () => _toggleNatureAudio(record));
         } else {
           return SizedBox();
         }
@@ -148,15 +179,10 @@ class _PetSpeackerState extends State<PetSpeacker>
     );
   }
 
-  Widget buildListValue(Map<String, dynamic> value) {
+  Widget buildListValue(Map<String, dynamic> value, Function function) {
     return GestureDetector(
       onTap: () async {
-        print("클릭됨");
-        try {
-          await _audioPlayer.play(AssetSource(audioPath));
-        } catch (e) {
-          print("Error playing audio: $e");
-        }
+        function();
       },
       child: Container(
         margin: EdgeInsets.only(
