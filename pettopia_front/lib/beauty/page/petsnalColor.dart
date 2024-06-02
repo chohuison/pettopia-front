@@ -25,7 +25,7 @@ class _PetsnalColorState extends State<PetsnalColor>
   late List<Map<String, dynamic>> _beautyAppBar;
   AppBarList _appBarList = AppBarList();
   AI _aiServer = AI();
-   List<List<int>> colors=[];
+   List<Color> _colors= [];
 
   @override
   void initState() {
@@ -49,12 +49,16 @@ class _PetsnalColorState extends State<PetsnalColor>
     if (pickedImage == null) {
       return;
     }
-    
- _aiServer.applyPetColor(pickedImage);
-
-    setState(() {
+     setState(() {
       file = pickedImage;
     });
+    
+ List<List<int>> colors = await _aiServer.applyPetColor(pickedImage);
+
+   setState(() {
+     _colors=  colors.map((color) =>
+        Color.fromRGBO(color[0], color[1], color[2], 1.0)).toList();
+   });
   }
 
   Future<void> _getPetsnalColor() async {
@@ -235,17 +239,17 @@ class _PetsnalColorState extends State<PetsnalColor>
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: Colors.red),
+                decoration: BoxDecoration(color: _colors.length >1? _colors[0]: Colors.red),
               ),
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: Colors.green),
+                decoration: BoxDecoration(color: _colors.length >1? _colors[1]: Colors.green),
               ),
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: Colors.blue),
+                decoration: BoxDecoration(color: _colors.length >1? _colors[2]: Colors.blue),
               ),
             ],
           ),
