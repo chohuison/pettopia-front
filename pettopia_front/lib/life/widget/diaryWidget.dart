@@ -90,7 +90,7 @@ class _DiaryWidgetState extends State<DiaryWidget>
                         builder: (BuildContext context) {
                           return AlertDialog(
                               surfaceTintColor: Colors.white,
-                              content: DaySelectPopUp(petList: widget.petList, isCreate: isCreate, diaryValue: valueDiary,));
+                              content: DaySelectPopUp(date: selectedDay, petList: widget.petList, isCreate: isCreate, diaryValue: valueDiary,));
                         });
                     print(selectedDay);
                     setState(() {

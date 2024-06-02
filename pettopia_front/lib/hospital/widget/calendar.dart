@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pettopia_front/life/widget/createPetDiaryCheckPopup.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'package:pettopia_front/hospital/widget/shortWriteValue.dart';
@@ -41,13 +42,24 @@ class _CalendarState extends State<Calendar>
           setState(() {
             _selectedDate = selectedDay;
           });
-          Navigator.push(
+          if(_petList.length<1){
+       showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              surfaceTintColor: Colors.white,
+                              content: CreatePetDiaryCheckPopup());
+                        });
+          }else{
+    Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ShortWriteValue(
                   selectedDay: _selectedDate!, petList: _petList),
             ),
           );
+          }
+      
         },
       ),
     );
