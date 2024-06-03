@@ -19,25 +19,25 @@ import 'package:pettopia_front/life/page/writeDiary.dart';
 class AppBarList {
   final FlutterSecureStorage _storage = FlutterSecureStorage();
   List<Map<String, dynamic>> _hospitalAppBar = [
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '병원찾기'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '명냥접종'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '피부병'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '질병찾기'},
+    {'imgUrl': 'assets/img/icon/map.png', 'title': '병원찾기'},
+    {'imgUrl': 'assets/img/icon/short.png', 'title': '명냥접종'},
+    {'imgUrl': 'assets/img/icon/skin_disease.png', 'title': '피부병'},
+    {'imgUrl': 'assets/img/icon/find_disease.png', 'title': '질병찾기'},
   ];
 
   late List<Map<String, dynamic>> _petList = [];
   Pet _petServer = Pet();
 
   List<Map<String, dynamic>> _lifeAppBar = [
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫필터'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '반려동물팁'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫다이어리'},
-    {'imgUrl': 'assets/img/hospitalIcon.png', 'title': '펫스피커'},
+    {'imgUrl': 'assets/img/icon/pet_filter.png', 'title': '펫필터'},
+    {'imgUrl': 'assets/img/icon/pet_tips.png', 'title': '반려동물팁'},
+    {'imgUrl': 'assets/img/icon/pet_diary.png', 'title': '펫다이어리'},
+    {'imgUrl': 'assets/img/icon/pet_speaker.png', 'title': '펫스피커'},
   ];
 
   List<Map<String, dynamic>> _beautyAppBar = [
     {'imgUrl': 'assets/img/icon/petsnal_color.png', 'title': '펫스널컬러'},
-    {'imgUrl': 'assets/img/icon/salon_map.png', 'title': '미용실 찾기'},
+    {'imgUrl': 'assets/img/icon/map.png', 'title': '미용실 찾기'},
   ];
 
   AppBarList();
