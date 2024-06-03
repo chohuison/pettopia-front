@@ -73,7 +73,7 @@ class _ViewPetInfoState extends State<ViewPetInfo>
                             margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
                             width: 80.w,
                             height: 80.h,
-                            child:widget.petinfo['profile'] != ""? Image.network(widget.petinfo['profile']) : Container(),
+                            child:widget.petinfo['profile'] != ""? Image.network(widget.petinfo['profile'], key: UniqueKey()) : Container(),
 
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
