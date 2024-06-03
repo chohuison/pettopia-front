@@ -139,6 +139,28 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
         _breedPk, _fur, _sex, _neutering, _birth);
   }
 
+       Future<void> _getCamera() async {
+    ImagePicker().pickImage(source: ImageSource.camera).then((image) async {
+      if (image != null) {
+        setState(() {
+          _file = image;
+        });
+        String imagUrl = await _petServer.s3Upload(context, _file!, widget.petPk);
+    setState(() {
+      _profile = "";
+      print(_profile);
+  
+      _profile =    _profile = '$imagUrl?${DateTime.now().millisecondsSinceEpoch}'; 
+      print(_profile);
+    });
+
+    widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
+        _speciesPk, _fur, _sex, _neutering, _birth);
+      }
+    });
+  }
+
+
   Future<void> _getGallery() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -201,7 +223,9 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
                         width: 150.w,
                         height: 25.h,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _getCamera();
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Color(0xFFAFA59B)),
