@@ -27,7 +27,7 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
     return ScreenUtilInit(
       designSize: const Size(411.42857142857144, 683.4285714285714),
       child: Container(
-        height: 70.h,
+        height: 90.h,
         decoration: BoxDecoration(
           color: Color(0xFFD6CCC2),
           boxShadow: [
@@ -79,7 +79,6 @@ class _CustomBottomNavigatorBarState extends State<CustomBottomNavigatorBar> {
               MaterialPageRoute(builder: (context) => PetFilter()),
             );
           } else if (pageIndex == 4) {
-      
             bool containsKey =
                 await _secureStorage.containsKey(key: 'accessToken');
 

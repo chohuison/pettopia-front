@@ -24,9 +24,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: Container(
-        height: 100.h,
+        height: 110.h,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: widget.barList.length,
@@ -52,11 +52,15 @@ class _CustomAppBarState extends State<CustomAppBar> {
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           GestureDetector(
             onTap: () {
               buttonHandler(index, context);
+              final size = MediaQuery.of(context).size;
+              final width = size.width.toStringAsFixed(10);
+              final height = size.height.toStringAsFixed(10);
+              print("넓이" + width + "높이" + height);
             },
             child: Container(
               height: 60.h,
