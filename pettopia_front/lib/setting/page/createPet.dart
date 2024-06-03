@@ -116,9 +116,11 @@ class _CreatePetState extends State<CreatePet> {
     } else {
       petList = jsonDecode(jsonData);
       petList.add(newPetValue);
-      print(petList);
+  
       await _storage.delete(key: 'pet');
     }
+        print("petList: ");
+      print(petList);
     await _storage.write(key: 'pet', value: jsonEncode(petList));
   }
 
@@ -197,7 +199,7 @@ class _CreatePetState extends State<CreatePet> {
               print(petInfo);
 
               await _pet.modifyPet(petInfo, petPk, context, true);
-              _saveAppHandle(petInfo, petPk);
+             await _saveAppHandle(petInfo, petPk);
             } else {
 
               bool isCreate = await _pet.createPet(petInfo, context);
@@ -209,10 +211,12 @@ class _CreatePetState extends State<CreatePet> {
                   petPk = pet['petPk'];
                   print("여기서 petPk: $petPk");
                 }
-                await _saveAppHandle(petInfo, petPk);
+               
 
               }
+
               if(isCreate == true){
+                               await _saveAppHandle(petInfo, petPk);
                       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyApp()),
