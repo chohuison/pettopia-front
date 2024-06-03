@@ -7,7 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:gallery_saver_plus/files.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
-
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:math';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
 
@@ -99,6 +100,8 @@ class _PetFilterSearchState extends State<PetFilter>
       });
     }
   }
+  
+
 
   Future<void> _getCamera() async {
     ImagePicker().pickImage(source: ImageSource.camera).then((image) {
@@ -122,10 +125,31 @@ class _PetFilterSearchState extends State<PetFilter>
     }
   }
 
-  Future<void> _saveImage() async {
-    print(file!.path);
-    await GallerySaver.saveVideo(file!.path, albumName: "펫토피아");
+Future<void> _saveImage() async {
+    if (file != null) {
+      print(file!.path);
+  final random = Random();
+
+  // 0부터 99까지의 랜덤한 숫자 생성
+  int randomNumber = random.nextInt(100); // 0부터 인자 값 - 1까지의 정수를 반환
+
+      // 권한 요청
+      if (await Permission.storage.request().isGranted) {
+        // 이미지 저장
+        String fileName = "펫토피아"+randomNumber.toString();
+        final bool? result = await GallerySaver.saveImage(file!.path, albumName:fileName);
+        if (result != null && result) {
+          print('Image saved to gallery');
+        } else {
+          print('Failed to save image to gallery');
+        }
+      } else {
+        // 권한이 거부된 경우 처리
+        print('Storage permission denied');
+      }
+    }
   }
+
 
   Future<void> _filter(Map<String, dynamic> filter) async {
     if (file == null) {
