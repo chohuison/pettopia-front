@@ -76,7 +76,7 @@ class _ViewPetInformationState extends State<ViewPetInformation> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(411.42857142857144,683.4285714285714),
+        designSize: const Size(392.7272727273, 783.2727272727),
         child: MaterialApp(
              debugShowCheckedModeBanner: false ,
           title: "petAddInformation",
