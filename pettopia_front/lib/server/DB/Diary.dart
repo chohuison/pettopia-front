@@ -283,4 +283,43 @@ String dateValue = date.toIso8601String().split('T').first;
 
 
   }
+
+    Future<String> getDiaryDefecation(BuildContext context, int petPk) async {
+    await _getServerUrl();
+
+    String? assessToken = await _secureStorage.read(key: 'accessToken');
+    print("accessToken");
+    print(assessToken);
+  bool isToken = await _jwt.tokenValidation();
+  if(isToken){
+String finalUrl = _serverDbUrl + "api/v1/life/diary/defecation/$petPk";
+
+    final url = Uri.parse(finalUrl);
+    print(url);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $assessToken',
+    };
+
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+     Map<String,dynamic> data =jsonDecode(utf8.decode(response.bodyBytes));
+      return data['defecation']; // 결과 반환
+    } else {
+      throw Exception(
+          "Failed to fetch chart list. Status code: ${response.body}"); // 예외 발생
+    }
+  }else{
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Login()),);
+      return "";
+  }
+    
+  }
 }

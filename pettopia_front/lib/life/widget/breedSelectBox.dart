@@ -102,6 +102,7 @@ class _BreedSelectBoxState extends State<BreedSelectBox>
                                 _selectBoxValue = record;
                               });
                               widget.onRegionSelected!(record);
+                              print(record);
                             },
                             child: Center(child: Text(record)));
                       }
