@@ -33,7 +33,7 @@ class _BreedBarState extends State<TipBar>
     super.build(context);
 
     return Container(
-      margin: EdgeInsets.only(left: 10.w),
+      margin: EdgeInsets.only(left: 3.w),
       child: Row(children: <Widget>[
         ElevatedButton(
             onPressed: () {
@@ -44,7 +44,7 @@ class _BreedBarState extends State<TipBar>
             },
             style: ButtonStyle(
               fixedSize: MaterialStateProperty.all<Size>(
-                Size(90.w, 20.h),
+                Size(90.w, 10.h),
               ),
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
@@ -55,10 +55,10 @@ class _BreedBarState extends State<TipBar>
             ),
             child: Text("주의음식",
                 style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold))),
-        SizedBox(width: 5.w),
+        SizedBox(width: 2.w),
         ElevatedButton(
             onPressed: () {
               widget.index(2);
@@ -68,7 +68,7 @@ class _BreedBarState extends State<TipBar>
             },
             style: ButtonStyle(
               fixedSize: MaterialStateProperty.all<Size>(
-                Size(90.w, 20.h), // 가로 150, 세로 50 크기로 조정
+                Size(90.w, 10.h), // 가로 150, 세로 50 크기로 조정
               ),
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
@@ -79,10 +79,10 @@ class _BreedBarState extends State<TipBar>
             ),
             child: Text("이상행동",
                 style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold))),
-        SizedBox(width: 5.w),
+        SizedBox(width: 2.w),
         ElevatedButton(
             onPressed: () {
               widget.index(3);
@@ -92,7 +92,7 @@ class _BreedBarState extends State<TipBar>
             },
             style: ButtonStyle(
               fixedSize: MaterialStateProperty.all<Size>(
-                Size(90.w, 20.h), // 가로 150, 세로 50 크기로 조정
+                Size(90.w, 10.h), // 가로 150, 세로 50 크기로 조정
               ),
               side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: Color(0xFF665D55)),
@@ -103,10 +103,10 @@ class _BreedBarState extends State<TipBar>
             ),
             child: Text("예방접종",
                 style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold))),
-        SizedBox(width: 5.w),
+        SizedBox(width: 2.w),
         widget.breedPk == 1 ? 
         ElevatedButton(
             onPressed: () {
@@ -128,7 +128,7 @@ class _BreedBarState extends State<TipBar>
             ),
             child: Text("훈련",
                 style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.bold))):Container()
       ]),
