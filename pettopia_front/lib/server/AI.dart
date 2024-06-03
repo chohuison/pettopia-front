@@ -27,8 +27,7 @@ class AI {
     print(_serverAIUrl);
   }
 
-  Future<XFile?> applyPetFilterDog(XFile pickedImage, String species,
-      String noseFilter, String hornsFilter) async {
+  Future<XFile?> applyPetFilterDog(XFile pickedImage, Map<String,dynamic> filter) async {
     await _getServerUrl();
     // final uri = Uri.parse('$_serverAIUrl/pet_filter');
     String finalUrl = _serverAIUrl + "pet_filter_dog";
@@ -40,12 +39,8 @@ class AI {
 
     request.files
         .add(await http.MultipartFile.fromPath('petImage', pickedImage.path));
-    request.fields['petFilterNose'] = noseFilter;
-    request.fields['petFilterHorns'] = hornsFilter;
-    print("request: ");
-    print(request);
-    print(noseFilter);
-    print(hornsFilter);
+    request.fields['petFilterNose'] = filter['petFilterNose'];
+    request.fields['petFilterHorns'] = filter['petFilterHorns'];
 
     try {
       final response = await request.send();
@@ -73,7 +68,7 @@ class AI {
     }
   }
 
-  Future<XFile?> applyCatFilter(XFile pickedImage) async {
+  Future<XFile?> applyCatFilter(XFile pickedImage,Map<String,dynamic>filter) async {
     await _getServerUrl();
     // final uri = Uri.parse('$_serverAIUrl/pet_filter');
     String finalUrl = _serverAIUrl + "pet_filter_cat";
@@ -85,7 +80,7 @@ class AI {
 
     request.files
         .add(await http.MultipartFile.fromPath('petImage', pickedImage.path));
-    request.fields['petFilterCat'] = "glasses";
+    request.fields['petFilterCat'] = filter['petFilterCat'];
 
     print("request: ");
     print(request);
@@ -267,6 +262,40 @@ class AI {
     } catch (e) {
       print("Error applying filter: $e");
       return [];
+    }
+  }
+
+   Future<void> petSkinDisease(XFile pickedImage,) async {
+    await _getServerUrl();
+   
+    String finalUrl = _serverAIUrl + "petSkinDisease";
+    final uri = Uri.parse(finalUrl);
+    print(uri);
+
+
+    final request = http.MultipartRequest('POST', uri);
+    print("pickedImage.path: ");
+    print(pickedImage.path);
+    request.files
+        .add(await http.MultipartFile.fromPath('skinImage', pickedImage.path));
+    
+
+    try {
+      final response = await request.send();
+      if (response.statusCode == 200) {
+       final responseData = await response.stream.bytesToString();
+
+        final Map<String, dynamic> parsedData = json.decode(responseData);
+        print("ai");
+        print("error: $parsedData");
+        
+      } else {
+        print("Failed to apply filter. Status code: ${response.statusCode}");
+       
+      }
+    } catch (e) {
+      print("Error applying filter: $e");
+   
     }
   }
 }

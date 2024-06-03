@@ -37,6 +37,7 @@ class _PetFilterSearchState extends State<PetFilter>
   final petFilterService = AI();
   AppBarList _appBarList = AppBarList();
   late List<Map<String, dynamic>> _pictureList = [];
+  late String _errorMessage = "";
 
   @override
   void initState() {
@@ -59,20 +60,15 @@ class _PetFilterSearchState extends State<PetFilter>
         _pictureList = [
           {
             'breed': '강아지',
-            'nose': 'nose',
-            'hat': 'hat',
+            'petFilterNose': 'rudolph_nose',
+            'petFilterHorns': 'rudolph_hat',
             'imgURL': 'assets/img/petFilter/dog/rudolph.jpg'
           },
+    
           {
             'breed': '강아지',
-            'nose': 'nose',
-            'hat': 'hat',
-            'imgURL': 'assets/img/petFilter/dog/happy_birthday.jpg'
-          },
-          {
-            'breed': '강아지',
-            'nose': 'nose',
-            'hat': 'hat',
+            'petFilterNose': 'Santa_nose',
+            'petFilterHorns': 'santa_hat',
             'imgURL': 'assets/img/petFilter/dog/santa.jpg'
           }
         ];
@@ -80,27 +76,28 @@ class _PetFilterSearchState extends State<PetFilter>
       print(_pictureList);
     } else {
       print("고양이 필터");
-    }
-    setState(() {
+         setState(() {
       breedPk = 2;
       _pictureList = [
         {
           'breed': '고양이',
-          'hat': 'hat',
+          'petFilterCat': 'glasses',
           'imgURL': 'assets/img/petFilter/cat/glasses.jpg'
         },
         {
           'breed': '고양이',
-          'hat': 'hat',
+          'petFilterCat': 'happy_birthday_sunglasses',
           'imgURL': 'assets/img/petFilter/cat/happy_birthday_sunglasses.jpg'
         },
         {
           'breed': '고양이',
-          'hat': 'hat',
+          'petFilterCat': 'sunglasses',
           'imgURL': 'assets/img/petFilter/cat/sunglasses.jpg'
         }
       ];
     });
+    }
+ 
   }
 
   Future<void> _getCamera() async {
@@ -118,22 +115,39 @@ class _PetFilterSearchState extends State<PetFilter>
         await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       file = pickedImage;
+      _errorMessage="";
     });
     if (pickedImage == null) {
       return;
     }
   }
 
-  Future<void> _filter(String nose, String horn) async {
-    // XFile? filteredImage = await petFilterService.applyPetFilterDog(
-    //     file!, _selectedBreed, nose, horn); // 필터 적용 요청
-    XFile? filteredImage = await petFilterService.applyCatFilter(
-      file!,
-    );
-
-    setState(() {
+  Future<void> _filter(Map<String,dynamic>filter) async {
+    if(file == null){
+      setState(() {
+        _errorMessage = "사진을 먼저 선택해주세요";
+      });
+    }else{
+   if(_selectedBreed == "강아지"){
+    XFile? filteredImage = await petFilterService.applyPetFilterDog(
+        file!,filter); // 필터 적용 요청
+         setState(() {
       file = filteredImage;
     });
+    }else{
+   XFile? filteredImage = await petFilterService.applyCatFilter(
+      file!,filter
+    );
+          setState(() {
+      file = filteredImage;
+    });
+    }
+ 
+    }
+
+ 
+
+   
   }
 
   Future<void> _initializeData() async {
@@ -206,10 +220,16 @@ class _PetFilterSearchState extends State<PetFilter>
                                 _button("갤러리", _getGallery)
                               ],
                             )),
+                           Text(
+  _errorMessage,
+  style: TextStyle(
+    color: Colors.red,
+  ),
+),
                         Container(
                           margin: EdgeInsets.only(top: 10.h),
                           width: 350.w,
-                          height: 150.h,
+                          height: 120.h,
                           decoration: BoxDecoration(
                               color: Color(0xFFF5EBE0),
                               borderRadius: BorderRadius.circular(25),
@@ -280,8 +300,7 @@ class _PetFilterSearchState extends State<PetFilter>
       height: 60.h,
       child: IconButton(
           onPressed: () {
-            // print("버튼 선택됨");
-            // _filter(nose, horn);
+        _filter(list);
           },
           icon: Image.asset(list['imgURL'])),
     );
