@@ -70,7 +70,7 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
       _fur = value;
     });
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
 
   void _onWightUpdate(String value) {
@@ -78,7 +78,7 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
       _wight = value;
     });
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
 
   void _onSexUpdate(int value) {
@@ -87,7 +87,7 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
     });
     print(_sex);
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
 
   void _onnNuteringUpdate(int value) {
@@ -95,20 +95,20 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
       _neutering = value;
     });
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
 
   void onSeleted(String value, int pk) {
     setState(() {
       _species = value;
-      _speciesPk = pk;
+      _breedPk = pk;
     });
     print(value);
     print(pk);
     print(_species);
     print(_speciesPk);
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
 
   void _petNumberController(String value) {
@@ -127,7 +127,7 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
     print(_petName);
 
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _widght,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
 
   void _birthController(String value) {
@@ -136,8 +136,30 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
     });
 
     widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
-        _speciesPk, _fur, _sex, _neutering, _birth);
+        _breedPk, _fur, _sex, _neutering, _birth);
   }
+
+       Future<void> _getCamera() async {
+    ImagePicker().pickImage(source: ImageSource.camera).then((image) async {
+      if (image != null) {
+        setState(() {
+          _file = image;
+        });
+        String imagUrl = await _petServer.s3Upload(context, _file!, widget.petPk);
+    setState(() {
+      _profile = "";
+      print(_profile);
+  
+      _profile =    _profile = '$imagUrl?${DateTime.now().millisecondsSinceEpoch}'; 
+      print(_profile);
+    });
+
+    widget.onHandlePetInformation(_profile, _petNumber, _petName, _wight,
+        _speciesPk, _fur, _sex, _neutering, _birth);
+      }
+    });
+  }
+
 
   Future<void> _getGallery() async {
     final pickedImage =
@@ -201,7 +223,9 @@ class _ModifyPetInformationState extends State<ModifyPetInformation>
                         width: 150.w,
                         height: 25.h,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _getCamera();
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Color(0xFFAFA59B)),

@@ -45,12 +45,12 @@ class ShortChartValueState extends State<ShortChartValue> {
           children:<Widget> [
             //기록부분
             Container(
-              width: 220.w,
+              width: 210.w,
               margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w,),
               child:Column(
                 children: <Widget>[
                   Container(
-                                 margin: EdgeInsets.only(right: 140.0.w,),
+                                 margin: EdgeInsets.only(right: 135.0.w,),
                     child: Text(widget.value['createAt'].toString())
                     
                   )
