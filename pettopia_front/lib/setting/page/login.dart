@@ -101,7 +101,7 @@ class _LoginState extends State<Login> {
 
               print(html.runtimeType);
               String strHtml = html as String;
-                  if (context.mounted) {
+              if (context.mounted) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -140,7 +140,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
         title: "Login",
         debugShowCheckedModeBanner: false,
@@ -157,7 +157,7 @@ class _LoginState extends State<Login> {
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
               body: Container(
                 width: 400.w,
-                height: 650.h,
+                height: 850.h,
                 margin: EdgeInsets.all(15.w),
                 decoration: BoxDecoration(
                   color: Color(0xFFE3D5CA),
@@ -196,7 +196,7 @@ class _LoginState extends State<Login> {
                           'assets/img/kakao_login.png',
                           width: double.infinity,
                           height: double.infinity,
-                          fit: BoxFit.cover,
+                          // fit: BoxFit.cover,
                         ),
                       ),
                     ),

@@ -64,7 +64,6 @@ class _PetFilterSearchState extends State<PetFilter>
             'petFilterHorns': 'rudolph_hat',
             'imgURL': 'assets/img/petFilter/dog/rudolph.jpg'
           },
-    
           {
             'breed': '강아지',
             'petFilterNose': 'Santa_nose',
@@ -76,28 +75,27 @@ class _PetFilterSearchState extends State<PetFilter>
       print(_pictureList);
     } else {
       print("고양이 필터");
-         setState(() {
-      breedPk = 2;
-      _pictureList = [
-        {
-          'breed': '고양이',
-          'petFilterCat': 'glasses',
-          'imgURL': 'assets/img/petFilter/cat/glasses.jpg'
-        },
-        {
-          'breed': '고양이',
-          'petFilterCat': 'happy_birthday_sunglasses',
-          'imgURL': 'assets/img/petFilter/cat/happy_birthday_sunglasses.jpg'
-        },
-        {
-          'breed': '고양이',
-          'petFilterCat': 'sunglasses',
-          'imgURL': 'assets/img/petFilter/cat/sunglasses.jpg'
-        }
-      ];
-    });
+      setState(() {
+        breedPk = 2;
+        _pictureList = [
+          {
+            'breed': '고양이',
+            'petFilterCat': 'glasses',
+            'imgURL': 'assets/img/petFilter/cat/glasses.jpg'
+          },
+          {
+            'breed': '고양이',
+            'petFilterCat': 'happy_birthday_sunglasses',
+            'imgURL': 'assets/img/petFilter/cat/happy_birthday_sunglasses.jpg'
+          },
+          {
+            'breed': '고양이',
+            'petFilterCat': 'sunglasses',
+            'imgURL': 'assets/img/petFilter/cat/sunglasses.jpg'
+          }
+        ];
+      });
     }
- 
   }
 
   Future<void> _getCamera() async {
@@ -115,39 +113,33 @@ class _PetFilterSearchState extends State<PetFilter>
         await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       file = pickedImage;
-      _errorMessage="";
+      _errorMessage = "";
     });
     if (pickedImage == null) {
       return;
     }
   }
 
-  Future<void> _filter(Map<String,dynamic>filter) async {
-    if(file == null){
+  Future<void> _filter(Map<String, dynamic> filter) async {
+    if (file == null) {
       setState(() {
         _errorMessage = "사진을 먼저 선택해주세요";
       });
-    }else{
-   if(_selectedBreed == "강아지"){
-    XFile? filteredImage = await petFilterService.applyPetFilterDog(
-        file!,filter); // 필터 적용 요청
-         setState(() {
-      file = filteredImage;
-    });
-    }else{
-   XFile? filteredImage = await petFilterService.applyCatFilter(
-      file!,filter
-    );
-          setState(() {
-      file = filteredImage;
-    });
+    } else {
+      if (_selectedBreed == "강아지") {
+        XFile? filteredImage =
+            await petFilterService.applyPetFilterDog(file!, filter); // 필터 적용 요청
+        setState(() {
+          file = filteredImage;
+        });
+      } else {
+        XFile? filteredImage =
+            await petFilterService.applyCatFilter(file!, filter);
+        setState(() {
+          file = filteredImage;
+        });
+      }
     }
- 
-    }
-
- 
-
-   
   }
 
   Future<void> _initializeData() async {
@@ -191,8 +183,8 @@ class _PetFilterSearchState extends State<PetFilter>
                       Column(children: <Widget>[
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 60.h, 0, 0),
-                          width: 200.h,
-                          height: 200.h,
+                          width: 250.h,
+                          height: 250.h,
                           child: (file != null)
                               ? Image.file(
                                   File(file!.path),
@@ -220,16 +212,16 @@ class _PetFilterSearchState extends State<PetFilter>
                                 _button("갤러리", _getGallery)
                               ],
                             )),
-                           Text(
-  _errorMessage,
-  style: TextStyle(
-    color: Colors.red,
-  ),
-),
+                        Text(
+                          _errorMessage,
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
                         Container(
                           margin: EdgeInsets.only(top: 10.h),
-                          width: 350.w,
-                          height: 120.h,
+                          width: 320.w,
+                          height: 150.h,
                           decoration: BoxDecoration(
                               color: Color(0xFFF5EBE0),
                               borderRadius: BorderRadius.circular(25),
@@ -300,7 +292,7 @@ class _PetFilterSearchState extends State<PetFilter>
       height: 60.h,
       child: IconButton(
           onPressed: () {
-        _filter(list);
+            _filter(list);
           },
           icon: Image.asset(list['imgURL'])),
     );
