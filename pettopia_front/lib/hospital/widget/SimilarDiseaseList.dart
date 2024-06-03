@@ -21,6 +21,7 @@ class _SilimarDiseaseListState extends State<SilimarDiseaseList> {
     return Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
         decoration: BoxDecoration(
+          color: Color(0xFFF5EBE0),
           borderRadius: BorderRadius.circular(20.0),
           border: Border.all(
             color: Color(0xFFD5BDAF), // 테두리 색상
@@ -33,7 +34,17 @@ class _SilimarDiseaseListState extends State<SilimarDiseaseList> {
             Container(
                 child: Column(
               children: <Widget>[
-                Text(widget.diseaseValue['breed']),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  widget.diseaseValue['breed'],
+                  style:
+                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
                 _Row("나이: ", widget.diseaseValue['age'].toString(), "단장모: ",
                     widget.diseaseValue['pet_class']),
                 _Row("성별: ", widget.diseaseValue['sex'], "몸무게: ",
@@ -42,7 +53,7 @@ class _SilimarDiseaseListState extends State<SilimarDiseaseList> {
                     widget.diseaseValue['environment']),
                 _Row("배변 상태: ", widget.diseaseValue['defecation'], "식사량: ",
                     widget.diseaseValue['food_count']),
-                _Row("식사 종류", widget.diseaseValue['food_kind'], "", "")
+                _mealContainer("식사 종류: ", widget.diseaseValue['food_kind'])
               ],
             )),
             //질병 정보
@@ -57,14 +68,17 @@ class _SilimarDiseaseListState extends State<SilimarDiseaseList> {
                 ),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  _Row("질병 명: ", widget.diseaseValue['disease_name'].toString(),
-                      "", ""),
-                  _Row("CRP: ", widget.diseaseValue['CRP'].toString(), "", ""),
-                  _Row(" IgG: ", widget.diseaseValue['IgG'].toString(), "", ""),
-                  _Row("AFP: ", widget.diseaseValue['AFP'].toString(), "", ""),
-                  _Row("stress: ", widget.diseaseValue['stress'].toString(), "",
-                      ""),
+                  _diseaseRow(
+                    "질병 명: ",
+                    widget.diseaseValue['disease_name'].toString(),
+                  ),
+                  _diseaseRow("CRP: ", widget.diseaseValue['CRP'].toString()),
+                  _diseaseRow(" IgG: ", widget.diseaseValue['IgG'].toString()),
+                  _diseaseRow("AFP: ", widget.diseaseValue['AFP'].toString()),
+                  _diseaseRow(
+                      "stress: ", widget.diseaseValue['stress'].toString()),
                 ],
               ),
             )
@@ -75,12 +89,67 @@ class _SilimarDiseaseListState extends State<SilimarDiseaseList> {
   Widget _Row(String name1, String value1, String name2, String value2) {
     return Row(
       children: <Widget>[
-        Text(name1),
-        Text(value1),
-        SizedBox(width: 30.w),
-        Text(name2),
-        Text(value2)
+        SizedBox(
+          width: 20.w,
+        ),
+        Container(
+          width: 170.w,
+          //color: Colors.blue,
+          child: Row(
+            children: [
+              Text(
+                name1,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(value1),
+            ],
+          ),
+        ),
+        SizedBox(width: 20.w),
+        Row(
+          children: [
+            Text(
+              name2,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(value2),
+          ],
+        ),
       ],
+    );
+  }
+
+  Widget _mealContainer(String name, String value) {
+    return Row(children: [
+      SizedBox(
+        width: 20.w,
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            name,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(value),
+        ],
+      ),
+    ]);
+  }
+
+  Widget _diseaseRow(String name, String value) {
+    return Container(
+      width: 270.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            name,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(value),
+        ],
+      ),
     );
   }
 }
