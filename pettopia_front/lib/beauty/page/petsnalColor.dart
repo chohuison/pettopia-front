@@ -25,7 +25,7 @@ class _PetsnalColorState extends State<PetsnalColor>
   late List<Map<String, dynamic>> _beautyAppBar;
   AppBarList _appBarList = AppBarList();
   AI _aiServer = AI();
-   List<Color> _colors= [];
+  List<Color> _colors = [];
 
   @override
   void initState() {
@@ -39,13 +39,14 @@ class _PetsnalColorState extends State<PetsnalColor>
         setState(() {
           file = image;
         });
-            
- List<List<int>> colors = await _aiServer.applyPetColor(image);
 
-   setState(() {
-     _colors=  colors.map((color) =>
-        Color.fromRGBO(color[0], color[1], color[2], 1.0)).toList();
-   });
+        List<List<int>> colors = await _aiServer.applyPetColor(image);
+
+        setState(() {
+          _colors = colors
+              .map((color) => Color.fromRGBO(color[0], color[1], color[2], 1.0))
+              .toList();
+        });
       }
     });
   }
@@ -56,16 +57,17 @@ class _PetsnalColorState extends State<PetsnalColor>
     if (pickedImage == null) {
       return;
     }
-     setState(() {
+    setState(() {
       file = pickedImage;
     });
-    
- List<List<int>> colors = await _aiServer.applyPetColor(pickedImage);
 
-   setState(() {
-     _colors=  colors.map((color) =>
-        Color.fromRGBO(color[0], color[1], color[2], 1.0)).toList();
-   });
+    List<List<int>> colors = await _aiServer.applyPetColor(pickedImage);
+
+    setState(() {
+      _colors = colors
+          .map((color) => Color.fromRGBO(color[0], color[1], color[2], 1.0))
+          .toList();
+    });
   }
 
   Future<void> _getPetsnalColor() async {
@@ -113,9 +115,9 @@ class _PetsnalColorState extends State<PetsnalColor>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+          debugShowCheckedModeBanner: false,
           title: "petsnalColor",
           builder: (context, child) {
             return MediaQuery(
@@ -133,10 +135,10 @@ class _PetsnalColorState extends State<PetsnalColor>
                     barList: _beautyAppBar,
                     buttonHandler: _appBarList.beautyAppBarHandler),
                 Container(
-                  height: 485.h,
+                  height: 550.h,
                   width: 500.w,
                   margin:
-                      EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
+                      EdgeInsets.symmetric(vertical: 0.8.h, horizontal: 20.0.w),
                   decoration: BoxDecoration(
                     color: Color(0xFFE3D5CA),
                     borderRadius: BorderRadius.circular(25),
@@ -219,7 +221,7 @@ class _PetsnalColorState extends State<PetsnalColor>
         _button("사진 찾기", _getGallery),
         _button("펫스널컬러란?", _getPetsnalColor),
         Container(
-          height: 10.h,
+          height: 30.h,
         ),
         Text("- 반려동물을 가까이에서 찍어주세요."),
         Text("- 밝은 장소에서 촬영해주세요.")
@@ -246,17 +248,20 @@ class _PetsnalColorState extends State<PetsnalColor>
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: _colors.length >1? _colors[0]: Colors.red),
+                decoration: BoxDecoration(
+                    color: _colors.length > 1 ? _colors[0] : Colors.red),
               ),
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: _colors.length >1? _colors[1]: Colors.green),
+                decoration: BoxDecoration(
+                    color: _colors.length > 1 ? _colors[1] : Colors.green),
               ),
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: _colors.length >1? _colors[2]: Colors.blue),
+                decoration: BoxDecoration(
+                    color: _colors.length > 1 ? _colors[2] : Colors.blue),
               ),
             ],
           ),

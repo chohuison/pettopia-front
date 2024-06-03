@@ -46,7 +46,7 @@ class _HospitalSearchState extends State<HospitalSearch>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
            debugShowCheckedModeBanner: false ,
         title: "hospitalSearch",
@@ -67,7 +67,7 @@ class _HospitalSearchState extends State<HospitalSearch>
                   buttonHandler: _appBarList.hospitalAppBarHandler),
               Container(
                   width: 500.w,
-                  height: 485.h,
+                  height: 550.h,
                   margin:
                       EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
                   decoration: BoxDecoration(

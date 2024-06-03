@@ -16,7 +16,7 @@ class _SkinDiseaseListValueState extends State<SkinDiseaseListValue> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: Container(
         margin: EdgeInsets.only(
             top: 10.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),

@@ -96,7 +96,7 @@ class _PetSpeakerState extends State<PetSpeaker>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "shortRecords",
@@ -117,7 +117,7 @@ class _PetSpeakerState extends State<PetSpeaker>
                 buttonHandler: _appBarList.lifeAppBarHandler,
               ),
               Container(
-                height: 485.h,
+                height: 550.h,
                 width: 500.w,
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
