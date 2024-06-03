@@ -36,7 +36,7 @@ class _PetFilterSearchState extends State<PetFilter>
   late CameraDescription firstCamera;
   final petFilterService = AI();
   AppBarList _appBarList = AppBarList();
-  late List<Map<String,dynamic>> _pictureList=[];
+  late List<Map<String, dynamic>> _pictureList = [];
 
   @override
   void initState() {
@@ -50,15 +50,56 @@ class _PetFilterSearchState extends State<PetFilter>
   String _selectedBreed = "";
   int breedPk = 0;
   void _fetchBreedList(String selectedBreed) {
-    print(selectedBreed);
-    setState(() {
-      _selectedBreed = selectedBreed;
-      if (selectedBreed == "강아지") {
+    print("selectedBrdde: $selectedBreed");
+    _selectedBreed = selectedBreed;
+    if (selectedBreed == "강아지") {
+      print("강아지필터");
+      setState(() {
         breedPk = 1;
-        // _pictureList=[{'breed':'강아지', ''}]
-      } else {
-        breedPk = 2;
-      }
+        _pictureList = [
+          {
+            'breed': '강아지',
+            'nose': 'nose',
+            'hat': 'hat',
+            'imgURL': 'assets/img/petFilter/dog/rudolph.jpg'
+          },
+          {
+            'breed': '강아지',
+            'nose': 'nose',
+            'hat': 'hat',
+            'imgURL': 'assets/img/petFilter/dog/happy_birthday.jpg'
+          },
+          {
+            'breed': '강아지',
+            'nose': 'nose',
+            'hat': 'hat',
+            'imgURL': 'assets/img/petFilter/dog/santa.jpg'
+          }
+        ];
+      });
+      print(_pictureList);
+    } else {
+      print("고양이 필터");
+    }
+    setState(() {
+      breedPk = 2;
+      _pictureList = [
+        {
+          'breed': '고양이',
+          'hat': 'hat',
+          'imgURL': 'assets/img/petFilter/cat/glasses.jpg'
+        },
+        {
+          'breed': '고양이',
+          'hat': 'hat',
+          'imgURL': 'assets/img/petFilter/cat/happy_birthday_sunglasses.jpg'
+        },
+        {
+          'breed': '고양이',
+          'hat': 'hat',
+          'imgURL': 'assets/img/petFilter/cat/sunglasses.jpg'
+        }
+      ];
     });
   }
 
@@ -86,8 +127,9 @@ class _PetFilterSearchState extends State<PetFilter>
   Future<void> _filter(String nose, String horn) async {
     // XFile? filteredImage = await petFilterService.applyPetFilterDog(
     //     file!, _selectedBreed, nose, horn); // 필터 적용 요청
-      XFile? filteredImage = await petFilterService.applyCatFilter(
-        file!,); 
+    XFile? filteredImage = await petFilterService.applyCatFilter(
+      file!,
+    );
 
     setState(() {
       file = filteredImage;
@@ -178,22 +220,13 @@ class _PetFilterSearchState extends State<PetFilter>
                           child: ListView(
                             children: [
                               Wrap(
-                                children: [
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                  _filterBtn('nose', 'horns2'),
-                                ],
-                              )
+                                children:
+                                    List.generate(_pictureList.length, (index) {
+                                  return _filterBtn(
+                                    _pictureList[index],
+                                  );
+                                }),
+                              ),
                             ],
                           ),
                         )
@@ -240,17 +273,17 @@ class _PetFilterSearchState extends State<PetFilter>
   }
 
 // 일단 필터 보여주기만 했는데 연결하다가 필요하면 클래스 분리해야 할듯
-  Widget _filterBtn(String nose, String horn) {
+  Widget _filterBtn(Map<String, dynamic> list) {
     return Container(
       margin: EdgeInsets.only(bottom: 5.h, left: 3.w, right: 3.w),
       width: 60.w,
       height: 60.h,
       child: IconButton(
           onPressed: () {
-            print("버튼 선택됨");
-            _filter(nose, horn);
+            // print("버튼 선택됨");
+            // _filter(nose, horn);
           },
-          icon: Image.asset('assets/img/exFilter.png')),
+          icon: Image.asset(list['imgURL'])),
     );
   }
 }

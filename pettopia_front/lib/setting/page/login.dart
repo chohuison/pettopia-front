@@ -100,6 +100,16 @@ class _LoginState extends State<Login> {
 
               print(html.runtimeType);
               String strHtml = html as String;
+                  if (context.mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BeforeMain(
+                      html: strHtml,
+                    ),
+                  ),
+                );
+              }
             }
           }).catchError((error) {
             print("Error getting HTML: $error");
