@@ -30,7 +30,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
       });
     } else {
       Map<String, dynamic> petInfo =
-          await _petServer.getAPIPetInfo(context,_dogRegNo, _ownerName);
+          await _petServer.getAPIPetInfo(context, _dogRegNo, _ownerName);
       setState(() {
         _petInfo = petInfo;
       });
@@ -82,7 +82,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
         builder: (context, child) {
           //전체 창 크기 조절 이걸로 하면됨 !
@@ -177,7 +177,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
           children: <Widget>[
             _typeContainer(containerName),
             Container(
-                width: 180.w,
+                width: 160.w,
                 child: TextField(
                     onChanged: (text) {
                       contorller(text);

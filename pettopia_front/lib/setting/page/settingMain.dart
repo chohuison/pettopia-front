@@ -39,12 +39,12 @@ class _SettingMainhState extends State<SettingMain> {
   }
 
   Future<void> _getPetInfo() async {
-    _petInfo = await _petServer.getPetInfo(context,_petList.first['petPk']);
+    _petInfo = await _petServer.getPetInfo(context, _petList.first['petPk']);
   }
 
   Future<void> _getPetAddInfo() async {
     Map<String, dynamic> petAddExtraInfo =
-        await _petServer.getAddPetInfo(context,_petList.first['petPk']);
+        await _petServer.getAddPetInfo(context, _petList.first['petPk']);
     _petAddInfo = petAddExtraInfo['petExtraInfo'];
     _medicenList = petAddExtraInfo['responseMedicineList']['list'];
     _height = _medicenList.length * 160 + 800;
@@ -53,7 +53,7 @@ class _SettingMainhState extends State<SettingMain> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "settingMain",
@@ -68,7 +68,7 @@ class _SettingMainhState extends State<SettingMain> {
           backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
           body: Container(
             width: 400.w,
-            height: 600.h,
+            height: 800.h,
             margin: EdgeInsets.only(
                 left: 15.w, top: 15.h, right: 15.w, bottom: 15.h),
             decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class _SettingMainhState extends State<SettingMain> {
               children: <Widget>[
                 //여기 나중에 펫토피아 글씨 로고 넣기
                 Container(
-                    margin: EdgeInsets.only(left: 17.w, top: 60.h),
+                    margin: EdgeInsets.only(left: 17.w, top: 100.h),
                     width: 240.w,
                     height: 80.h,
                     decoration: BoxDecoration(
@@ -123,7 +123,6 @@ class _SettingMainhState extends State<SettingMain> {
       child: ElevatedButton(
         onPressed: () async {
           if (index == 0) {
-   
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -219,10 +218,10 @@ class _SettingMainhState extends State<SettingMain> {
           } else if (index == 3) {
             await _secureStorage.deleteAll();
             await users.logoutKakao();
-              Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => Login()),
-    );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Login()),
+            );
           }
         },
         style: ButtonStyle(
