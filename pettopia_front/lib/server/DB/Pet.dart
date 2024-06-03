@@ -149,7 +149,7 @@ class Pet {
   }
 
   //pet기본 정보 작성
-  Future<void> createPet( Map<String, dynamic> petInfo , bool isProfile,BuildContext context) async {
+  Future<bool> createPet( Map<String, dynamic> petInfo ,BuildContext context) async {
     await _getServerUrl();
           bool isToken = await _jwt.tokenValidation();
           if(isToken){
@@ -173,19 +173,16 @@ class Pet {
 
     if (response.statusCode == 201) {
       print("Shot record created successfully!");
-      if(isProfile == false){
-          Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyApp()),
-      );
-      }
+      return true;
     } else {
       print("Failed to create shot record. Status code :${response.body}");
+      return false;
     }
           }else{
              Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => Login()),);
+      return false;
           }
   
   }
@@ -235,7 +232,7 @@ class Pet {
         }
         await _secureStorage.write(key: 'pet', value: jsonEncode(petValueList));
       }
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyApp()),
       );
@@ -291,7 +288,7 @@ class Pet {
         await _secureStorage.delete(key: 'pet');
         await _secureStorage.write(key: 'pet', value: jsonEncode(newPetList));
 
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MyApp()),
         );
