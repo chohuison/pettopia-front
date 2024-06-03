@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pettopia_front/beforeMain.dart';
 import 'package:pettopia_front/main.dart';
 import 'package:pettopia_front/server/DB/Pet.dart';
+import 'package:pettopia_front/setting/page/naverViewPage.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/server/DB/Users.dart';
@@ -188,7 +189,6 @@ class _LoginState extends State<Login> {
                       height: 60.h,
                       child: IconButton(
                         onPressed: () {
-                          print("버튼 누름");
                           _kakaoWebViewSetting(context);
                           launchLogin(context);
                         },
@@ -221,7 +221,13 @@ class _LoginState extends State<Login> {
                       width: 200.w,
                       height: 70.h,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // 네이버 인증 때문에 만든 화면(구글 로그인 구현할 때 삭제해야 함)
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NaverViewPage()));
+                        },
                         icon: Image.asset('assets/img/google_login.png'),
                       ),
                     ),
