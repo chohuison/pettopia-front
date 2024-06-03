@@ -53,32 +53,41 @@ class _DaySelectPopUpState extends State<DaySelectPopUp>
     _date = date;
   }
 
-  Future<void> _writeDiary() async {
-    List<Map<String, dynamic>> medicenList =
-        await _diaryServer.getMedicenList(context,_petPk);
+   Future<void> _writeDiary() async {
+    if (!mounted) return;
+
+    List<Map<String, dynamic>> medicenList = await _diaryServer.getMedicenList(context, _petPk);
+    
+    if (!mounted) return;
+
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WriteDiary(
-                  date: _date,
-                  name: _petName,
-                  pk: _petPk,
-                  medicenList: medicenList,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => WriteDiary(
+          date: _date,
+          name: _petName,
+          pk: _petPk,
+          medicenList: medicenList,
+        ),
+      ),
+    );
   }
 
   Future<void> _viewDiary() async {
+    if (!mounted) return;
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ViewDiary(
-                    diaryPk: widget.diaryValue['diaryPk'],
-                    diaryValue: widget.diaryValue,
-                    date: _date,
-                    name: _petName,
-                    pk: _petPk,
-                  )));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ViewDiary(
+          diaryPk: widget.diaryValue['diaryPk'],
+          diaryValue: widget.diaryValue,
+          date: _date,
+          name: _petName,
+          pk: _petPk,
+        ),
+      ),
+    );
   }
 
   @override

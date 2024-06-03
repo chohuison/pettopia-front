@@ -75,23 +75,34 @@ class _DiaryWidgetState extends State<DiaryWidget>
                   DateTime focusedDay,
                 ) async {
                   if (widget.petList.length < 1) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                              surfaceTintColor: Colors.white,
-                              content: CreatePetDiaryCheckPopup());
-                        });
+                     if (!mounted) return;
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        surfaceTintColor: Colors.white,
+                        content: CreatePetDiaryCheckPopup(),
+                      );
+                    },
+                  );
                   } else {
                     Map<String,dynamic > valueDiary = await _diaryServer.getDiary(context,_petPk,selectedDay);
                     bool isCreate = valueDiary['diaryPk'] == null ? true: false;
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                              surfaceTintColor: Colors.white,
-                              content: DaySelectPopUp(date: selectedDay, petList: widget.petList, isCreate: isCreate, diaryValue: valueDiary,));
-                        });
+        if (!mounted) return;
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        surfaceTintColor: Colors.white,
+                        content: DaySelectPopUp(
+                          date: selectedDay,
+                          petList: widget.petList,
+                          isCreate: isCreate,
+                          diaryValue: valueDiary,
+                        ),
+                      );
+                    },
+                  );
                     print(selectedDay);
                     setState(() {
                       _selectedDate = selectedDay;

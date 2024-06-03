@@ -100,7 +100,7 @@ class _CreatePetState extends State<CreatePet> {
     List<dynamic> petList = [];
     Map<String, dynamic> newPetValue = {
       'pk': petPk,
-      'profile': value['profile'],
+      'profile': value['profile']!= null ? value['profile']: "",
       'dogRegNo': value['dogRegNo'],
       'dogNm': value['dogNm'],
       'speciesName': _petBreedList.speciesNameByPk(_breedPk),
@@ -177,7 +177,7 @@ class _CreatePetState extends State<CreatePet> {
             print(petInfo);
 
             if (_file != null) {
-              await _pet.createPet(petInfo, true, context);
+              await _pet.createPet(petInfo,  context);
               List<Map<String, dynamic>> petList =
                   await _pet.getPetList(context);
               int petPk = 0;
@@ -199,7 +199,8 @@ class _CreatePetState extends State<CreatePet> {
               await _pet.modifyPet(petInfo, petPk, context, true);
               _saveAppHandle(petInfo, petPk);
             } else {
-              await _pet.createPet(petInfo, false, context);
+
+              bool isCreate = await _pet.createPet(petInfo, context);
               List<Map<String, dynamic>> petList =
                   await _pet.getPetList(context);
               int petPk = 0;
@@ -208,7 +209,14 @@ class _CreatePetState extends State<CreatePet> {
                   petPk = pet['petPk'];
                   print("여기서 petPk: $petPk");
                 }
-                _saveAppHandle(petInfo, petPk);
+                await _saveAppHandle(petInfo, petPk);
+
+              }
+              if(isCreate == true){
+                      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
               }
             }
           }

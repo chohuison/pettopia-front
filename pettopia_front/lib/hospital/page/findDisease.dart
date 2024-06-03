@@ -57,7 +57,7 @@ class _FindDiseaseState extends State<FindDisease>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(392.7, 783.3),
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,

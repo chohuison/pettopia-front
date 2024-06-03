@@ -63,7 +63,7 @@ class _SkinDiseaseState extends State<SkinDisease>
 @override
 Widget build(BuildContext context) {
   return ScreenUtilInit(
-    designSize: const Size(411.42857142857144, 683.4285714285714),
+    designSize: const Size(392.7, 783.3),
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "skinDisease",
