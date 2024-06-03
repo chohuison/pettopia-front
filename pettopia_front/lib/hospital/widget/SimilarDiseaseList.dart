@@ -93,7 +93,7 @@ class _SilimarDiseaseListState extends State<SilimarDiseaseList> {
           width: 20.w,
         ),
         Container(
-          width: 170.w,
+          width: 160.w,
           //color: Colors.blue,
           child: Row(
             children: [
