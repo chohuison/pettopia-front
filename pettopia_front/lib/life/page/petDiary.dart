@@ -45,7 +45,7 @@ class _PetDiaryState extends State<PetDiary>
               );
             },
             home: Scaffold(
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
               body: Column(
                 children: <Widget>[

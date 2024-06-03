@@ -69,21 +69,26 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+  _getPetInfo();
     _getCurrentLocation();
     //그냥 펫 정보 잘 처리되나 확인할라고
-    _getPetInfo();
+   
   }
 
   //그냥 펫 정보
   Future<void> _getPetInfo() async {
     String? jsonData = await _storage.read(key: 'pet');
+
     if (jsonData != null) {
-      petList = jsonDecode(jsonData);
-      print(petList);
+          setState(() {
+       petList = jsonDecode(jsonData);
+    });
       if (petList.length > 0) {
         setState(() {
+             
           _curretnPetValue = petList[0];
           print("폰에 저장된 펫 정보들");
+          print(petList);
           _petName = petList[0]['dogNm'];
           _petPk = petList[0]['pk'];
         });
@@ -209,13 +214,13 @@ class _MyAppState extends State<MyApp> {
                     height: 610.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
-                  if (petList.length > 1)
+                  if (petList.length > 0)
                     Container(
                       margin: EdgeInsets.only(top: 30.h, left: 20.w),
                       child: MainSelectBox(
                           onRegionSelected: _petNameHandler, petName: petList),
                     ),
-                  if (petList.length > 1)
+                  if (petList.length > 0)
                     Positioned(
                       bottom: 0,
                       left: 0,
@@ -265,7 +270,7 @@ class _MyAppState extends State<MyApp> {
             style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
           ),
         ),
-        // 반려동물 사진 보여주는 Container
+     //   반려동물 사진 보여주는 Container
         Container(
           margin: EdgeInsets.fromLTRB(100.w, 20.h, 100.w, 20.h),
           // color: Colors.yellow,
@@ -310,7 +315,7 @@ class _MyAppState extends State<MyApp> {
                     style: TextStyle(fontSize: 15.sp),
                   ),
                   Text(
-                    "연락처: " + _protectorPhoneNum,
+                    "연락처: " + _curretnPetValue['protectorPhoneNum'],
                     style: TextStyle(fontSize: 15.sp),
                   ),
                 ],
