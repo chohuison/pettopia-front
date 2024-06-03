@@ -156,13 +156,13 @@ class _PetTipState extends State<PetTip> with AutomaticKeepAliveClientMixin {
                           //ToDo
                           //카테고리 별로 나오도록 만들어야됨
                           Positioned(
-                              top: 80.h,
+                              top: 90.h,
                               // tip list
                               child: Container(
                                   //color: Colors.blue,
-                                  margin: EdgeInsets.fromLTRB(0, 25.h, 0, 0),
-                                  height: 380.h,
-                                  width: 370.w,
+                                  margin: EdgeInsets.fromLTRB(10.w, 25.h, 0, 0),
+                                  height: 440.h,
+                                  width: 350.w,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: <Widget>[

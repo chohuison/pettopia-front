@@ -20,8 +20,8 @@ class _BreedValueState extends State<BreedValue> {
       designSize: const Size(392.7272727273, 783.2727272727),
       child: Container(
         margin: EdgeInsets.only(
-            top: 0.0.h, left: 10.0.w, right: 10.w, bottom: 10.h),
-        width: 350.w,
+            top: 0.0.h, left: 1.w, right: 20.w, bottom: 10.h),
+        width: 260.w,
         height: 120.h,
         decoration: BoxDecoration(
           color: Color(0xFFF5EBE0),
@@ -34,11 +34,11 @@ class _BreedValueState extends State<BreedValue> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 300.w,
+                  width: 200.w,
                   child:  Text(
                   widget.value['content'],
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15.0),
+                  style: TextStyle(fontSize: 13.0),
                 ),
                 )
               
