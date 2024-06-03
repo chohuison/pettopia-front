@@ -24,7 +24,7 @@ class _HospitalValueState extends State<HospitalValue> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(392.7272727273, 783.2727272727),
       builder: (context, child) {
         return Container(
           margin: EdgeInsets.only(

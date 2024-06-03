@@ -23,7 +23,7 @@ class _HospitalMapState extends State<HospitalMap> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(392.7, 783.3),
+        designSize: const Size(392.7272727273, 783.2727272727),
         child: MaterialApp(
                debugShowCheckedModeBanner: false,
           home: Scaffold(

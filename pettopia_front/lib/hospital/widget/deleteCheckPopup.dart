@@ -20,7 +20,7 @@ class _DeleteCheckPopupState extends State<DeleteCheckPopup> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.4, 683.4),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
         builder: (context, child) {
           //전체 창 크기 조절 이걸로 하면됨 !

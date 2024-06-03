@@ -69,10 +69,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-  _getPetInfo();
+    _getPetInfo();
     _getCurrentLocation();
     //그냥 펫 정보 잘 처리되나 확인할라고
-   
   }
 
   //그냥 펫 정보
@@ -80,12 +79,11 @@ class _MyAppState extends State<MyApp> {
     String? jsonData = await _storage.read(key: 'pet');
 
     if (jsonData != null) {
-          setState(() {
-       petList = jsonDecode(jsonData);
-    });
+      setState(() {
+        petList = jsonDecode(jsonData);
+      });
       if (petList.length > 0) {
         setState(() {
-             
           _curretnPetValue = petList[0];
           print("폰에 저장된 펫 정보들");
           print(petList);
@@ -182,7 +180,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(392.7, 783.3), // 디자인 기준 크기를 설정합니다.
+      designSize: const Size(392.7272727273, 783.2727272727), // 디자인 기준 크기를 설정합니다.
       child: MaterialApp(
         title: "main_page",
         debugShowCheckedModeBanner: false,
@@ -209,7 +207,8 @@ class _MyAppState extends State<MyApp> {
                           : Container()),
                   Container(
                     // color: Colors.yellow,
-                    width: 550.w,
+                    width: 600.w,
+                    height: 800.h,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
                   Container(
@@ -229,19 +228,19 @@ class _MyAppState extends State<MyApp> {
                       ],
                     ),
                   ),
-                  if (petList.length > 1)
+                  if (petList.length > 0)
                     Container(
                       margin: EdgeInsets.only(top: 50.h, left: 20.w),
                       child: MainSelectBox(
                           onRegionSelected: _petNameHandler, petName: petList),
                     ),
-                  if (petList.length > 1)
+                  if (petList.length > 0)
                     Positioned(
                       bottom: 0,
                       left: 0,
                       right: 0,
                       child: Container(
-                          height: 600.h,
+                          height: 700.h,
                           child: DraggableSheet(child: _petCard())),
                     ),
                 ],
@@ -262,13 +261,13 @@ class _MyAppState extends State<MyApp> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 20.h),
+          margin: EdgeInsets.only(top: 40.h),
           child: Text(
             "반려동물등록증",
             style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
           ),
         ),
-     //   반려동물 사진 보여주는 Container
+        //   반려동물 사진 보여주는 Container
         Container(
           margin: EdgeInsets.fromLTRB(100.w, 20.h, 100.w, 20.h),
           // color: Colors.yellow,
@@ -347,7 +346,7 @@ class _MyAppState extends State<MyApp> {
         ),
         Container(
           width: 150.w,
-          margin: EdgeInsets.only(top: 10.h),
+          margin: EdgeInsets.only(top: 70.h),
           //color: Colors.blue,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

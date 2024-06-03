@@ -86,7 +86,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(392.7, 783.3),
+      designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "shortRecords",
@@ -105,7 +105,7 @@ class _ShortRecordModifyValueState extends State<ShortRecordModify>
                 barList: _hospitalAppBar,
                 buttonHandler: _appBarList.hospitalAppBarHandler),
             Container(
-                height: 485.h,
+                height: 550.h,
                 width: 500.w,
                 margin:
                     EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
