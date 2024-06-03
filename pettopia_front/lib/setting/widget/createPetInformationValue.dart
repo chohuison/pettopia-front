@@ -148,8 +148,16 @@ class _CreatePetInformationState extends State<CreatePetInformation>
     //  _profile = await _petServer.seUploat(_file!);
     // widget.onHandlePetInformation(_profile,_petNumber, _petName, _widght, _speciesPk,
     //     _fur, _sex, _neutering, _birth);
-   
 
+  }
+     Future<void> _getCamera() async {
+    ImagePicker().pickImage(source: ImageSource.camera).then((image) {
+      if (image != null) {
+        setState(() {
+          _file = image;
+        });
+      }
+    });
   }
 
   @override
@@ -192,7 +200,9 @@ class _CreatePetInformationState extends State<CreatePetInformation>
                         width: 150.w,
                         height: 25.h,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _getCamera();
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Color(0xFFAFA59B)),
