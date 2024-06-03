@@ -28,8 +28,9 @@ class _SkinDiseaseState extends State<SkinDisease>
   late List<Map<String, dynamic>> _hospitalAppBar;
   AppBarList _appBarList = AppBarList();
 
-  late List<Map<String, dynamic>> _diseaseList = [];
+  late List<String> _diseaseList = ['피부병1','피부병2'];
   AI _aiServer = AI();
+  
 
   @override
   void initState() {
@@ -54,10 +55,11 @@ class _SkinDiseaseState extends State<SkinDisease>
    
       return;
     }
-       _aiServer.petSkinDisease(pickedImage);
+      String diseaseList = await _aiServer.petSkinDisease(pickedImage);
 
     setState(() {
       file = pickedImage;
+      _diseaseList = diseaseList.split("/");
     });
   }
 @override
@@ -110,19 +112,13 @@ Widget build(BuildContext context) {
                   ),
                   Text("피부병이 의심되는 부위를 가까이에서 찍어주세요"),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // 인공지능 연결해서 동적으로 생성하도록 만들어야함
-                          SkinDiseaseListValue(),
-                          SkinDiseaseListValue(),
-                          SkinDiseaseListValue(),
-                          SkinDiseaseListValue(),
-                          SkinDiseaseListValue(),
-                        ],
-                      ),
-                    ),
-                  ),
+              child: ListView.builder(
+                itemCount: _diseaseList.length,
+                itemBuilder: (context, index) {
+                  return SkinDiseaseListValue(diseaseName: _diseaseList[index],);
+                },
+              ),
+            ),
                 ],
               ),
             ),
