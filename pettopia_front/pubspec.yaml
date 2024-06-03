@@ -45,6 +45,8 @@ dependencies:
   geolocator: ^7.1.0
   geocode: 1.0.3
   audioplayers: ^6.0.0
+  image_gallery_saver: ^2.0.3
+  gallery_saver_plus: ^3.0.1
 
    
 
