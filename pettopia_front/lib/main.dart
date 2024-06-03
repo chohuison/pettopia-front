@@ -177,8 +177,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(
-          411.42857142857144, 683.4285714285714), // 디자인 기준 크기를 설정합니다.
+      designSize: const Size(392.7, 783.3), // 디자인 기준 크기를 설정합니다.
       child: MaterialApp(
         title: "main_page",
         debugShowCheckedModeBanner: false,
@@ -196,7 +195,7 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   // 날씨 API Container
                   Container(
-                      margin: EdgeInsets.only(top: 90.h, left: 155.w),
+                      margin: EdgeInsets.only(top: 110.h, left: 150.w),
                       width: 170.w,
                       height: 140.h,
                       color: Color.fromARGB(255, 162, 207, 221),
@@ -205,27 +204,11 @@ class _MyAppState extends State<MyApp> {
                           : Container()),
                   Container(
                     // color: Colors.yellow,
-                    width: 420.w,
-                    height: 610.h,
+                    width: 550.w,
                     child: Image.asset("assets/img/mainImage.png"),
                   ),
-                  if (petList.length > 1)
-                    Container(
-                      margin: EdgeInsets.only(top: 30.h, left: 20.w),
-                      child: MainSelectBox(
-                          onRegionSelected: _petNameHandler, petName: petList),
-                    ),
-                  if (petList.length > 1)
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                          height: 600.h,
-                          child: DraggableSheet(child: _petCard())),
-                    ),
                   Container(
-                    margin: EdgeInsets.only(top: 330.h, left: 90.w),
+                    margin: EdgeInsets.only(top: 400.h, left: 90.w),
                     child: Row(
                       children: [
                         Container(
@@ -240,7 +223,22 @@ class _MyAppState extends State<MyApp> {
                         )
                       ],
                     ),
-                  )
+                  ),
+                  if (petList.length > 1)
+                    Container(
+                      margin: EdgeInsets.only(top: 50.h, left: 20.w),
+                      child: MainSelectBox(
+                          onRegionSelected: _petNameHandler, petName: petList),
+                    ),
+                  if (petList.length > 1)
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                          height: 600.h,
+                          child: DraggableSheet(child: _petCard())),
+                    ),
                 ],
               ),
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),

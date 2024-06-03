@@ -25,7 +25,7 @@ class _PetsnalColorState extends State<PetsnalColor>
   late List<Map<String, dynamic>> _beautyAppBar;
   AppBarList _appBarList = AppBarList();
   AI _aiServer = AI();
-   List<Color> _colors= [];
+  List<Color> _colors = [];
 
   @override
   void initState() {
@@ -39,13 +39,14 @@ class _PetsnalColorState extends State<PetsnalColor>
         setState(() {
           file = image;
         });
-            
- List<List<int>> colors = await _aiServer.applyPetColor(image);
 
-   setState(() {
-     _colors=  colors.map((color) =>
-        Color.fromRGBO(color[0], color[1], color[2], 1.0)).toList();
-   });
+        List<List<int>> colors = await _aiServer.applyPetColor(image);
+
+        setState(() {
+          _colors = colors
+              .map((color) => Color.fromRGBO(color[0], color[1], color[2], 1.0))
+              .toList();
+        });
       }
     });
   }
@@ -56,16 +57,17 @@ class _PetsnalColorState extends State<PetsnalColor>
     if (pickedImage == null) {
       return;
     }
-     setState(() {
+    setState(() {
       file = pickedImage;
     });
-    
- List<List<int>> colors = await _aiServer.applyPetColor(pickedImage);
 
-   setState(() {
-     _colors=  colors.map((color) =>
-        Color.fromRGBO(color[0], color[1], color[2], 1.0)).toList();
-   });
+    List<List<int>> colors = await _aiServer.applyPetColor(pickedImage);
+
+    setState(() {
+      _colors = colors
+          .map((color) => Color.fromRGBO(color[0], color[1], color[2], 1.0))
+          .toList();
+    });
   }
 
   Future<void> _getPetsnalColor() async {
@@ -113,9 +115,9 @@ class _PetsnalColorState extends State<PetsnalColor>
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(411.42857142857144, 683.4285714285714),
+      designSize: const Size(392.7, 783.3),
       child: MaterialApp(
-           debugShowCheckedModeBanner: false ,
+          debugShowCheckedModeBanner: false,
           title: "petsnalColor",
           builder: (context, child) {
             return MediaQuery(
@@ -136,7 +138,7 @@ class _PetsnalColorState extends State<PetsnalColor>
                   height: 485.h,
                   width: 500.w,
                   margin:
-                      EdgeInsets.symmetric(vertical: 1.0.h, horizontal: 20.0.w),
+                      EdgeInsets.symmetric(vertical: 0.8.h, horizontal: 20.0.w),
                   decoration: BoxDecoration(
                     color: Color(0xFFE3D5CA),
                     borderRadius: BorderRadius.circular(25),
@@ -246,17 +248,20 @@ class _PetsnalColorState extends State<PetsnalColor>
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: _colors.length >1? _colors[0]: Colors.red),
+                decoration: BoxDecoration(
+                    color: _colors.length > 1 ? _colors[0] : Colors.red),
               ),
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: _colors.length >1? _colors[1]: Colors.green),
+                decoration: BoxDecoration(
+                    color: _colors.length > 1 ? _colors[1] : Colors.green),
               ),
               Container(
                 width: 60.w,
                 height: 60.h,
-                decoration: BoxDecoration(color: _colors.length >1? _colors[2]: Colors.blue),
+                decoration: BoxDecoration(
+                    color: _colors.length > 1 ? _colors[2] : Colors.blue),
               ),
             ],
           ),

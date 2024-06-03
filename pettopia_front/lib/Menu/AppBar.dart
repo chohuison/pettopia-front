@@ -26,7 +26,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return ScreenUtilInit(
       designSize: const Size(411.42857142857144, 683.4285714285714),
       child: Container(
-        height: 100.h,
+        height: 120.h,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: widget.barList.length,
@@ -52,7 +52,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 20.h,
+            height: 25.h,
           ),
           GestureDetector(
             onTap: () {
