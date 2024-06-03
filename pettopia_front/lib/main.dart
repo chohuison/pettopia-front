@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    
+
     _getCurrentLocation();
     //그냥 펫 정보 잘 처리되나 확인할라고
     _getPetInfo();
@@ -117,7 +117,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _getCurrentLocation() async {
-
     if (await isCheckedWeather()) {
       print("다시 날씨 정보 가져옴");
       try {
@@ -225,6 +224,23 @@ class _MyAppState extends State<MyApp> {
                           height: 600.h,
                           child: DraggableSheet(child: _petCard())),
                     ),
+                  Container(
+                    margin: EdgeInsets.only(top: 330.h, left: 90.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 120.w,
+                          height: 120.h,
+                          child: Image.asset("assets/img/icon/main_dog.png"),
+                        ),
+                        Container(
+                          width: 120.w,
+                          height: 120.h,
+                          child: Image.asset("assets/img/icon/main_cat.png"),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
               backgroundColor: Color.fromRGBO(237, 237, 233, 1.0),
@@ -347,10 +363,9 @@ class _MyAppState extends State<MyApp> {
               ),
               // 멍냥이들 발바닥 젤리 그림 들어갈 자리
               Container(
-                width: 50.w,
-                height: 50.h,
-                color: Colors.green,
-              )
+                  width: 50.w,
+                  height: 50.h,
+                  child: Image.asset("assets/img/icon/pettopia.png"))
             ],
           ),
         )
