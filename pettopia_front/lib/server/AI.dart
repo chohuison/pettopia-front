@@ -265,7 +265,7 @@ class AI {
     }
   }
 
-   Future<void> petSkinDisease(XFile pickedImage,) async {
+   Future<String> petSkinDisease(XFile pickedImage,) async {
     await _getServerUrl();
    
     String finalUrl = _serverAIUrl + "petSkinDisease";
@@ -288,13 +288,16 @@ class AI {
         final Map<String, dynamic> parsedData = json.decode(responseData);
         print("ai");
         print("error: $parsedData");
+        return parsedData['response'];
         
       } else {
         print("Failed to apply filter. Status code: ${response.statusCode}");
+        return "";
        
       }
     } catch (e) {
       print("Error applying filter: $e");
+      return "";
    
     }
   }

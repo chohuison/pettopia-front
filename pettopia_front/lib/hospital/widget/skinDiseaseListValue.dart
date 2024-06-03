@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SkinDiseaseListValue extends StatefulWidget {
+  final String diseaseName;
   const SkinDiseaseListValue({
     Key? key,
+    required this.diseaseName,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,8 @@ class _SkinDiseaseListValueState extends State<SkinDiseaseListValue> {
           color: Color(0xFFF5EBE0),
           borderRadius: BorderRadius.circular(40.0),
         ),
+        child: Center(
+          child: Text(widget.diseaseName,style: TextStyle(fontSize: 30.sp),),)
       ),
     );
   }
