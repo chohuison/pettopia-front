@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:gallery_saver_plus/files.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
 
 import 'package:pettopia_front/Menu/CustomBottomNavigatorBar.dart';
 import 'package:pettopia_front/Menu/AppBar.dart';
@@ -120,6 +122,11 @@ class _PetFilterSearchState extends State<PetFilter>
     }
   }
 
+  Future<void> _saveImage() async {
+    print(file!.path);
+    await GallerySaver.saveVideo(file!.path, albumName: "펫토피아");
+  }
+
   Future<void> _filter(Map<String, dynamic> filter) async {
     if (file == null) {
       setState(() {
@@ -204,12 +211,14 @@ class _PetFilterSearchState extends State<PetFilter>
                               )),
                         ),
                         Container(
-                            margin: EdgeInsets.only(top: 10.h, left: 75.w),
+                            margin: EdgeInsets.only(
+                                top: 10.h, left: 10.w, right: 10.w),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 _button("촬영하기", _getCamera),
-                                SizedBox(width: 20.w),
-                                _button("갤러리", _getGallery)
+                                _button("갤러리", _getGallery),
+                                if (file != null) _button("저장하기", _saveImage)
                               ],
                             )),
                         Text(
