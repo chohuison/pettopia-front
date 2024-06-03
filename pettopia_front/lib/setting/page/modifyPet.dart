@@ -111,7 +111,7 @@ class _ModifyPetState extends State<ModifyPet> {
       }
       print(petInfo);
 
-      _pet.modifyPet(petInfo, widget.petPk,context,false);
+      await _pet.modifyPet(petInfo, widget.petPk,context,false);
 
   
     }
