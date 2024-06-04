@@ -59,14 +59,10 @@ class _LoginState extends State<Login> {
               String strHtml = html as String;
 
               if (context.mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BeforeMain(
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BeforeMain(
                       html: strHtml,
-                    ),
-                  ),
-                );
+                    ),), (route) => false);
+             
               }
             }
           }).catchError((error) {

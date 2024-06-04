@@ -30,7 +30,7 @@ class _HospitalValueState extends State<HospitalValue> {
           margin: EdgeInsets.only(
             top: 0.0.h,
             left: 10.0.w,
-            right: 10.w,
+            right: 30.w,
             bottom: 10.h,
           ),
           width: 350.w,
@@ -44,7 +44,7 @@ class _HospitalValueState extends State<HospitalValue> {
               Row(
                 children: <Widget>[
                   Container(
-                    width: 250.w,
+                    width: 230.w,
                     margin: EdgeInsets.only(
                       top: 15.0.h,
                       left: 10.0.w,

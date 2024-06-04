@@ -81,7 +81,7 @@ class _HospitalSearchState extends State<HospitalSearch>
                           child: Container(
                               // color: Colors.blue,
                               margin: EdgeInsets.fromLTRB(0, 17.h, 0, 20.h),
-                              height: 400.h,
+                              height: 460.h,
                               width: 370.w,
                               child: SingleChildScrollView(
                                 child: Column(
