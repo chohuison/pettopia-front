@@ -216,10 +216,10 @@ class _LoginState extends State<Login> {
                       child: IconButton(
                         onPressed: () {
                           // 네이버 인증 때문에 만든 화면(구글 로그인 구현할 때 삭제해야 함)
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NaverViewPage()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => NaverViewPage()));
                         },
                         icon: Image.asset('assets/img/google_login.png'),
                       ),
