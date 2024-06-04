@@ -167,7 +167,7 @@ class _PetAddInformationState extends State<PetAddInformation> {
                               top: 45.h,
                               child: //생활 습관 컨테이너
                                   Container(
-                                      width: 350.w,
+                                      width: 330.w,
                                       height: 155.h,
                                       margin: EdgeInsets.only(
                                         // top: 5.h,

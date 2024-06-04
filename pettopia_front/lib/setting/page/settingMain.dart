@@ -218,10 +218,8 @@ class _SettingMainhState extends State<SettingMain> {
           } else if (index == 3) {
             await _secureStorage.deleteAll();
             await users.logoutKakao();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Login()),
-            );
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Login()), (route) => false);
+
           }
         },
         style: ButtonStyle(
