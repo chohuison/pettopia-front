@@ -25,13 +25,13 @@ class _HospitalMapState extends State<HospitalMap> {
     return ScreenUtilInit(
         designSize: const Size(392.7272727273, 783.2727272727),
         child: MaterialApp(
-               debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
             appBar: AppBar(
               actions: [
                 Container(
-                  //color: Colors.blue,
-                  width: 350.w,
+                  // color: Colors.blue,
+                  width: 330.w,
                   child: Text(
                     widget.value['name'],
                     textAlign: TextAlign.left,
