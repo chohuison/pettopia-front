@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
   }
 
   void _naverWebViewSetting(BuildContext context) async {
-    await _getServerUrl();
+      await _getServerUrl();
     String url = _serverUrl + "oauth2/authorization/naver";
     // String url = 'http://10.0.2.2/' + "oauth2/authorization/kakao";
 
@@ -97,15 +97,12 @@ class _LoginState extends State<Login> {
 
               print(html.runtimeType);
               String strHtml = html as String;
+
               if (context.mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BeforeMain(
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BeforeMain(
                       html: strHtml,
-                    ),
-                  ),
-                );
+                    ),), (route) => false);
+             
               }
             }
           }).catchError((error) {
@@ -125,10 +122,10 @@ class _LoginState extends State<Login> {
     print(_serverUrl);
   }
 
-  void launchLogin(BuildContext context) {
+  void launchLogin(BuildContext context, String name) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => WebViewPage(controller: _webViewController),
+        builder: (context) => WebViewPage(controller: _webViewController, name : name),
       ),
     );
   }
@@ -186,7 +183,7 @@ class _LoginState extends State<Login> {
                       child: IconButton(
                         onPressed: () {
                           _kakaoWebViewSetting(context);
-                          launchLogin(context);
+                          launchLogin(context, 'KakaoLogin');
                         },
                         icon: Image.asset(
                           'assets/img/kakao_login.png',
@@ -203,7 +200,7 @@ class _LoginState extends State<Login> {
                       child: IconButton(
                         onPressed: () {
                           _naverWebViewSetting(context);
-                          launchLogin(context);
+                          launchLogin(context,'NaverLogin');
                         },
                         icon: Image.asset(
                           'assets/img/naver_login.png',
@@ -240,8 +237,9 @@ class _LoginState extends State<Login> {
 
 class WebViewPage extends StatefulWidget {
   final WebViewController controller;
+  final String name;
 
-  WebViewPage({required this.controller});
+  WebViewPage({required this.controller, required this.name});
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
@@ -257,7 +255,7 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("KakaoLogin"),
+        title: Text(widget.name),
       ),
       body: WebViewWidget(
         controller: widget.controller, // 전달받은 컨트롤러 사용
