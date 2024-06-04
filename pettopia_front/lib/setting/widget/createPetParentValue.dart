@@ -24,7 +24,7 @@ class _CreatePetParentValueState extends State<CreatePetParentValue>  with Autom
   bool get wantKeepAlive => true;
  late String _parentName=widget.parentName;
  late String _parentPhoneNum="";
- late String _parentNameLabelText = widget.parentName != null? widget.parentName:"보호자의 이름을 입력해주세요";
+ late String _parentNameLabelText = widget.parentName != ""? widget.parentName:"보호자의 이름을 입력해주세요";
  late bool _isPet = widget.parentName != ""? true : false;
  void parentNameChange(String value){
   _parentName=value;

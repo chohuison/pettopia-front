@@ -158,6 +158,7 @@ class _CreatePetInformationState extends State<CreatePetInformation>
         });
       }
     });
+        widget.xfileHandle(_file!);
   }
 
   @override

@@ -96,12 +96,7 @@ class _BeforeMainState extends State<BeforeMain> with AutomaticKeepAliveClientMi
       print("Refresh Token: $refreshToken");
     // await Future.delayed(const Duration(seconds: 1)); 
      
-
-                Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MyApp()),
-    );
-   
+  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyApp()), (route) => false);
     } else {
       print("No JSON object found.");
     }

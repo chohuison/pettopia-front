@@ -84,6 +84,7 @@ class _PetInfoCheckPopupState extends State<PetInfoCheckPopup> {
     return ScreenUtilInit(
       designSize: const Size(392.7272727273, 783.2727272727),
       child: MaterialApp(
+           debugShowCheckedModeBanner: false,
         builder: (context, child) {
           //전체 창 크기 조절 이걸로 하면됨 !
           return SizedBox(
